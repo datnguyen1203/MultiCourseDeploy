@@ -1,5 +1,6 @@
 var createError = require("http-errors");
 var express = require("express");
+var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
@@ -31,6 +32,7 @@ const ActivityHistory = require("./Routers/ActivityHistoryRouter");
 const RequestRouter = require("./Routers/RequestRouter");
 var app = express();
 const cors = require("cors");
+app.use(cors());
 
 app.connect = mongoose;
 
@@ -71,13 +73,10 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({
-    error: err.message || "Something went wrong!",
-    status: err.status || 500,
-  });
+  res.render("error");
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;
