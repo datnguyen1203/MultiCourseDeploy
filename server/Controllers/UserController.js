@@ -604,7 +604,16 @@ exports.googleLoginCallback = async (req, res, next) => {
       // sameSite: "None",
       // secure: true,
     });
-    return res.redirect("https://multicourse.vercel.app/course-list");
+    // return res.redirect("https://multicourse.vercel.app/course-list");
+     return res.status(200).json({
+      message: "Google login successful",
+      token: token,
+      user_id: user._id,
+      fullname: user.fullname,
+      role: user.role,
+      status: user.status,
+      tutor_certificates: user.tutor_certificates,
+    });
   })(req, res, next);
 };
 
