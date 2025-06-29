@@ -34,8 +34,8 @@ exports.createPayment = async (req, res) => {
       orderCode: orderCode,
       amount: newPayment.payment_amount,
       description: orderCode,
-      cancelUrl: `http://localhost:3000/api/payment/check-payment/${orderCode}`,
-      returnUrl: `http://localhost:3000/api/payment/check-payment/${orderCode}`,
+      cancelUrl: `https://multicourse.vercel.app/api/payment/check-payment/${orderCode}`,
+      returnUrl: `https://multicourse.vercel.app/api/payment/check-payment/${orderCode}`,
       // cancelUrl: `http://localhost:3001/cancel?orderCode=${orderCode}&status=CANCELLED`,
       // returnUrl: `http://localhost:3001/success?orderCode=${orderCode}&status=SUCCESS`,
     };
