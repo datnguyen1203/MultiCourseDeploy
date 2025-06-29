@@ -246,29 +246,12 @@ const Login = () => {
     navigate("/signup", { state: { role: "Tutor" } });
   };
   const handleGoogleLogin = () => {
-    window.open("https://multicourseserver.onrender.com/api/users/google/login", "_self");
-
-    // const checkToken = setInterval(() => {
-    //   const token = getCookie("token");
-    //   if (token) {
-    //     clearInterval(checkToken);
-    //     localStorage.setItem("authToken", token);
-
-    //     // Thêm đoạn code lấy role từ API
-    //     fetch("https://multicourseserver.onrender.com/api/users/profile", {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     })
-    //       .then((res) => res.json())
-    //       .then((data) => {
-    //         localStorage.setItem("profile-role", data.role);
-    //         // Tạo một event để thông báo role đã thay đổi
-    //         window.dispatchEvent(new Event("roleChanged"));
-    //         window.location.href = "/course-list";
-    //       });
-    //   }
-    // }, 500);
+    setIsLoading(true);
+    setError(""); // Clear any existing errors
+    window.open(
+      "https://multicourseserver.onrender.com/api/users/google/login",
+      "_self"
+    );
   };
 
   // Hàm để lấy cookie theo tên
@@ -277,6 +260,80 @@ const Login = () => {
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
+
+  // Kiểm tra token từ cookie sau khi Google login redirect về
+  useEffect(() => {
+    const checkGoogleLoginToken = () => {
+      const token = getCookie("Token");
+      if (token && !localStorage.getItem("authToken")) {
+        // Hiển thị loading cho user biết đang xử lý
+        setIsLoading(true);
+
+        // Lưu token vào localStorage
+        localStorage.setItem("authToken", token);
+
+        // Gọi API để lấy thông tin user
+        axios
+          .get(
+            "https://multicourseserver.onrender.com/api/users/get-user-by-token",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            const userData = response.data;
+
+            // Kiểm tra trạng thái tài khoản
+            if (!userData.status) {
+              setError("Account has been BANNED");
+              localStorage.removeItem("authToken");
+              document.cookie =
+                "Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              setIsLoading(false);
+              return;
+            }
+
+            localStorage.setItem("role", userData.role);
+            localStorage.setItem("userId", userData._id);
+            setSuccessMessage("Google login successful!");
+
+            // Redirect theo role sau một chút delay để user thấy thông báo
+            setTimeout(() => {
+              if (userData.role.toLowerCase() === "admin") {
+                navigate("/statistic-for-admin");
+              } else if (userData.role.toLowerCase() === "student") {
+                navigate("/course-list");
+              } else if (userData.role.toLowerCase() === "tutor") {
+                if (
+                  !userData.tutor_certificates ||
+                  userData.tutor_certificates.length === 0
+                ) {
+                  navigate(`/uploadtutorcertificate/${userData._id}`);
+                } else {
+                  navigate("/courses-list-tutor");
+                }
+              }
+            }, 1000);
+          })
+          .catch((error) => {
+            console.error("Error getting user profile:", error);
+            setError("Google login failed. Please try again.");
+            // Xóa token nếu không hợp lệ
+            localStorage.removeItem("authToken");
+            document.cookie =
+              "Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            setIsLoading(false);
+          });
+      }
+    };
+
+    // Chỉ kiểm tra khi ở trang login
+    if (window.location.pathname === "/login") {
+      checkGoogleLoginToken();
+    }
+  }, [navigate]);
 
   return (
     <Row
@@ -404,6 +461,19 @@ const Login = () => {
                   style={{ display: "block", marginBottom: 12 }}
                 >
                   {error}
+                </Text>
+              )}
+
+              {successMessage && (
+                <Text
+                  type="success"
+                  style={{
+                    display: "block",
+                    marginBottom: 12,
+                    color: "#52c41a",
+                  }}
+                >
+                  {successMessage}
                 </Text>
               )}
 
