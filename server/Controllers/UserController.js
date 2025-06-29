@@ -495,7 +495,6 @@ exports.banAndUnbanUser = async (req, res) => {
   }
 };
 
-
 //log out
 exports.logout = async (req, res) => {
   try {
@@ -578,7 +577,18 @@ exports.googleLoginCallback = async (req, res, next) => {
     if (!user) {
       const message = info?.message || "Authentication failed";
       return res.redirect(
-        `https://multicourse.vercel.app/login?error=${encodeURIComponent(message)}`
+        `https://multicourse.vercel.app/login?error=${encodeURIComponent(
+          message
+        )}`
+      );
+    }
+
+    // Kiểm tra trạng thái tài khoản bị ban
+    if (!user.status) {
+      return res.redirect(
+        `https://multicourse.vercel.app/login?error=${encodeURIComponent(
+          "Account has been banned"
+        )}`
       );
     }
 
@@ -604,16 +614,11 @@ exports.googleLoginCallback = async (req, res, next) => {
       // sameSite: "None",
       // secure: true,
     });
-    // return res.redirect("https://multicourse.vercel.app/course-list");
-     return res.status(200).json({
-      message: "Google login successful",
-      token: token,
-      user_id: user._id,
-      fullname: user.fullname,
-      role: user.role,
-      status: user.status,
-      tutor_certificates: user.tutor_certificates,
-    });
+
+    // Redirect về login để popup có thể detect và xử lý token
+    return res.redirect(
+      "https://multicourse.vercel.app/login?googleAuth=success"
+    );
   })(req, res, next);
 };
 
