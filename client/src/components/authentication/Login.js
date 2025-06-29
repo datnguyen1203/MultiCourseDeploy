@@ -256,30 +256,48 @@ const Login = () => {
       "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,directories=no,status=no"
     );
 
+    // Listen for messages từ popup (nếu có)
+    const messageListener = (event) => {
+      if (event.origin !== "https://multicourse.vercel.app") return;
+
+      if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+        popup.close();
+        window.removeEventListener("message", messageListener);
+        // useEffect sẽ xử lý token
+      }
+    };
+    window.addEventListener("message", messageListener);
+
     // Theo dõi popup window
     const checkClosed = setInterval(() => {
       if (popup.closed) {
         clearInterval(checkClosed);
+        window.removeEventListener("message", messageListener);
 
-        // Kiểm tra token trong cookie sau khi popup đóng
+        // Kiểm tra token trong cookie và URL params sau khi popup đóng
         setTimeout(() => {
           const token = getCookie("Token");
-          if (token && !localStorage.getItem("authToken")) {
-            // Xử lý token và redirect (logic này sẽ được xử lý bởi useEffect)
-            window.location.reload(); // Reload để trigger useEffect
+          const currentUrl = new URL(window.location.href);
+          const googleAuth = currentUrl.searchParams.get("googleAuth");
+
+          if (token || googleAuth === "success") {
+            // Token hoặc success parameter đã có, useEffect sẽ xử lý
+            // Không cần reload, chỉ cần trigger useEffect bằng cách update state
+            setIsLoading(false); // Reset loading để useEffect có thể set lại
           } else {
-            // Nếu không có token, có thể user đã cancel
+            // Nếu không có token và không có success param, user có thể đã cancel
             setIsLoading(false);
           }
-        }, 1000); // Delay một chút để đảm bảo cookie được set
+        }, 500); // Giảm delay xuống để responsive hơn
       }
-    }, 1000);
+    }, 500); // Kiểm tra thường xuyên hơn
 
     // Timeout sau 5 phút nếu popup vẫn mở
     setTimeout(() => {
       if (!popup.closed) {
         popup.close();
         clearInterval(checkClosed);
+        window.removeEventListener("message", messageListener);
         setIsLoading(false);
         setError("Google login timeout. Please try again.");
       }
@@ -296,68 +314,84 @@ const Login = () => {
   // Kiểm tra token từ cookie sau khi Google login redirect về
   useEffect(() => {
     const checkGoogleLoginToken = () => {
+      const queryParams = new URLSearchParams(window.location.search);
+      const googleAuth = queryParams.get("googleAuth");
       const token = getCookie("Token");
-      if (token && !localStorage.getItem("authToken")) {
+
+      if (
+        (googleAuth === "success" || token) &&
+        !localStorage.getItem("authToken")
+      ) {
         // Hiển thị loading cho user biết đang xử lý
         setIsLoading(true);
 
-        // Lưu token vào localStorage
-        localStorage.setItem("authToken", token);
+        if (token) {
+          // Lưu token vào localStorage
+          localStorage.setItem("authToken", token);
 
-        // Gọi API để lấy thông tin user
-        axios
-          .get(
-            "https://multicourseserver.onrender.com/api/users/get-user-by-token",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            const userData = response.data;
+          // Gọi API để lấy thông tin user
+          axios
+            .get(
+              "https://multicourseserver.onrender.com/api/users/get-user-by-token",
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              const userData = response.data;
 
-            // Kiểm tra trạng thái tài khoản
-            if (!userData.status) {
-              setError("Account has been BANNED");
+              // Kiểm tra trạng thái tài khoản
+              if (!userData.status) {
+                setError("Account has been BANNED");
+                localStorage.removeItem("authToken");
+                document.cookie =
+                  "Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                setIsLoading(false);
+                return;
+              }
+
+              localStorage.setItem("role", userData.role);
+              localStorage.setItem("userId", userData._id);
+              setSuccessMessage("Google login successful!");
+
+              // Clear URL parameters
+              const newUrl = window.location.pathname;
+              window.history.replaceState({}, document.title, newUrl);
+
+              // Redirect theo role sau một chút delay để user thấy thông báo
+              setTimeout(() => {
+                if (userData.role.toLowerCase() === "admin") {
+                  navigate("/statistic-for-admin");
+                } else if (userData.role.toLowerCase() === "student") {
+                  navigate("/course-list");
+                } else if (userData.role.toLowerCase() === "tutor") {
+                  if (
+                    !userData.tutor_certificates ||
+                    userData.tutor_certificates.length === 0
+                  ) {
+                    navigate(`/uploadtutorcertificate/${userData._id}`);
+                  } else {
+                    navigate("/courses-list-tutor");
+                  }
+                }
+              }, 1000);
+            })
+            .catch((error) => {
+              console.error("Error getting user profile:", error);
+              setError("Google login failed. Please try again.");
+              // Xóa token nếu không hợp lệ
               localStorage.removeItem("authToken");
               document.cookie =
                 "Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
               setIsLoading(false);
-              return;
-            }
 
-            localStorage.setItem("role", userData.role);
-            localStorage.setItem("userId", userData._id);
-            setSuccessMessage("Google login successful!");
-
-            // Redirect theo role sau một chút delay để user thấy thông báo
-            setTimeout(() => {
-              if (userData.role.toLowerCase() === "admin") {
-                navigate("/statistic-for-admin");
-              } else if (userData.role.toLowerCase() === "student") {
-                navigate("/course-list");
-              } else if (userData.role.toLowerCase() === "tutor") {
-                if (
-                  !userData.tutor_certificates ||
-                  userData.tutor_certificates.length === 0
-                ) {
-                  navigate(`/uploadtutorcertificate/${userData._id}`);
-                } else {
-                  navigate("/courses-list-tutor");
-                }
-              }
-            }, 1000);
-          })
-          .catch((error) => {
-            console.error("Error getting user profile:", error);
-            setError("Google login failed. Please try again.");
-            // Xóa token nếu không hợp lệ
-            localStorage.removeItem("authToken");
-            document.cookie =
-              "Token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            setIsLoading(false);
-          });
+              // Clear URL parameters
+              const newUrl = window.location.pathname;
+              window.history.replaceState({}, document.title, newUrl);
+            });
+        }
       }
     };
 
