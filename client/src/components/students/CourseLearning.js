@@ -447,19 +447,27 @@ const CourseLearningPage = ({ isCourseCompleted }) => {
     const fetchLessonsAndProgress = async () => {
       try {
         const [lessonsResponse, progressResponse] = await Promise.all([
-          fetch(`https://multicourseserver.onrender.com/api/lessons/all-lessons/${courseId}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-          }),
+          fetch(
+            `https://multicourseserver.onrender.com/api/lessons/all-lessons/${courseId}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+              },
+            }
+          ),
           progressId
-            ? fetch(`https://multicourseserver.onrender.com/api/progress/${progressId}`, {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-                },
-              })
+            ? fetch(
+                `https://multicourseserver.onrender.com/api/progress/${progressId}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem(
+                      "authToken"
+                    )}`,
+                  },
+                }
+              )
             : Promise.resolve({ json: () => ({ lesson: [] }) }),
         ]);
 
@@ -580,14 +588,17 @@ const CourseLearningPage = ({ isCourseCompleted }) => {
 
   const updateNextLessonProgress = async (lessonId) => {
     try {
-      await fetch(`https://multicourseserver.onrender.com/api/progress/lesson/${lessonId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-        body: JSON.stringify({ status: "In Progress" }),
-      });
+      await fetch(
+        `https://multicourseserver.onrender.com/api/progress/lesson/${lessonId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+          body: JSON.stringify({ status: "In Progress" }),
+        }
+      );
 
       setProgressData((prev) => ({
         ...prev,
@@ -815,7 +826,7 @@ const CourseLearningPage = ({ isCourseCompleted }) => {
                             type="primary"
                             size="large"
                             icon={<FileTextOutlined />}
-                            href="http://localhost:3001/my-certificate"
+                            href="https://multicourse.vercel.app/my-certificate"
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ marginTop: 16 }}
