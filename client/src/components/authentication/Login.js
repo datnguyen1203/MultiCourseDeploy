@@ -248,10 +248,42 @@ const Login = () => {
   const handleGoogleLogin = () => {
     setIsLoading(true);
     setError(""); // Clear any existing errors
-    window.open(
+
+    // Mở popup window cho Google login
+    const popup = window.open(
       "https://multicourseserver.onrender.com/api/users/google/login",
-      "_self"
+      "GoogleLogin",
+      "width=500,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,directories=no,status=no"
     );
+
+    // Theo dõi popup window
+    const checkClosed = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(checkClosed);
+
+        // Kiểm tra token trong cookie sau khi popup đóng
+        setTimeout(() => {
+          const token = getCookie("Token");
+          if (token && !localStorage.getItem("authToken")) {
+            // Xử lý token và redirect (logic này sẽ được xử lý bởi useEffect)
+            window.location.reload(); // Reload để trigger useEffect
+          } else {
+            // Nếu không có token, có thể user đã cancel
+            setIsLoading(false);
+          }
+        }, 1000); // Delay một chút để đảm bảo cookie được set
+      }
+    }, 1000);
+
+    // Timeout sau 5 phút nếu popup vẫn mở
+    setTimeout(() => {
+      if (!popup.closed) {
+        popup.close();
+        clearInterval(checkClosed);
+        setIsLoading(false);
+        setError("Google login timeout. Please try again.");
+      }
+    }, 300000); // 5 phút
   };
 
   // Hàm để lấy cookie theo tên
