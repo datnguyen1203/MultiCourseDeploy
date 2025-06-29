@@ -495,7 +495,6 @@ exports.banAndUnbanUser = async (req, res) => {
   }
 };
 
-
 //log out
 exports.logout = async (req, res) => {
   try {
@@ -505,7 +504,7 @@ exports.logout = async (req, res) => {
     }
     // Xóa cookie Token
     res.clearCookie("Token", { path: "/" });
-    res.redirect("http://localhost:3001/");
+    res.redirect("https://multicourse.vercel.app/");
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal Server Error" });
@@ -578,7 +577,9 @@ exports.googleLoginCallback = async (req, res, next) => {
     if (!user) {
       const message = info?.message || "Authentication failed";
       return res.redirect(
-        `http://localhost:3001/login?error=${encodeURIComponent(message)}`
+        `https://multicourse.vercel.app/login?error=${encodeURIComponent(
+          message
+        )}`
       );
     }
 
@@ -604,7 +605,7 @@ exports.googleLoginCallback = async (req, res, next) => {
       // sameSite: "None",
       // secure: true,
     });
-    return res.redirect("http://localhost:3001/course-list");
+    return res.redirect("https://multicourse.vercel.app/course-list");
   })(req, res, next);
 };
 
