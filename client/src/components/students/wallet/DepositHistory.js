@@ -22,13 +22,13 @@ import {
   Breadcrumb
 } from "antd";
 import moment from "moment";
-import { 
-  SwapOutlined, 
-  DollarCircleOutlined, 
-  HistoryOutlined, 
-  FilterOutlined, 
-  CalendarOutlined, 
-  SortAscendingOutlined, 
+import {
+  SwapOutlined,
+  DollarCircleOutlined,
+  HistoryOutlined,
+  FilterOutlined,
+  CalendarOutlined,
+  SortAscendingOutlined,
   SortDescendingOutlined,
   ClockCircleOutlined,
   BankOutlined,
@@ -84,19 +84,19 @@ const DepositHistory = () => {
 
   if (error) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh', 
-        gap: 16 
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        gap: 16
       }}>
-        <Alert 
-          message="Đã xảy ra lỗi" 
-          description={error} 
-          type="error" 
-          showIcon 
+        <Alert
+          message="Đã xảy ra lỗi"
+          description={error}
+          type="error"
+          showIcon
           style={{ maxWidth: 500 }}
         />
         <Button
@@ -131,18 +131,18 @@ const DepositHistory = () => {
   );
 
   const columns = [
-    { 
-      title: "ID", 
-      dataIndex: "order_code", 
+    {
+      title: "ID",
+      dataIndex: "order_code",
       key: "order_code",
       render: (text) => (
         <Tag color="blue">{text}</Tag>
       ),
       width: 150
     },
-    { 
-      title: "Description", 
-      dataIndex: "description", 
+    {
+      title: "Description",
+      dataIndex: "description",
       key: "description",
       render: (text) => (
         <Tooltip title={text}>
@@ -193,9 +193,9 @@ const DepositHistory = () => {
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           {/* Sử dụng Card thay thế cho PageHeader */}
           <Card
-            style={{ 
-              marginBottom: 24, 
-              borderRadius: 8, 
+            style={{
+              marginBottom: 24,
+              borderRadius: 8,
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.09)'
             }}
           >
@@ -209,8 +209,8 @@ const DepositHistory = () => {
                 <Title level={2} style={{ margin: '16px 0 0 0' }}>Deposit History</Title>
                 <Text type="secondary">Track all your deposit transactions</Text>
               </div>
-              <Button 
-                icon={<ReloadOutlined />} 
+              <Button
+                icon={<ReloadOutlined />}
                 onClick={fetchDepositHistory}
               >
                 Refresh
@@ -220,8 +220,8 @@ const DepositHistory = () => {
 
           <Row gutter={24} style={{ marginBottom: 24 }}>
             <Col xs={24} sm={12}>
-              <Card 
-                hoverable 
+              <Card
+                hoverable
                 bordered={false}
                 style={{ borderRadius: 8, overflow: 'hidden', height: '100%' }}
               >
@@ -239,8 +239,8 @@ const DepositHistory = () => {
               </Card>
             </Col>
             <Col xs={24} sm={12}>
-              <Card 
-                hoverable 
+              <Card
+                hoverable
                 bordered={false}
                 style={{ borderRadius: 8, overflow: 'hidden', height: '100%' }}
               >
@@ -261,7 +261,7 @@ const DepositHistory = () => {
             </Col>
           </Row>
 
-          <Card 
+          <Card
             title={
               <Space>
                 <HistoryOutlined />
@@ -350,8 +350,8 @@ const DepositHistory = () => {
                 }}
               />
             ) : (
-              <Empty 
-                image={Empty.PRESENTED_IMAGE_SIMPLE} 
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
                 description="Không tìm thấy giao dịch nào"
               />
             )}

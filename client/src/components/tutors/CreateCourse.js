@@ -220,9 +220,8 @@ const CreateCourse = () => {
 
   return (
     <div
-      className={`min-h-screen px-4 py-8 ${
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50"
-      }`}
+      className={`min-h-screen px-4 py-8 ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50"
+        }`}
     >
       {spinning && (
         <Spin spinning={spinning} tip={`Uploading... ${percent}%`}>
@@ -232,15 +231,13 @@ const CreateCourse = () => {
 
       <Card
         bordered={false}
-        className={`w-full max-w-2xl mx-auto shadow-lg ${
-          theme === "dark" ? "bg-gray-800" : "bg-white"
-        }`}
+        className={`w-full max-w-2xl mx-auto shadow-lg ${theme === "dark" ? "bg-gray-800" : "bg-white"
+          }`}
       >
         <Title
           level={2}
-          className={`mb-6 ${
-            theme === "dark" ? "text-white" : "text-gray-800"
-          }`}
+          className={`mb-6 ${theme === "dark" ? "text-white" : "text-gray-800"
+            }`}
         >
           Create New Course
         </Title>
@@ -266,9 +263,8 @@ const CreateCourse = () => {
             name="title"
             label={
               <Text
-                className={`text-lg ${
-                  theme === "dark" ? "text-gray-200" : "text-gray-700"
-                }`}
+                className={`text-lg ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  }`}
               >
                 Course Title
               </Text>
@@ -282,9 +278,8 @@ const CreateCourse = () => {
             name="description"
             label={
               <Text
-                className={`text-lg ${
-                  theme === "dark" ? "text-gray-200" : "text-gray-700"
-                }`}
+                className={`text-lg ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  }`}
               >
                 Description
               </Text>
@@ -300,9 +295,8 @@ const CreateCourse = () => {
             name="price"
             label={
               <Text
-                className={`text-lg ${
-                  theme === "dark" ? "text-gray-200" : "text-gray-700"
-                }`}
+                className={`text-lg ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  }`}
               >
                 Price
               </Text>
@@ -328,9 +322,8 @@ const CreateCourse = () => {
             name="category"
             label={
               <Text
-                className={`text-lg ${
-                  theme === "dark" ? "text-gray-200" : "text-gray-700"
-                }`}
+                className={`text-lg ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  }`}
               >
                 Category
               </Text>
@@ -379,9 +372,8 @@ const CreateCourse = () => {
             name="image"
             label={
               <Text
-                className={`text-lg ${
-                  theme === "dark" ? "text-gray-200" : "text-gray-700"
-                }`}
+                className={`text-lg ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  }`}
               >
                 Course Image
               </Text>
@@ -390,7 +382,7 @@ const CreateCourse = () => {
             getValueFromEvent={normFile}
             rules={[{ required: true, message: "Please upload an image" }]}
             validateStatus={fileList.length === 0 ? "error" : ""}
-            // help={fileList.length === 0 ? "Please upload an image" : ""}
+          // help={fileList.length === 0 ? "Please upload an image" : ""}
           >
             <Upload
               listType="picture-card"
@@ -407,9 +399,8 @@ const CreateCourse = () => {
           {imagePreview && (
             <div className="mb-6">
               <Text
-                className={`text-lg ${
-                  theme === "dark" ? "text-gray-200" : "text-gray-700"
-                }`}
+                className={`text-lg ${theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  }`}
               >
                 Image Preview
               </Text>

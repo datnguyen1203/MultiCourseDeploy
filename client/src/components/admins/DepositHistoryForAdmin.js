@@ -236,7 +236,7 @@ const DepositHistoryForAdmin = () => {
           scroll={{ x: 'max-content' }}
           summary={(pageData) => {
             if (pageData.length === 0) return null;
-            
+
             return (
               <Table.Summary fixed>
                 <Table.Summary.Row>

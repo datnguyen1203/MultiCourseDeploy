@@ -303,10 +303,10 @@ const CourseLearningPage = ({ isCourseCompleted }) => {
           comments: prevLesson.comments.map((comment) =>
             comment._id === currentEditComment._id
               ? {
-                  ...comment,
-                  comment: editCommentText,
-                  rating: editCommentRating,
-                }
+                ...comment,
+                comment: editCommentText,
+                rating: editCommentRating,
+              }
               : comment
           ),
         }));
@@ -458,16 +458,16 @@ const CourseLearningPage = ({ isCourseCompleted }) => {
           ),
           progressId
             ? fetch(
-                `https://multicourseserver.onrender.com/api/progress/${progressId}`,
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem(
-                      "authToken"
-                    )}`,
-                  },
-                }
-              )
+              `https://multicourseserver.onrender.com/api/progress/${progressId}`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "authToken"
+                  )}`,
+                },
+              }
+            )
             : Promise.resolve({ json: () => ({ lesson: [] }) }),
         ]);
 
@@ -768,7 +768,7 @@ const CourseLearningPage = ({ isCourseCompleted }) => {
                   </div>
 
                   {currentLesson?.type === "exam" &&
-                  currentLesson.title === "Final Exam" ? (
+                    currentLesson.title === "Final Exam" ? (
                     <div
                       style={{
                         marginTop: 24,
@@ -960,7 +960,7 @@ const CourseLearningPage = ({ isCourseCompleted }) => {
                           </Space>
 
                           {currentLesson.comments &&
-                          currentLesson.comments.length > 0 ? (
+                            currentLesson.comments.length > 0 ? (
                             <List
                               itemLayout="horizontal"
                               dataSource={currentLesson.comments}
@@ -988,26 +988,26 @@ const CourseLearningPage = ({ isCourseCompleted }) => {
                                     actions={
                                       comment.author === userProfile?.fullname
                                         ? [
-                                            <Button
-                                              type="link"
-                                              icon={<EditOutlined />}
-                                              onClick={() =>
-                                                showEditModal(comment)
-                                              }
-                                            >
-                                              Edit
-                                            </Button>,
-                                            <Button
-                                              type="link"
-                                              danger
-                                              icon={<DeleteOutlined />}
-                                              onClick={() =>
-                                                handleDeleteComment(comment._id)
-                                              }
-                                            >
-                                              Delete
-                                            </Button>,
-                                          ]
+                                          <Button
+                                            type="link"
+                                            icon={<EditOutlined />}
+                                            onClick={() =>
+                                              showEditModal(comment)
+                                            }
+                                          >
+                                            Edit
+                                          </Button>,
+                                          <Button
+                                            type="link"
+                                            danger
+                                            icon={<DeleteOutlined />}
+                                            onClick={() =>
+                                              handleDeleteComment(comment._id)
+                                            }
+                                          >
+                                            Delete
+                                          </Button>,
+                                        ]
                                         : null
                                     }
                                   />

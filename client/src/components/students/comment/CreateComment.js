@@ -26,7 +26,7 @@ const CreateComment = ({ courseId, onCommentAdded }) => {
       setSuccess("Bình luận đã được thêm thành công!");
       setComment("");
       setRating(5);
-      
+
       if (onCommentAdded) onCommentAdded(response.data.comment);
     } catch (err) {
       setError("Lỗi khi gửi bình luận. Vui lòng thử lại!");
@@ -40,7 +40,7 @@ const CreateComment = ({ courseId, onCommentAdded }) => {
       <h3 className="text-lg font-bold mb-3">Thêm bình luận</h3>
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">{success}</p>}
-      
+
       <form onSubmit={handleSubmit} className="space-y-3">
         <label className="block font-medium">Đánh giá:</label>
         <select

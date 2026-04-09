@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Dropdown, Table, Tag, Modal, Input, Space, Select, Card, Typography, Row, Col, Progress, message as antMessage } from "antd";
-import { 
-  EllipsisOutlined, 
-  SearchOutlined, 
-  PlusOutlined, 
+import {
+  EllipsisOutlined,
+  SearchOutlined,
+  PlusOutlined,
   FilterOutlined,
   SortAscendingOutlined,
   ReloadOutlined,
@@ -48,13 +48,13 @@ const CourseListForAdmin = () => {
         }
       );
       setCourses(response.data);
-      
+
       // Extract unique tutors for filter dropdown
       const uniqueTutors = [...new Set(response.data.map(course => course.tutor.fullname))];
       setTutors(uniqueTutors);
       //  antMessage.success("Courses loaded successfully");
-       
-     
+
+
     } catch (err) {
       setError("Error loading course list.");
       // antMessage.error("Failed to load courses");
@@ -65,7 +65,7 @@ const CourseListForAdmin = () => {
 
   useEffect(() => {
     fetchCourses();
-   
+
   }, []);
 
   // Advanced course statistics
@@ -73,13 +73,13 @@ const CourseListForAdmin = () => {
   const activeCourses = courses.filter(course => course.status).length;
   const inactiveCourses = totalCourses - activeCourses;
   const activePercentage = totalCourses > 0 ? Math.round((activeCourses / totalCourses) * 100) : 0;
-  
+
   // Get unique tutors count
   const uniqueTutorsCount = new Set(courses.map(course => course.tutor._id)).size;
-  
+
   // Find most popular course (this is a placeholder - you might want to add actual view/enrollment counts to your data)
-  const mostPopularCourse = courses.length > 0 ? 
-    courses.reduce((prev, current) => (prev.views > current.views) ? prev : current) : 
+  const mostPopularCourse = courses.length > 0 ?
+    courses.reduce((prev, current) => (prev.views > current.views) ? prev : current) :
     null;
 
   const handleSearch = (value) => {
@@ -115,19 +115,19 @@ const CourseListForAdmin = () => {
   // Apply filters and search
   const filteredData = courses.filter(course => {
     // Text search
-    const matchesSearch = 
+    const matchesSearch =
       course.title.toLowerCase().includes(searchText.toLowerCase()) ||
       course.tutor.fullname.toLowerCase().includes(searchText.toLowerCase());
 
     // Status filter
-    const matchesStatus = 
-      filters.status === 'all' || 
+    const matchesStatus =
+      filters.status === 'all' ||
       (filters.status === 'active' && course.status) ||
       (filters.status === 'inactive' && !course.status);
 
     // Tutor filter
-    const matchesTutor = 
-      filters.tutor === 'all' || 
+    const matchesTutor =
+      filters.tutor === 'all' ||
       course.tutor.fullname === filters.tutor;
 
     return matchesSearch && matchesStatus && matchesTutor;
@@ -136,37 +136,37 @@ const CourseListForAdmin = () => {
   // Apply sorting
   const sortedData = sortConfig.key
     ? [...filteredData].sort((a, b) => {
-        let valueA, valueB;
-        
-        if (sortConfig.key === 'title') {
-          valueA = a.title.toLowerCase();
-          valueB = b.title.toLowerCase();
-        } else if (sortConfig.key === 'tutor') {
-          valueA = a.tutor.fullname.toLowerCase();
-          valueB = b.tutor.fullname.toLowerCase();
-        } else if (sortConfig.key === 'status') {
-          valueA = a.status ? 1 : 0;
-          valueB = b.status ? 1 : 0;
-        } else {
-          valueA = a[sortConfig.key];
-          valueB = b[sortConfig.key];
-        }
-        
-        if (valueA < valueB) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (valueA > valueB) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      })
+      let valueA, valueB;
+
+      if (sortConfig.key === 'title') {
+        valueA = a.title.toLowerCase();
+        valueB = b.title.toLowerCase();
+      } else if (sortConfig.key === 'tutor') {
+        valueA = a.tutor.fullname.toLowerCase();
+        valueB = b.tutor.fullname.toLowerCase();
+      } else if (sortConfig.key === 'status') {
+        valueA = a.status ? 1 : 0;
+        valueB = b.status ? 1 : 0;
+      } else {
+        valueA = a[sortConfig.key];
+        valueB = b[sortConfig.key];
+      }
+
+      if (valueA < valueB) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (valueA > valueB) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    })
     : filteredData;
 
   const columns = [
     {
       title: (
         <div className="flex items-center cursor-pointer" onClick={() => handleSort('title')}>
-          Course Name 
+          Course Name
           {/* {getSortIcon('title')} */}
         </div>
       ),
@@ -181,15 +181,15 @@ const CourseListForAdmin = () => {
             </span>
           </div>
           <div>
-            <a 
-              href={`/courses-list-for-admin/${record._id}`} 
+            <a
+              href={`/courses-list-for-admin/${record._id}`}
               className="text-blue-600 hover:text-blue-800 transition-colors font-semibold"
             >
               {title}
             </a>
             <p className="text-xs text-gray-500 mt-1">
-              {record.description && record.description.length > 50 
-                ? `${record.description.substring(0, 50)}...` 
+              {record.description && record.description.length > 50
+                ? `${record.description.substring(0, 50)}...`
                 : record.description}
             </p>
           </div>
@@ -199,7 +199,7 @@ const CourseListForAdmin = () => {
     {
       title: (
         <div className="flex items-center cursor-pointer" onClick={() => handleSort('tutor')}>
-          Tutor 
+          Tutor
           {/* {getSortIcon('tutor')} */}
         </div>
       ),
@@ -220,7 +220,7 @@ const CourseListForAdmin = () => {
     {
       title: (
         <div className="flex items-center cursor-pointer" onClick={() => handleSort('status')}>
-          Status 
+          Status
           {/* {getSortIcon('status')} */}
         </div>
       ),
@@ -228,21 +228,21 @@ const CourseListForAdmin = () => {
       key: "status",
       sorter: true,
       render: (status) => (
-        status 
-        ? <Tag color="success" icon={<CheckOutlined />} className="px-3 py-1">Active</Tag>
-        : <Tag color="error" icon={<StopOutlined />} className="px-3 py-1">Inactive</Tag>
+        status
+          ? <Tag color="success" icon={<CheckOutlined />} className="px-3 py-1">Active</Tag>
+          : <Tag color="error" icon={<StopOutlined />} className="px-3 py-1">Inactive</Tag>
       ),
     },
     {
       title: "Action",
       key: "action",
       render: (record) => (
-        <DropDownMenu 
-          record={record} 
-          setCourses={setCourses} 
+        <DropDownMenu
+          record={record}
+          setCourses={setCourses}
           courses={courses}
           fetchCourses={fetchCourses}
-        />  
+        />
       ),
     },
   ];
@@ -256,22 +256,22 @@ const CourseListForAdmin = () => {
     <div className="flex justify-center items-center h-screen bg-gray-50">
       <div className="text-center">
         <div className="animate-spin mb-4">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
             className="w-16 h-16 text-blue-600 mx-auto"
           >
-            <circle 
-              cx="12" 
-              cy="12" 
-              r="10" 
-              stroke="currentColor" 
-              strokeWidth="4" 
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
               className="opacity-25"
             ></circle>
-            <path 
-              fill="currentColor" 
+            <path
+              fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               className="text-blue-600"
             ></path>
@@ -286,18 +286,18 @@ const CourseListForAdmin = () => {
     <div className="flex justify-center items-center h-screen bg-red-50">
       <div className="text-center">
         <div className="mb-4">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            className="h-16 w-16 text-red-600 mx-auto" 
-            fill="none" 
-            viewBox="0 0 24 24" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-16 w-16 text-red-600 mx-auto"
+            fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
         </div>
@@ -306,7 +306,7 @@ const CourseListForAdmin = () => {
       </div>
     </div>
   );
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="bg-white shadow-lg rounded-2xl p-6">
@@ -316,8 +316,8 @@ const CourseListForAdmin = () => {
             Course Management
           </h2>
           <div className="flex space-x-4">
-            <Button 
-              icon={<ReloadOutlined />} 
+            <Button
+              icon={<ReloadOutlined />}
               onClick={fetchCourses}
               className="flex items-center bg-blue-50 hover:bg-blue-100 text-blue-600 border-blue-200"
             >
@@ -345,8 +345,8 @@ const CourseListForAdmin = () => {
                       <span>Course Status Distribution</span>
                       <span>{activePercentage}% Active</span>
                     </div>
-                    <Progress 
-                      percent={activePercentage} 
+                    <Progress
+                      percent={activePercentage}
                       showInfo={false}
                       strokeColor="#3B82F6"
                       trailColor="#EFF6FF"
@@ -357,7 +357,7 @@ const CourseListForAdmin = () => {
                 </div>
               </Card>
             </Col>
-            
+
             <Col xs={24} sm={12} md={8}>
               <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200 shadow-md h-full overflow-hidden">
                 <div className="relative">
@@ -367,7 +367,7 @@ const CourseListForAdmin = () => {
                     <div className="flex items-baseline">
                       <Title level={2} className="text-green-700 m-0">{activeCourses}</Title>
                       <Text className="ml-2 text-green-700 opacity-70">
-                        ({totalCourses > 0 ? ((activeCourses/totalCourses)*100).toFixed(1) : 0}%)
+                        ({totalCourses > 0 ? ((activeCourses / totalCourses) * 100).toFixed(1) : 0}%)
                       </Text>
                     </div>
                     <Text className="text-gray-500 text-sm mt-2 block">
@@ -377,7 +377,7 @@ const CourseListForAdmin = () => {
                 </div>
               </Card>
             </Col>
-            
+
             <Col xs={24} sm={12} md={8}>
               <Card className="bg-gradient-to-r from-red-50 to-red-100 border-red-200 shadow-md h-full overflow-hidden">
                 <div className="relative">
@@ -387,12 +387,12 @@ const CourseListForAdmin = () => {
                     <div className="flex items-baseline">
                       <Title level={2} className="text-red-700 m-0">{inactiveCourses}</Title>
                       <Text className="ml-2 text-red-700 opacity-70">
-                        ({totalCourses > 0 ? ((inactiveCourses/totalCourses)*100).toFixed(1) : 0}%)
+                        ({totalCourses > 0 ? ((inactiveCourses / totalCourses) * 100).toFixed(1) : 0}%)
                       </Text>
                     </div>
                     <div className="flex justify-between items-center mt-2">
-                      <Button 
-                        size="small" 
+                      <Button
+                        size="small"
                         type="text"
                         className="p-0 text-red-700 text-sm hover:text-red-800"
                         onClick={() => handleFilterChange('status', 'inactive')}
@@ -416,8 +416,8 @@ const CourseListForAdmin = () => {
               onChange={(e) => handleSearch(e.target.value)}
               className="w-full sm:w-64"
             />
-            <Button 
-              icon={<FilterOutlined />} 
+            <Button
+              icon={<FilterOutlined />}
               onClick={() => setShowFilterPanel(!showFilterPanel)}
               className={`flex items-center ${showFilterPanel ? 'bg-blue-50 text-blue-600 border-blue-200' : 'text-gray-600 border-gray-300'}`}
             >
@@ -489,11 +489,11 @@ const CourseListForAdmin = () => {
           </Card>
         )}
 
-        <Table 
-          columns={columns} 
-          dataSource={data} 
-          pagination={{ 
-            pageSize: 10, 
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{
+            pageSize: 10,
             showSizeChanger: true,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} courses`
           }}
@@ -504,10 +504,10 @@ const CourseListForAdmin = () => {
       <ToastContainer />
     </div>
   );
-};  
+};
 
 // Dropdown Menu Component (kept mostly the same as previous implementation)
-const DropDownMenu = ({record, setCourses, courses, fetchCourses}) => {
+const DropDownMenu = ({ record, setCourses, courses, fetchCourses }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
   const navigate = useNavigate();
@@ -521,21 +521,21 @@ const DropDownMenu = ({record, setCourses, courses, fetchCourses}) => {
         { status, message: reasonMsg },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-     
+
       // Update the local state
-      setCourses(prevCourses => 
+      setCourses(prevCourses =>
         prevCourses.map((course) =>
           course._id === courseId ? { ...course, status: !course.status } : course
         )
       );
-      
+
       fetchCourses();
-  
+
       setIsModalOpen(false);
       setRejectReason("");
       antMessage.success(
-        status === "Rejected" 
-          ? "Course rejected successfully." 
+        status === "Rejected"
+          ? "Course rejected successfully."
           : "Course status updated successfully."
       );
     } catch (err) {
@@ -556,13 +556,13 @@ const DropDownMenu = ({record, setCourses, courses, fetchCourses}) => {
     {
       key: '1',
       label: (
-        <div 
+        <div
           onClick={handleStatusToggleClick}
           className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 rounded-md transition-colors duration-150"
         >
           {record.status ? (
             <>
-              <StopOutlined className="h-4 w-4 text-red-500"/>
+              <StopOutlined className="h-4 w-4 text-red-500" />
               <span>Ban Course</span>
             </>
           ) : (
@@ -577,7 +577,7 @@ const DropDownMenu = ({record, setCourses, courses, fetchCourses}) => {
     {
       key: '2',
       label: (
-        <div 
+        <div
           onClick={() => navigate(`/courses-list-for-admin/${record._id}`)}
           className="flex items-center px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-150 cursor-pointer"
         >
@@ -588,12 +588,12 @@ const DropDownMenu = ({record, setCourses, courses, fetchCourses}) => {
     },
   ];
 
-  return(
+  return (
     <div>
-      <Dropdown menu={{items}} trigger={['click']}>
-        <Button 
-          type="text" 
-          icon={<EllipsisOutlined />} 
+      <Dropdown menu={{ items }} trigger={['click']}>
+        <Button
+          type="text"
+          icon={<EllipsisOutlined />}
           className="hover:bg-gray-100 rounded-full"
         />
       </Dropdown>
@@ -606,14 +606,14 @@ const DropDownMenu = ({record, setCourses, courses, fetchCourses}) => {
           <Button key="back" onClick={() => setIsModalOpen(false)}>
             Cancel
           </Button>,
-          <Button 
-            key="submit" 
-            type="primary" 
+          <Button
+            key="submit"
+            type="primary"
             danger
             onClick={() => toggleCourseStatus(record.key, "Rejected", rejectReason)}
             disabled={!rejectReason.trim()}
           >
-            
+
             Ban Course
           </Button>,
         ]}

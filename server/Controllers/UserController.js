@@ -7,7 +7,10 @@ const Wallet = require("../Models/Wallet");
 const ActivityHistory = require("../Models/ActivityHistory");
 const config = require("../Configurations/Config");
 const multer = require("multer");
-const admin = require("firebase-admin");
+const {
+  deleteCloudinaryAsset,
+  uploadBufferToCloudinary,
+} = require("../Utils/cloudinary");
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -19,33 +22,6 @@ const transporter = nodemailer.createTransport({
     pass: config.password || "ivqm xtbu vfvu wdyk",
   },
 });
-
-async function uploadFileToStorage(file, folderPath) {
-  const bucket = admin.storage().bucket();
-  const blob = bucket.file(folderPath + file.originalname);
-  const blobStream = blob.createWriteStream({
-    metadata: {
-      contentType: file.mimetype,
-    },
-  });
-  blobStream.on("error", (err) => {
-    console.log(err);
-  });
-  blobStream.on("finish", async () => {
-    await blob.makePublic();
-  });
-  blobStream.end(file.buffer);
-
-  // Wait for the blob upload to complete
-  await new Promise((resolve, reject) => {
-    blobStream.on("finish", resolve);
-    blobStream.on("error", reject);
-  });
-
-  // Return the public URL
-  const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-  return publicUrl;
-}
 
 //Sign up
 exports.signUp = async (req, res) => {
@@ -341,23 +317,20 @@ exports.uploadAvatar = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
       }
 
-      if (user.avatar) {
-        // Xoá hình ảnh cũ trên Firebase Storage
-        const bucket = admin.storage().bucket();
-        const filename = user.avatar
-          .split("Avatar/" + user.fullname + "/")
-          .pop();
-        const file = bucket.file("Avatar/" + user.fullname + "/" + filename);
-        await file.delete().catch((err) => {
-          console.log(err);
-        });
-      }
+      const previousAvatar = user.avatar;
 
       let avatarUrl = null;
       if (req.file) {
-        // Upload hình ảnh lên Firebase Storage
-        const folderPath = "Avatar/" + user.fullname + "/"; // Thay đổi theo cấu trúc thư mục bạn muốn
-        avatarUrl = await uploadFileToStorage(req.file, folderPath);
+        const uploadResult = await uploadBufferToCloudinary(req.file.buffer, {
+          folder: `avatars/${user._id}`,
+          public_id: `avatar_${Date.now()}`,
+          resource_type: "image",
+        });
+        avatarUrl = uploadResult.secure_url;
+      }
+
+      if (previousAvatar) {
+        await deleteCloudinaryAsset(previousAvatar);
       }
 
       user.avatar = avatarUrl;

@@ -106,7 +106,7 @@ const ViewCertificate = () => {
           message.error("Token not found! Please log in again.");
           return;
         }
-      
+
         try {
           await axios.delete(
             `https://multicourseserver.onrender.com/api/certificates/delete-tutor-certificate/${id}`,
@@ -121,20 +121,20 @@ const ViewCertificate = () => {
         }
       },
     });
-  };  
+  };
 
   const renderCertificateItem = (item) => {
     // Detect if URL is likely a PDF
     const isPDF = item.certificate_url.toLowerCase().includes('.pdf');
-    
+
     return (
       <List.Item
         key={item._id}
         actions={[
           <Tooltip title="Delete certificate">
-            <Button 
-              type="primary" 
-              danger 
+            <Button
+              type="primary"
+              danger
               icon={<DeleteOutlined />}
               onClick={() => deleteCertificate(item._id)}
             >
@@ -183,7 +183,7 @@ const ViewCertificate = () => {
           <FilePdfOutlined style={{ marginRight: '12px', color: '#1890ff' }} />
           Certificate Management
         </Title>
-        
+
         <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Text type="secondary">Manage your professional certificates and qualifications</Text>
           <Button
@@ -202,9 +202,9 @@ const ViewCertificate = () => {
             Upload Certificate
           </Button>
         </div>
-        
+
         <Divider style={{ margin: '8px 0 24px' }} />
-        
+
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px 0' }}>
             <Spin size="large" tip="Loading certificates..." />

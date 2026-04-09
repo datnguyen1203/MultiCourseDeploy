@@ -141,7 +141,7 @@ const CourseListForTutor = () => {
       } catch (error) {
         setErrorMessage(
           error.response?.data?.message ||
-            "An error occurred while fetching courses."
+          "An error occurred while fetching courses."
         );
       } finally {
         setLoading(false);
@@ -408,9 +408,8 @@ const CourseListForTutor = () => {
 
   return (
     <div
-      className={`p-6 min-h-screen ${
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
-      }`}
+      className={`p-6 min-h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
+        }`}
     >
       {/* <Spin spinning={spinning} fullscreen /> */}
       {/* {loading && (
@@ -435,9 +434,8 @@ const CourseListForTutor = () => {
       <div className="flex justify-between items-center mb-6">
         <Title
           level={2}
-          className={`${
-            theme === "dark" ? "text-white" : "text-gray-800"
-          } mb-0`}
+          className={`${theme === "dark" ? "text-white" : "text-gray-800"
+            } mb-0`}
         >
           My Courses
         </Title>
@@ -445,9 +443,8 @@ const CourseListForTutor = () => {
           <Button
             icon={<FilterOutlined />}
             onClick={() => setFilterVisible(!filterVisible)}
-            className={`${
-              filterVisible ? "bg-blue-50 text-blue-500 border-blue-200" : ""
-            }`}
+            className={`${filterVisible ? "bg-blue-50 text-blue-500 border-blue-200" : ""
+              }`}
           >
             Filter
           </Button>
@@ -463,14 +460,12 @@ const CourseListForTutor = () => {
 
       {/* Filter and Search Section */}
       <div
-        className={`mb-6 transition-all duration-300 ${
-          filterVisible ? "block" : "hidden"
-        }`}
+        className={`mb-6 transition-all duration-300 ${filterVisible ? "block" : "hidden"
+          }`}
       >
         <Card
-          className={`${
-            theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
-          }`}
+          className={`${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
+            }`}
         >
           <div className="flex justify-between items-center mb-4">
             <Title level={5} className="m-0">
@@ -595,9 +590,8 @@ const CourseListForTutor = () => {
       {!loading && (
         <div className="mb-4 flex justify-between items-center">
           <Text
-            className={`${
-              theme === "dark" ? "text-gray-300" : "text-gray-600"
-            }`}
+            className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"
+              }`}
           >
             Showing {displayedCourses.length} of {courses.length} courses
           </Text>
@@ -628,9 +622,8 @@ const CourseListForTutor = () => {
           {displayedCourses.map((course) => (
             <Card
               key={course._id}
-              className={`overflow-hidden transition-all duration-300 hover:shadow-lg ${
-                theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
-              }`}
+              className={`overflow-hidden transition-all duration-300 hover:shadow-lg ${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
+                }`}
               actions={[
                 <Button
                   type="text"

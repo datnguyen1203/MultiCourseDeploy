@@ -584,8 +584,8 @@ const WalletManageForAdmin = () => {
                     modalData.status === "Pending"
                       ? "warning"
                       : modalData.status === "Approved"
-                      ? "success"
-                      : "error"
+                        ? "success"
+                        : "error"
                   }
                   className="text-sm"
                 >

@@ -66,7 +66,7 @@ const UpdateProfile = () => {
 
         const { fullname, phone, gender, address, birthday } = response.data;
         const formattedBirthday = birthday ? birthday.split("T")[0] : "";
-        
+
         const userData = {
           fullname: fullname || "",
           phone: phone || "",
@@ -74,7 +74,7 @@ const UpdateProfile = () => {
           address: address || "",
           birthday: formattedBirthday ? moment(formattedBirthday) : null,
         };
-        
+
         setFormData(userData);
         form.setFieldsValue(userData);
       } catch (error) {
@@ -110,32 +110,32 @@ const UpdateProfile = () => {
     if (!value) {
       return Promise.reject("Please enter your phone number");
     }
-    
+
     // Remove any spaces, dashes, parentheses for validation
     const cleanedValue = value.replace(/[\s\-()]/g, '');
-    
+
     // Check if starts with 0
     if (!cleanedValue.startsWith('0')) {
       return Promise.reject("Phone number must start with 0");
     }
-    
+
     // Check for valid length (10 digits for Vietnamese mobile numbers)
     if (cleanedValue.length !== 10) {
       return Promise.reject("Phone number must be exactly 10 digits");
     }
-    
+
     // Check if it's all digits
     if (!/^\d+$/.test(cleanedValue)) {
       return Promise.reject("Phone number must contain only digits");
     }
-    
+
     // Check for valid Vietnamese mobile prefixes
     const validPrefixes = ['03', '05', '07', '08', '09'];
     const prefix = cleanedValue.substring(0, 2);
     if (!validPrefixes.includes(prefix)) {
       return Promise.reject("Invalid phone number prefix");
     }
-    
+
     return Promise.resolve();
   };
 
@@ -158,19 +158,19 @@ const UpdateProfile = () => {
     if (!value) {
       return Promise.reject("Please select your birthday");
     }
-    
+
     // Check if user is at least 13 years old
     const thirteenYearsAgo = moment().subtract(13, 'years');
     if (value.isAfter(thirteenYearsAgo)) {
       return Promise.reject("You must be at least 13 years old");
     }
-    
+
     // Check if birthdate is not too far in the past (e.g., 120 years)
     const tooOld = moment().subtract(120, 'years');
     if (value.isBefore(tooOld)) {
       return Promise.reject("Please enter a valid birth date");
     }
-    
+
     return Promise.resolve();
   };
 
@@ -183,13 +183,13 @@ const UpdateProfile = () => {
   // Handle form submission
   const handleSubmit = async (values) => {
     setLoading(true);
-    
+
     if (!token) {
       setErrorMessage("Please log in to update your profile.");
       setLoading(false);
       return;
     }
-    
+
     // Format the date for the API
     const formattedData = {
       ...values,
@@ -232,10 +232,10 @@ const UpdateProfile = () => {
 
   if (initializing) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: '100vh',
         background: '#f0f2f5'
       }}>
@@ -245,18 +245,18 @@ const UpdateProfile = () => {
   }
 
   return (
-    <div style={{ 
-      padding: '24px', 
-      background: '#f0f2f5', 
+    <div style={{
+      padding: '24px',
+      background: '#f0f2f5',
       minHeight: '100vh',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-start'
     }}>
-      <Card 
-        style={{ 
-          maxWidth: '800px', 
-          width: '100%', 
+      <Card
+        style={{
+          maxWidth: '800px',
+          width: '100%',
           borderRadius: '8px',
           boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
         }}
@@ -264,9 +264,9 @@ const UpdateProfile = () => {
         <Title level={2} style={{ textAlign: 'center', color: '#1890ff', marginBottom: '24px' }}>
           Update Profile
         </Title>
-        
+
         <Divider style={{ margin: '0 0 24px 0' }} />
-        
+
         {successMessage && (
           <Alert
             message="Success"
@@ -276,7 +276,7 @@ const UpdateProfile = () => {
             style={{ marginBottom: '24px' }}
           />
         )}
-        
+
         {errorMessage && (
           <Alert
             message="Error"
@@ -301,9 +301,9 @@ const UpdateProfile = () => {
               rules={[{ validator: validateFullName }]}
               hasFeedback
             >
-              <Input 
-                prefix={<UserOutlined style={{ color: '#bfbfbf' }} />} 
-                placeholder="Enter your full name" 
+              <Input
+                prefix={<UserOutlined style={{ color: '#bfbfbf' }} />}
+                placeholder="Enter your full name"
                 maxLength={100}
               />
             </Form.Item>
@@ -314,9 +314,9 @@ const UpdateProfile = () => {
               rules={[{ validator: validatePhone }]}
               hasFeedback
             >
-              <Input 
+              <Input
                 prefix={<PhoneOutlined style={{ color: '#bfbfbf' }} />}
-                placeholder="Enter your phone number" 
+                placeholder="Enter your phone number"
                 maxLength={15}
               />
             </Form.Item>
@@ -342,8 +342,8 @@ const UpdateProfile = () => {
               rules={[{ validator: validateBirthday }]}
               hasFeedback
             >
-              <DatePicker 
-                style={{ width: '100%' }} 
+              <DatePicker
+                style={{ width: '100%' }}
                 disabledDate={disabledDate}
                 format="YYYY-MM-DD"
                 placeholder="Select your birthday"
@@ -358,24 +358,24 @@ const UpdateProfile = () => {
             rules={[{ validator: validateAddress }]}
             hasFeedback
           >
-            <Input 
+            <Input
               prefix={<HomeOutlined style={{ color: '#bfbfbf' }} />}
-              placeholder="Enter your address" 
+              placeholder="Enter your address"
               maxLength={200}
             />
           </Form.Item>
 
           <Form.Item style={{ marginTop: '24px', textAlign: 'center' }}>
             <Space size="middle">
-              <Button 
-                icon={<RollbackOutlined />} 
+              <Button
+                icon={<RollbackOutlined />}
                 onClick={() => navigate('/userprofile')}
               >
                 Cancel
               </Button>
-              <Button 
-                type="primary" 
-                htmlType="submit" 
+              <Button
+                type="primary"
+                htmlType="submit"
                 loading={loading}
                 icon={<SaveOutlined />}
               >

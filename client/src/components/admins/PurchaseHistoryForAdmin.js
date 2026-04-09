@@ -69,7 +69,7 @@ const PurchaseHistoryForAdmin = () => {
     if (dateRange && dateRange[0] && dateRange[1]) {
       const startDate = dateRange[0].startOf('day').valueOf();
       const endDate = dateRange[1].endOf('day').valueOf();
-      
+
       filtered = filtered.filter((order) => {
         const orderDate = new Date(order.order_date).getTime();
         return orderDate >= startDate && orderDate <= endDate;
@@ -273,7 +273,7 @@ const PurchaseHistoryForAdmin = () => {
           <Table
             columns={columns}
             dataSource={data}
-            pagination={{ 
+            pagination={{
               pageSize: 10,
               showSizeChanger: true,
               pageSizeOptions: ['10', '20', '50'],

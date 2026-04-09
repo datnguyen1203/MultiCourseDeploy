@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  ResponsiveContainer, 
-  PieChart, 
-  Pie, 
-  Cell, 
-  Legend 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend
 } from "recharts";
-import { 
-  DollarOutlined, 
-  CalendarOutlined, 
-  LineChartOutlined, 
-  PieChartOutlined 
+import {
+  DollarOutlined,
+  CalendarOutlined,
+  LineChartOutlined,
+  PieChartOutlined
 } from "@ant-design/icons";
 import { Spin, Card, Statistic, Typography, message } from "antd";
 
@@ -93,13 +93,13 @@ export default function TutorStatistics() {
   ];
 
   // Prepare course earnings data
-  const courseEarningsData = Array.isArray(courseEarnings) 
-    ? courseEarnings 
+  const courseEarningsData = Array.isArray(courseEarnings)
+    ? courseEarnings
     : [];
 
   return (
     <div className="bg-gray-50 min-h-screen p-6">
-      <Card 
+      <Card
         className="max-w-6xl mx-auto shadow-lg rounded-2xl"
         title={
           <div className="flex items-center justify-center space-x-3">
@@ -112,8 +112,8 @@ export default function TutorStatistics() {
       >
         {/* Revenue Summary */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card 
-            hoverable 
+          <Card
+            hoverable
             className="bg-blue-50 border-blue-200"
           >
             <Statistic
@@ -130,8 +130,8 @@ export default function TutorStatistics() {
             />
           </Card>
 
-          <Card 
-            hoverable 
+          <Card
+            hoverable
             className="bg-green-50 border-green-200"
           >
             <Statistic
@@ -150,7 +150,7 @@ export default function TutorStatistics() {
         </div>
 
         {/* Monthly Revenue Bar Chart */}
-        <Card 
+        <Card
           title={
             <div className="flex items-center">
               <PieChartOutlined className="mr-2 text-blue-600" />
@@ -163,18 +163,18 @@ export default function TutorStatistics() {
             <BarChart data={monthlyRevenue}>
               <XAxis dataKey="month" stroke="#888" />
               <YAxis stroke="#888" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#fff', 
-                  borderRadius: '8px', 
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)' 
-                }} 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#fff',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                }}
               />
-              <Bar 
-                dataKey="revenue" 
-                fill="#1890ff" 
-                barSize={50} 
-                radius={[5, 5, 0, 0]} 
+              <Bar
+                dataKey="revenue"
+                fill="#1890ff"
+                barSize={50}
+                radius={[5, 5, 0, 0]}
               />
             </BarChart>
           </ResponsiveContainer>

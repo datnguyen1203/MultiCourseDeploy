@@ -2,22 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { 
-  Layout, 
-  Typography, 
-  Tag, 
-  Button, 
-  Spin, 
-  Table, 
-  Card, 
-  Avatar, 
-  Modal, 
-  Collapse, 
-  Progress, 
-  Image, 
-  Divider, 
-  Statistic, 
-  Space, 
+import {
+  Layout,
+  Typography,
+  Tag,
+  Button,
+  Spin,
+  Table,
+  Card,
+  Avatar,
+  Modal,
+  Collapse,
+  Progress,
+  Image,
+  Divider,
+  Statistic,
+  Space,
   Alert,
   List,
   Rate,
@@ -25,17 +25,17 @@ import {
   message
 } from "antd";
 import { Comment } from '@ant-design/compatible';
-import { 
-  ArrowLeftOutlined, 
-  EditOutlined, 
-  DeleteOutlined, 
-  EyeOutlined, 
-  FileAddOutlined, 
-  PlusOutlined, 
-  DollarOutlined, 
-  UserOutlined, 
-  BookOutlined, 
-  FileExcelOutlined, 
+import {
+  ArrowLeftOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  FileAddOutlined,
+  PlusOutlined,
+  DollarOutlined,
+  UserOutlined,
+  BookOutlined,
+  FileExcelOutlined,
   WarningOutlined,
   CommentOutlined,
   EyeInvisibleOutlined,
@@ -278,18 +278,18 @@ const CourseDetailForAdmin = () => {
         //     console.warn("Expected array but received:", incomeData);
         //   }
         // }
-        
+
         // Fetch user role
         const userResponse = await axios.get(
           "https://multicourseserver.onrender.com/api/users/profile",
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        
+
         if (userResponse.status === 200) {
           setRole(userResponse.data.role);
           // message.success("User role fetched successfully!");
         }
-        
+
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
           // console.log("Course not found, showing alternative UI.");
@@ -339,9 +339,9 @@ const CourseDetailForAdmin = () => {
       dataIndex: "percent",
       key: "progress",
       render: (percent) => (
-        <Progress 
-          percent={parseFloat(percent).toFixed(2)} 
-          size="small" 
+        <Progress
+          percent={parseFloat(percent).toFixed(2)}
+          size="small"
           status={percent >= 100 ? "success" : "active"}
         />
       ),
@@ -379,22 +379,22 @@ const CourseDetailForAdmin = () => {
   };
 
   return (
-    <Layout className= {isDarkMode ? "bg-gray-900 text-white min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6" : "bg-white min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6"}>
+    <Layout className={isDarkMode ? "bg-gray-900 text-white min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6" : "bg-white min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6"}>
       <Header className="bg-transparent flex items-center p-4">
-        <Button 
-          icon={<ArrowLeftOutlined />} 
+        <Button
+          icon={<ArrowLeftOutlined />}
           onClick={() => navigate(-1)}
           className="mr-4"
         >
           Back
         </Button>
       </Header>
-      
+
       <Content className="px-4 py-8">
         {course ? (
           <div className="space-y-8 max-w-7xl mx-auto">
             {/* Course Header */}
-            <Card 
+            <Card
               className={`w-full ${isDarkMode ? "bg-gray-800 text-white" : "bg-white"}`}
               bordered={false}
               headStyle={{ borderBottom: 0 }}
@@ -403,7 +403,7 @@ const CourseDetailForAdmin = () => {
                 <Title level={1} className={`text-center mb-6 ${isDarkMode ? "text-white" : ""}`}>
                   {course.title}
                 </Title>
-                
+
                 <Space className="mb-4 flex flex-wrap justify-center">
                   <Tag color="gold" className="m-1 px-3 py-1 text-base">{course.category}</Tag>
                   <Tag color="green" className="m-1 px-3 py-1 text-base">{course.price.toLocaleString()} VND</Tag>
@@ -418,11 +418,11 @@ const CourseDetailForAdmin = () => {
                     })}
                   </Tag>
                 </Space>
-                
+
                 <Paragraph className={`text-center max-w-3xl mx-auto mb-8 text-lg ${isDarkMode ? "text-gray-300" : ""}`}>
                   {course.description}
                 </Paragraph>
-                
+
                 {course.image && (
                   <div className="mb-6 w-full max-w-4xl mx-auto">
                     <Image
@@ -435,7 +435,7 @@ const CourseDetailForAdmin = () => {
                     />
                   </div>
                 )}
-                
+
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 w-full max-w-4xl mt-8">
                   <Card className={`w-full md:w-1/2 ${isDarkMode ? "bg-gradient-to-r from-blue-900 to-indigo-900" : "bg-gradient-to-r from-green-400 to-blue-500"} text-white shadow-lg`}>
                     <Statistic
@@ -452,7 +452,7 @@ const CourseDetailForAdmin = () => {
                       valueStyle={{ color: 'white', fontSize: '28px' }}
                     />
                   </Card>
-                  
+
                   {course.comments && course.comments.length > 0 && (
                     <Card className={`w-full md:w-1/2 ${isDarkMode ? "bg-gray-700" : "bg-gray-50"} shadow-lg`}>
                       <div className="flex items-center justify-center gap-2 mb-3">
@@ -468,9 +468,9 @@ const CourseDetailForAdmin = () => {
                 </div>
               </div>
             </Card>
-            
+
             {/* Reviews Section - Hiển thị trực tiếp trên trang */}
-            <Card 
+            <Card
               className={`w-full ${isDarkMode ? "bg-gray-800 text-white" : "bg-white"}`}
               bordered={false}
               title={
@@ -487,13 +487,13 @@ const CourseDetailForAdmin = () => {
               {course.comments && course.comments.length > 0 ? (
                 <div className="space-y-6">
                   {course.comments.slice(0, 3).map((comment, index) => (
-                    <div 
-                      key={index} 
+                    <div
+                      key={index}
                       className={`p-6 rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-50"} transition-all hover:shadow-md`}
                     >
                       <div className="flex items-start">
-                        <Avatar 
-                          icon={<UserOutlined />} 
+                        <Avatar
+                          icon={<UserOutlined />}
                           size={50}
                           className={`${isDarkMode ? "bg-blue-600" : "bg-blue-500"} flex-shrink-0`}
                         />
@@ -513,28 +513,28 @@ const CourseDetailForAdmin = () => {
                               </Text>
                             </div>
                           </div>
-                          
+
                           <div className="mt-2 flex items-center">
-                            <Rate 
-                              disabled 
-                              defaultValue={comment.rating} 
+                            <Rate
+                              disabled
+                              defaultValue={comment.rating}
                               className="text-yellow-400 text-sm"
                             />
                             <Text strong className="ml-2">
                               {comment.rating.toFixed(1)}
                             </Text>
                           </div>
-                          
-                          <Paragraph 
+
+                          <Paragraph
                             className={`mt-3 ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}
                             ellipsis={{ rows: 3, expandable: true, symbol: 'Read more' }}
                           >
                             {comment.comment}
                           </Paragraph>
-                          
+
                           <div className="mt-3 flex items-center">
-                            <Button 
-                              type="text" 
+                            <Button
+                              type="text"
                               size="small"
                               icon={<LikeFilled />}
                               className={isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-blue-500"}
@@ -546,11 +546,11 @@ const CourseDetailForAdmin = () => {
                       </div>
                     </div>
                   ))}
-                  
+
                   {course.comments.length > 3 && (
                     <div className="text-center mt-4">
-                      <Button 
-                        type="primary" 
+                      <Button
+                        type="primary"
                         ghost
                         onClick={openCommentModal}
                         className={`rounded-full px-6 ${isDarkMode ? "border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300" : ""}`}
@@ -570,9 +570,9 @@ const CourseDetailForAdmin = () => {
                 />
               )}
             </Card>
-            
+
             {/* Students Section */}
-            <Card 
+            <Card
               title={
                 <Title level={3} className={`flex items-center ${isDarkMode ? "text-white" : ""}`}>
                   <UserOutlined className="mr-2" /> Students Enrolled
@@ -598,7 +598,7 @@ const CourseDetailForAdmin = () => {
                 />
               )}
             </Card>
-            
+
             {/* Exams Section */}
             <Card
               title={
@@ -622,7 +622,7 @@ const CourseDetailForAdmin = () => {
             >
               {exams ? (
                 <div>
-                  <Card 
+                  <Card
                     className={`mb-4 ${isDarkMode ? "bg-gray-700 text-white" : "bg-gray-50"}`}
                     bordered={false}
                   >
@@ -635,13 +635,13 @@ const CourseDetailForAdmin = () => {
                         </Space>
                       }
                     />
-                    
+
                     <Divider className={isDarkMode ? "bg-gray-600" : ""} />
-                    
+
                     <div>
                       <Title level={5} className={`mb-4 ${isDarkMode ? "text-white" : ""}`}>Questions:</Title>
-                      <Collapse 
-                        defaultActiveKey={[]} 
+                      <Collapse
+                        defaultActiveKey={[]}
                         className={isDarkMode ? "bg-gray-700" : ""}
                       >
                         {(showAllQuestions
@@ -658,15 +658,14 @@ const CourseDetailForAdmin = () => {
                               dataSource={question.answers}
                               renderItem={(answer) => (
                                 <List.Item
-                                  className={`py-2 px-4 rounded-md my-1 ${
-                                    answer.isCorrect
-                                      ? isDarkMode 
+                                  className={`py-2 px-4 rounded-md my-1 ${answer.isCorrect
+                                      ? isDarkMode
                                         ? "bg-green-900 border-l-4 border-green-500 text-green-300"
                                         : "bg-green-100 border-l-4 border-green-500 text-green-700"
                                       : isDarkMode
                                         ? "bg-red-900 border-l-4 border-red-500 text-red-300"
                                         : "bg-red-50 border-l-4 border-red-300 text-red-500"
-                                  }`}
+                                    }`}
                                 >
                                   {answer.answer}
                                 </List.Item>
@@ -675,7 +674,7 @@ const CourseDetailForAdmin = () => {
                           </Panel>
                         ))}
                       </Collapse>
-                      
+
                       {exams.questions.length > 3 && (
                         <Button
                           type="link"
@@ -688,7 +687,7 @@ const CourseDetailForAdmin = () => {
                       )}
                     </div>
                   </Card>
-                  
+
                   {role !== "Admin" && (
                     <Space>
                       <Button
@@ -717,7 +716,7 @@ const CourseDetailForAdmin = () => {
                 />
               )}
             </Card>
-            
+
             {/* Lessons Section */}
             <Card
               title={
@@ -775,7 +774,7 @@ const CourseDetailForAdmin = () => {
                         //   >
                         //     Delete
                         //   </Button>
-                  
+
                         // ),
                       ].filter(Boolean)}
                     >
@@ -792,10 +791,10 @@ const CourseDetailForAdmin = () => {
                         {lesson.description}
                       </Paragraph>
                     </Card>
-                    
+
                   ))}
-                  
-                  
+
+
                 </div>
               ) : (
                 <Alert
@@ -804,7 +803,7 @@ const CourseDetailForAdmin = () => {
                   type="info"
                   showIcon
                 />
-                
+
               )}
             </Card>
           </div>
@@ -821,7 +820,7 @@ const CourseDetailForAdmin = () => {
           />
         )}
       </Content>
-      
+
       {/* Modals */}
       {/* {isModalOpen && selectedLesson && (
         <UpdateLessonModal
@@ -831,7 +830,7 @@ const CourseDetailForAdmin = () => {
           visible={isModalOpen}
         />
       )} */}
-{/*       
+      {/*       
       <Modal
         title={<Text strong className={isDarkMode ? "text-white" : ""}>Delete Lesson</Text>}
         open={isDeleteLessonOpen}
@@ -860,7 +859,7 @@ const CourseDetailForAdmin = () => {
           className="mb-4"
         />
       </Modal> */}
-      
+
       {/* <Modal
         title={<Text strong className={isDarkMode ? "text-white" : ""}>Delete Exam</Text>}
         open={isDeleteModalOpen}
@@ -921,13 +920,13 @@ const CourseDetailForAdmin = () => {
             itemLayout="vertical"
             dataSource={selectedComments}
             renderItem={(comment, index) => (
-              <List.Item 
+              <List.Item
                 key={index}
                 className={`mb-4 p-4 rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-50"}`}
               >
                 <div className="flex items-start">
-                  <Avatar 
-                    icon={<UserOutlined />} 
+                  <Avatar
+                    icon={<UserOutlined />}
                     size={50}
                     className={`${isDarkMode ? "bg-blue-600" : "bg-blue-500"} flex-shrink-0`}
                   />
@@ -947,27 +946,27 @@ const CourseDetailForAdmin = () => {
                         </Text>
                       </div>
                     </div>
-                    
+
                     <div className="mt-2 flex items-center">
-                      <Rate 
-                        disabled 
-                        defaultValue={comment.rating} 
+                      <Rate
+                        disabled
+                        defaultValue={comment.rating}
                         className="text-yellow-400 text-sm"
                       />
                       <Text strong className="ml-2">
                         {comment.rating.toFixed(1)}
                       </Text>
                     </div>
-                    
-                    <Paragraph 
+
+                    <Paragraph
                       className={`mt-3 ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}
                     >
                       {comment.comment}
                     </Paragraph>
-                    
+
                     <div className="mt-3 flex items-center">
-                      <Button 
-                        type="text" 
+                      <Button
+                        type="text"
                         size="small"
                         icon={<LikeFilled />}
                         className={isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-blue-500"}
@@ -996,7 +995,7 @@ const CourseDetailForAdmin = () => {
           />
         )}
       </Modal>
-      
+
       <ToastContainer position="top-right" autoClose={3000} />
     </Layout>
   );

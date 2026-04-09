@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { 
-  Layout, 
-  Typography, 
-  Button, 
-  Card, 
-  Divider, 
-  Spin, 
-  Tag, 
-  Avatar, 
-  Row, 
-  Col, 
-  Rate, 
-  Input, 
-  List, 
-  Modal, 
-  Space, 
-  message, 
+import {
+  Layout,
+  Typography,
+  Button,
+  Card,
+  Divider,
+  Spin,
+  Tag,
+  Avatar,
+  Row,
+  Col,
+  Rate,
+  Input,
+  List,
+  Modal,
+  Space,
+  message,
   Descriptions,
   Alert,
   Pagination
 } from "antd";
-import { 
-  ArrowLeftOutlined, 
-  ShoppingCartOutlined, 
-  UserOutlined, 
+import {
+  ArrowLeftOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
   CalendarOutlined,
   DollarOutlined,
   TagOutlined
@@ -48,7 +48,7 @@ const DetailCourse = () => {
   const [showTutorPopup, setShowTutorPopup] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -60,7 +60,7 @@ const DetailCourse = () => {
       setIsAuthenticated(true);
       const savedFullname = localStorage.getItem("fullname");
       setFullname(savedFullname || "User");
-      
+
       // Check if user has purchased this course
       const checkPurchaseStatus = async () => {
         try {
@@ -77,7 +77,7 @@ const DetailCourse = () => {
           const data = await response.json();
           if (response.ok && data.purchased) {
             setHasPurchased(true);
-            
+
             // Check if user has already commented
             if (course?.comments) {
               const userCommented = course.comments.some(
@@ -90,7 +90,7 @@ const DetailCourse = () => {
           console.error("Error checking purchase status:", error);
         }
       };
-      
+
       checkPurchaseStatus();
     } else {
       setIsAuthenticated(false);
@@ -298,7 +298,7 @@ const DetailCourse = () => {
             </List.Item>
           )}
         />
-        
+
         <div style={{ textAlign: 'right', marginTop: 16 }}>
           <Pagination
             current={currentPage}
@@ -335,9 +335,9 @@ const DetailCourse = () => {
         bodyStyle={{ padding: '24px' }}
       >
         <div style={{ textAlign: 'center', marginBottom: 30 }}>
-          <Avatar 
-            src={course.tutor.avatar} 
-            size={100} 
+          <Avatar
+            src={course.tutor.avatar}
+            size={100}
             icon={!course.tutor.avatar && <UserOutlined />}
             style={{ marginBottom: 16 }}
           />
@@ -346,9 +346,9 @@ const DetailCourse = () => {
           </Title>
           <Text type="secondary" style={{ fontSize: 16 }}>{course.tutor.email}</Text>
         </div>
-        
+
         <Divider style={{ marginBottom: 24 }} />
-        
+
         <Card title={<Title level={4}>Tutor Information</Title>} bordered={false}>
           <Row gutter={[0, 24]}>
             <Col span={24}>
@@ -357,21 +357,21 @@ const DetailCourse = () => {
                 <Text style={{ fontSize: 16 }}>{course.tutor.address || "Not provided"}</Text>
               </Space>
             </Col>
-            
+
             <Col span={24}>
               <Space direction="vertical" size="small" style={{ display: 'flex' }}>
                 <Text strong style={{ fontSize: 16 }}>Phone</Text>
                 <Text style={{ fontSize: 16 }}>{course.tutor.phone || "Not provided"}</Text>
               </Space>
             </Col>
-            
+
             <Col span={24}>
               <Space direction="vertical" size="small" style={{ display: 'flex' }}>
                 <Text strong style={{ fontSize: 16 }}>Gender</Text>
                 <Text style={{ fontSize: 16 }}>{course.tutor.gender || "Not provided"}</Text>
               </Space>
             </Col>
-            
+
             <Col span={24}>
               <Space direction="vertical" size="small" style={{ display: 'flex' }}>
                 <Text strong style={{ fontSize: 16 }}>Birthday</Text>
@@ -422,9 +422,9 @@ const DetailCourse = () => {
                     <img
                       src={course.image}
                       alt={course.title}
-                      style={{ 
-                        width: '100%', 
-                        height: 300, 
+                      style={{
+                        width: '100%',
+                        height: 300,
                         objectFit: 'cover',
                         transition: 'transform 0.5s ease',
                         ':hover': { transform: 'scale(1.05)' }
@@ -432,16 +432,16 @@ const DetailCourse = () => {
                     />
                   </div>
                 </Col>
-                
+
                 <Col xs={24} md={12}>
                   <Title level={2} style={{ color: '#096dd9' }}>
                     {course.title}
                   </Title>
-                  
+
                   <Paragraph style={{ fontSize: 16 }}>
                     {course.description}
                   </Paragraph>
-                  
+
                   <Space style={{ marginTop: 16 }}>
                     <Tag color="blue" icon={<TagOutlined />}>
                       {course.category}
@@ -450,31 +450,31 @@ const DetailCourse = () => {
                       Created: {new Date(course.createAt).toLocaleDateString()}
                     </Tag>
                   </Space>
-                  
+
                   <div style={{ marginTop: 24 }}>
                     <Title level={3} style={{ color: '#1890ff' }} type="secondary" icon={<DollarOutlined />}>
                       ${course.price}
                     </Title>
                   </div>
-                  
+
                   {course.tutor && (
-                    <Card 
-                      style={{ marginTop: 24, borderRadius: 8 }} 
-                      size="small" 
+                    <Card
+                      style={{ marginTop: 24, borderRadius: 8 }}
+                      size="small"
                       type="inner"
                     >
                       <Space align="center" size="middle">
-                        <Avatar 
-                          size={64} 
-                          src={course.tutor.avatar || undefined} 
+                        <Avatar
+                          size={64}
+                          src={course.tutor.avatar || undefined}
                           icon={!course.tutor.avatar && <UserOutlined />}
                         />
                         <div>
                           <Text type="secondary">Tutor</Text>
                           <div>
-                            <Button 
-                              type="link" 
-                              onClick={toggleTutorPopup} 
+                            <Button
+                              type="link"
+                              onClick={toggleTutorPopup}
                               style={{ padding: 0, fontSize: 18, fontWeight: 'bold' }}
                             >
                               {course.tutor.fullname}
@@ -484,7 +484,7 @@ const DetailCourse = () => {
                       </Space>
                     </Card>
                   )}
-                  
+
                   <div style={{ marginTop: 24, textAlign: 'right' }}>
                     <Button
                       type="primary"
@@ -499,7 +499,7 @@ const DetailCourse = () => {
               </Row>
             </Card>
 
-            <Card 
+            <Card
               title={<Title level={4}>Comments and Reviews</Title>}
               bordered={false}
             >
@@ -514,13 +514,13 @@ const DetailCourse = () => {
                       onChange={(e) => setNewComment(e.target.value)}
                       style={{ marginBottom: 16 }}
                     />
-                    
+
                     <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                       <div>
                         <Text style={{ marginRight: 8 }}>Rating:</Text>
                         <Rate value={newRating} onChange={setNewRating} />
                       </div>
-                      
+
                       <Button type="primary" onClick={handleCommentSubmit}>
                         Submit Comment
                       </Button>
@@ -528,7 +528,7 @@ const DetailCourse = () => {
                   </Card>
                 </div>
               )}
-              
+
               {/* Show message if user already commented */}
               {hasPurchased && hasCommented && (
                 <Alert
@@ -538,7 +538,7 @@ const DetailCourse = () => {
                   style={{ marginBottom: 16 }}
                 />
               )}
-              
+
               {/* Show message if user has not purchased but is logged in */}
               {isAuthenticated && !hasPurchased && (
                 <Alert
@@ -548,7 +548,7 @@ const DetailCourse = () => {
                   style={{ marginBottom: 16 }}
                 />
               )}
-              
+
               {/* Always show comments for everyone */}
               {renderComments()}
             </Card>
@@ -557,7 +557,7 @@ const DetailCourse = () => {
           <Empty description="No course information found" />
         )}
       </Content>
-      
+
       {renderTutorModal()}
     </Layout>
   );

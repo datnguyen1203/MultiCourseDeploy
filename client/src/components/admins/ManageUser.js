@@ -276,10 +276,10 @@ const ManageUser = () => {
       width: 80,
       render: (record) =>
         record.role !== "Admin" && (
-          <DropDownMenu 
-            record={record} 
-            setUsers={setUsers} 
-            users={users} 
+          <DropDownMenu
+            record={record}
+            setUsers={setUsers}
+            users={users}
             showCertificates={showCertificates}
           />
         ),
@@ -458,109 +458,109 @@ const ManageUser = () => {
 
       {/* Certificate Modal */}
       <Modal
-      title={
-        <div className="flex items-center gap-3">
-          <TrophyOutlined className="text-yellow-500 text-xl" />
-          <span className="text-lg font-medium">{selectedUserName}'s Achievements</span>
-        </div>
-      }
-      open={certificateModalVisible}
-      onCancel={() => setCertificateModalVisible(false)}
-      footer={[
-        <Button
-          key="close"
-          onClick={() => setCertificateModalVisible(false)}
-          size="large"
-          className="px-8"
-        >
-          Close
-        </Button>,
-      ]}
-      width={700}
-      className="certificate-modal"
-      centered
-      bodyStyle={{ padding: '20px 24px', maxHeight: '70vh', overflow: 'auto' }}
-    >
-      <List
-        itemLayout="vertical"
-        dataSource={selectedCertificates}
-        renderItem={(certificate, index) => (
-          <List.Item
-            className="rounded-lg mb-4 bg-gray-50 border border-gray-100 hover:border-blue-200 transition-all"
-            key={certificate._id || index}
+        title={
+          <div className="flex items-center gap-3">
+            <TrophyOutlined className="text-yellow-500 text-xl" />
+            <span className="text-lg font-medium">{selectedUserName}'s Achievements</span>
+          </div>
+        }
+        open={certificateModalVisible}
+        onCancel={() => setCertificateModalVisible(false)}
+        footer={[
+          <Button
+            key="close"
+            onClick={() => setCertificateModalVisible(false)}
+            size="large"
+            className="px-8"
           >
-            <div className="p-5 w-full">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <Title level={4} className="m-0 text-blue-700">
-                    {certificate.title}
-                  </Title>
-                  {certificate.issueDate && (
-                    <Text type="secondary" className="text-sm mt-1 block">
-                      Issued: {certificate.issueDate}
-                    </Text>
+            Close
+          </Button>,
+        ]}
+        width={700}
+        className="certificate-modal"
+        centered
+        bodyStyle={{ padding: '20px 24px', maxHeight: '70vh', overflow: 'auto' }}
+      >
+        <List
+          itemLayout="vertical"
+          dataSource={selectedCertificates}
+          renderItem={(certificate, index) => (
+            <List.Item
+              className="rounded-lg mb-4 bg-gray-50 border border-gray-100 hover:border-blue-200 transition-all"
+              key={certificate._id || index}
+            >
+              <div className="p-5 w-full">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <Title level={4} className="m-0 text-blue-700">
+                      {certificate.title}
+                    </Title>
+                    {certificate.issueDate && (
+                      <Text type="secondary" className="text-sm mt-1 block">
+                        Issued: {certificate.issueDate}
+                      </Text>
+                    )}
+                  </div>
+                  <Tag color="blue" className="rounded-full px-4 py-1 text-sm font-medium">
+                    Certificate #{index + 1}
+                  </Tag>
+                </div>
+
+                {certificate.description && (
+                  <Paragraph className="text-gray-600 mt-2 mb-4" ellipsis={{ rows: 2, expandable: true }}>
+                    {certificate.description}
+                  </Paragraph>
+                )}
+
+                <div className="flex flex-wrap items-center gap-3 mt-4">
+                  <Button
+                    type="primary"
+                    icon={<EyeOutlined />}
+                    href={certificate.certificate_url}
+                    target="_blank"
+                    className="flex items-center"
+                    size="middle"
+                  >
+                    View Certificate
+                  </Button>
+
+                  <Tooltip title="Copy URL">
+                    <Button
+                      icon={<CopyOutlined />}
+                      onClick={() => {
+                        navigator.clipboard.writeText(certificate.certificate_url);
+                        // You could add notification here
+                      }}
+                    >
+                      Copy Link
+                    </Button>
+                  </Tooltip>
+
+                  {certificate.verifyUrl && (
+                    <Button
+                      type="link"
+                      href={certificate.verifyUrl}
+                      target="_blank"
+                      className="text-green-600"
+                    >
+                      <CheckOutlined /> Verify
+                    </Button>
                   )}
                 </div>
-                <Tag color="blue" className="rounded-full px-4 py-1 text-sm font-medium">
-                  Certificate #{index + 1}
-                </Tag>
               </div>
-              
-              {certificate.description && (
-                <Paragraph className="text-gray-600 mt-2 mb-4" ellipsis={{ rows: 2, expandable: true }}>
-                  {certificate.description}
-                </Paragraph>
-              )}
-              
-              <div className="flex flex-wrap items-center gap-3 mt-4">
-                <Button
-                  type="primary"
-                  icon={<EyeOutlined />}
-                  href={certificate.certificate_url}
-                  target="_blank"
-                  className="flex items-center"
-                  size="middle"
-                >
-                  View Certificate
-                </Button>
-                
-                <Tooltip title="Copy URL">
-                  <Button 
-                    icon={<CopyOutlined />}
-                    onClick={() => {
-                      navigator.clipboard.writeText(certificate.certificate_url);
-                      // You could add notification here
-                    }}
-                  >
-                    Copy Link
-                  </Button>
-                </Tooltip>
-                
-                {certificate.verifyUrl && (
-                  <Button
-                    type="link"
-                    href={certificate.verifyUrl}
-                    target="_blank"
-                    className="text-green-600"
-                  >
-                    <CheckOutlined /> Verify
-                  </Button>
-                )}
+            </List.Item>
+          )}
+          locale={{
+            emptyText: (
+              <div className="text-center py-12">
+                <FileDoneOutlined className="text-5xl text-gray-300 mb-3" />
+                <p className="text-gray-500 text-lg">No certificates found</p>
+                <Button type="primary" className="mt-4">Add Certificate</Button>
               </div>
-            </div>
-          </List.Item>
-        )}
-        locale={{
-          emptyText: (
-            <div className="text-center py-12">
-              <FileDoneOutlined className="text-5xl text-gray-300 mb-3" />
-              <p className="text-gray-500 text-lg">No certificates found</p>
-              <Button type="primary" className="mt-4">Add Certificate</Button>
-            </div>
-          ),
-        }}
-      />
-    </Modal>
+            ),
+          }}
+        />
+      </Modal>
 
       <ToastContainer position="bottom-right" theme="colored" />
     </div>
@@ -610,7 +610,7 @@ const DropDownMenu = ({ record, setUsers, users, showCertificates }) => {
       toggleUserStatus(record.key);
     }
   };
-  
+
   // Build dropdown items based on user role and available data
   const getDropdownItems = () => {
     let items = [
@@ -636,7 +636,7 @@ const DropDownMenu = ({ record, setUsers, users, showCertificates }) => {
         ),
       }
     ];
-    
+
     // Add certificate view option for tutors with certificates
     if (record.role === "Tutor" && record.tutor_certificates?.length > 0) {
       items.push({
@@ -652,7 +652,7 @@ const DropDownMenu = ({ record, setUsers, users, showCertificates }) => {
         ),
       });
     }
-    
+
     return items;
   };
 

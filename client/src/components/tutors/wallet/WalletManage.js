@@ -433,11 +433,10 @@ const WalletManage = () => {
                 type="primary"
                 size="large"
                 disabled={hasPendingRequest}
-                className={`${
-                  hasPendingRequest
+                className={`${hasPendingRequest
                     ? "bg-gray-400"
                     : "bg-blue-500 hover:bg-blue-600"
-                } text-white`}
+                  } text-white`}
                 onClick={() => setIsWithdrawFormVisible(!isWithdrawFormVisible)}
                 icon={<FaWallet className="mr-2" />}
               >

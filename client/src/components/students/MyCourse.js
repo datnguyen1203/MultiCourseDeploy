@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  Layout, 
-  Typography, 
-  Input, 
-  Card, 
-  Button, 
-  Row, 
-  Col, 
-  Spin, 
-  Empty, 
-  Progress, 
-  Tag, 
-  Modal, 
-  Tabs, 
-  message, 
-  Statistic, 
+import {
+  Layout,
+  Typography,
+  Input,
+  Card,
+  Button,
+  Row,
+  Col,
+  Spin,
+  Empty,
+  Progress,
+  Tag,
+  Modal,
+  Tabs,
+  message,
+  Statistic,
   Dropdown,
   Menu,
   Skeleton,
   Tooltip,
   Select
 } from "antd";
-import { 
-  SearchOutlined, 
-  AppstoreOutlined, 
+import {
+  SearchOutlined,
+  AppstoreOutlined,
   PlayCircleOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
@@ -121,7 +121,7 @@ const MyCourses = () => {
 
         const ordersData = await ordersResponse.json();
         let progressDataResponse = [];
-        
+
         if (progressResponse.ok) {
           progressDataResponse = await progressResponse.json();
           if (!Array.isArray(progressDataResponse)) {
@@ -131,17 +131,17 @@ const MyCourses = () => {
 
         setProgressData(progressDataResponse);
         setOrders(ordersData);
-        
+
         // Extract all unique categories
         const allCourses = ordersData.flatMap(order => order.order_items.map(item => item.course));
         const categories = [...new Set(allCourses.map(course => course.category).filter(Boolean))];
         setAvailableCategories(categories);
-        
+
         // Calculate stats
         const completedCourses = progressDataResponse.filter(p => p.final_exam?.status === "Completed");
         const inProgressCourses = progressDataResponse.filter(p => p.final_exam?.status !== "Completed");
         const certifiedCourses = certificates.filter(cert => cert.isPassed);
-        
+
         setStats({
           total: allCourses.length,
           completed: completedCourses.length,
@@ -214,7 +214,7 @@ const MyCourses = () => {
       if (response.ok) {
         message.success("You've successfully enrolled in this course!");
         setProgressData((prev) => [...prev, data]);
-        
+
         // Update stats
         setStats(prev => ({
           ...prev,
@@ -290,26 +290,26 @@ const MyCourses = () => {
   // Get filtered and sorted courses
   const getFilteredCourses = () => {
     let allCourses = [];
-    
+
     // Extract all courses first
     orders.forEach(order => {
       order.order_items.forEach(item => {
         allCourses.push(item);
       });
     });
-    
+
     // Apply search filter
     if (searchTerm) {
-      allCourses = allCourses.filter(item => 
+      allCourses = allCourses.filter(item =>
         item.course.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
+
     // Apply tab filter
     if (activeTab === "favorites") {
       allCourses = allCourses.filter(item => favorites.includes(item.course._id));
     } else if (activeTab === "inProgress") {
-      allCourses = allCourses.filter(item => 
+      allCourses = allCourses.filter(item =>
         isEnrolled(item.course._id) && !isCourseCompleted(item.course._id)
       );
     } else if (activeTab === "completed") {
@@ -319,12 +319,12 @@ const MyCourses = () => {
     } else if (activeTab === "certified") {
       allCourses = allCourses.filter(item => hasCertificate(item.course._id));
     }
-    
+
     // Apply category filter
     if (categoryFilter !== "all") {
       allCourses = allCourses.filter(item => item.course.category === categoryFilter);
     }
-    
+
     // Apply sorting
     if (sortBy === "recent") {
       // Most recent purchases first (already sorted this way from API)
@@ -333,7 +333,7 @@ const MyCourses = () => {
     } else if (sortBy === "progress") {
       allCourses.sort((a, b) => getProgressForCourse(b.course._id) - getProgressForCourse(a.course._id));
     }
-    
+
     return allCourses;
   };
 
@@ -343,12 +343,12 @@ const MyCourses = () => {
     const completed = isCourseCompleted(item.course._id);
     const certified = hasCertificate(item.course._id);
     const isFavorite = favorites.includes(item.course._id);
-    
+
     // Course difficulty indicator (example - you would replace this with actual data)
     const getDifficultyBadge = () => {
       // This would ideally come from your course data
       const difficulty = item.course.difficulty || "Beginner";
-      
+
       if (difficulty === "Advanced") {
         return <Tag color="red">Advanced</Tag>;
       } else if (difficulty === "Intermediate") {
@@ -373,9 +373,9 @@ const MyCourses = () => {
       <Card
         className="course-card"
         hoverable
-        style={{ 
+        style={{
           height: '100%',
-          borderRadius: '12px', 
+          borderRadius: '12px',
           overflow: 'hidden',
           transition: 'all 0.3s ease',
           boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
@@ -385,9 +385,9 @@ const MyCourses = () => {
             <img
               alt={item.course.title}
               src={item.course.image || "https://via.placeholder.com/300x180?text=Course+Image"}
-              style={{ 
-                width: '100%', 
-                height: '100%', 
+              style={{
+                width: '100%',
+                height: '100%',
                 objectFit: 'cover',
                 transition: 'transform 0.5s ease'
               }}
@@ -395,23 +395,23 @@ const MyCourses = () => {
                 e.target.src = "https://via.placeholder.com/300x180?text=Course+Image";
               }}
             />
-            <div 
-              style={{ 
-                position: 'absolute', 
-                top: 0, 
-                left: 0, 
-                right: 0, 
-                bottom: 0, 
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
                 background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7))',
                 zIndex: 1
               }}
             />
             {certified && (
-              <div 
-                style={{ 
-                  position: 'absolute', 
-                  top: 12, 
-                  right: 12, 
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 12,
+                  right: 12,
                   zIndex: 2,
                   background: 'rgba(255, 255, 255, 0.9)',
                   borderRadius: '50%',
@@ -429,19 +429,19 @@ const MyCourses = () => {
                 e.stopPropagation();
                 toggleFavorite(item.course._id);
               }}
-              style={{ 
-                position: 'absolute', 
-                top: 12, 
-                left: 12, 
+              style={{
+                position: 'absolute',
+                top: 12,
+                left: 12,
                 zIndex: 2,
                 background: isFavorite ? '#ff4d4f' : 'rgba(255, 255, 255, 0.9)',
                 color: isFavorite ? '#fff' : '#ff4d4f'
               }}
             />
-            <div style={{ 
-              position: 'absolute', 
-              bottom: 12, 
-              left: 12, 
+            <div style={{
+              position: 'absolute',
+              bottom: 12,
+              left: 12,
               zIndex: 2,
               display: 'flex',
               gap: '8px'
@@ -456,8 +456,8 @@ const MyCourses = () => {
         actions={[
           isEnrolled(item.course._id) ? (
             <Tooltip title="Continue Learning">
-              <Button 
-                type="primary" 
+              <Button
+                type="primary"
                 icon={<PlayCircleOutlined />}
                 style={{ width: '90%' }}
                 onClick={() => handleCourseClick(item.course._id)}
@@ -467,7 +467,7 @@ const MyCourses = () => {
             </Tooltip>
           ) : (
             <Tooltip title="Start Learning">
-              <Button 
+              <Button
                 type="primary"
                 icon={<ThunderboltOutlined />}
                 style={{ width: '90%' }}
@@ -486,9 +486,9 @@ const MyCourses = () => {
           title={
             <div style={{ marginBottom: 6 }}>
               <Tooltip title={item.course.title}>
-                <div style={{ 
-                  whiteSpace: 'nowrap', 
-                  overflow: 'hidden', 
+                <div style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   fontSize: '16px',
                   fontWeight: 'bold'
@@ -512,24 +512,24 @@ const MyCourses = () => {
                   <Tag icon={<BookOutlined />}>Not Started</Tag>
                 )}
               </div>
-              
+
               {/* Progress bar for enrolled courses */}
               {isEnrolled(item.course._id) && (
                 <div style={{ marginTop: 12 }}>
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center', 
-                    marginBottom: 4 
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: 4
                   }}>
                     <Text type="secondary" style={{ fontSize: '12px' }}>
                       Progress
                     </Text>
                     {/* <Text strong style={{ fontSize: '12px' }}>{progress.toFixed(0)}%</Text> */}
                   </div>
-                  <Progress 
-                    percent={progress} 
-                    size="small" 
+                  <Progress
+                    percent={progress}
+                    size="small"
                     status={completed ? "success" : "active"}
                     strokeColor={
                       completed ? "#52c41a" : {
@@ -537,7 +537,7 @@ const MyCourses = () => {
                         to: '#1890ff',
                       }
                     }
-                     format={(percent) => `${percent.toFixed(0)}%`}
+                    format={(percent) => `${percent.toFixed(0)}%`}
                   />
                 </div>
               )}
@@ -552,8 +552,8 @@ const MyCourses = () => {
 
   return (
     <Layout style={{ background: '#f5f5f5', minHeight: '100vh' }}>
-      <Content style={{ 
-        width: '98%', 
+      <Content style={{
+        width: '98%',
         margin: '0 auto',
         padding: '16px'
       }}>
@@ -566,73 +566,73 @@ const MyCourses = () => {
             Track your progress and continue your learning
           </Text>
         </div>
-        
+
         {/* Stats cards */}
         {!loading && (
           <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
             <Col xs={12} sm={8} md={8} lg={4} xl={4}>
               <Card>
-                <Statistic 
-                  title="Total Courses" 
-                  value={stats.total} 
-                  prefix={<BookOutlined />} 
+                <Statistic
+                  title="Total Courses"
+                  value={stats.total}
+                  prefix={<BookOutlined />}
                   valueStyle={{ color: '#1890ff' }}
                 />
               </Card>
             </Col>
             <Col xs={12} sm={8} md={8} lg={4} xl={4}>
               <Card>
-                <Statistic 
-                  title="In Progress" 
-                  value={stats.inProgress} 
-                  prefix={<ClockCircleOutlined />} 
+                <Statistic
+                  title="In Progress"
+                  value={stats.inProgress}
+                  prefix={<ClockCircleOutlined />}
                   valueStyle={{ color: '#fa8c16' }}
                 />
               </Card>
             </Col>
             <Col xs={12} sm={8} md={8} lg={4} xl={4}>
               <Card>
-                <Statistic 
-                  title="Completed" 
-                  value={stats.completed} 
-                  prefix={<CheckCircleOutlined />} 
+                <Statistic
+                  title="Completed"
+                  value={stats.completed}
+                  prefix={<CheckCircleOutlined />}
                   valueStyle={{ color: '#52c41a' }}
                 />
               </Card>
             </Col>
             <Col xs={12} sm={8} md={8} lg={4} xl={4}>
               <Card>
-                <Statistic 
-                  title="Not Started" 
-                  value={stats.notStarted} 
-                  prefix={<BookOutlined />} 
+                <Statistic
+                  title="Not Started"
+                  value={stats.notStarted}
+                  prefix={<BookOutlined />}
                   valueStyle={{ color: '#d9d9d9' }}
                 />
               </Card>
             </Col>
             <Col xs={12} sm={8} md={8} lg={4} xl={4}>
               <Card>
-                <Statistic 
-                  title="Certified" 
-                  value={stats.certified} 
-                  prefix={<TrophyOutlined />} 
+                <Statistic
+                  title="Certified"
+                  value={stats.certified}
+                  prefix={<TrophyOutlined />}
                   valueStyle={{ color: '#faad14' }}
                 />
               </Card>
             </Col>
             <Col xs={12} sm={8} md={8} lg={4} xl={4}>
               <Card>
-                <Statistic 
-                  title="Favorites" 
-                  value={favorites.length} 
-                  prefix={<HeartFilled />} 
+                <Statistic
+                  title="Favorites"
+                  value={favorites.length}
+                  prefix={<HeartFilled />}
                   valueStyle={{ color: '#ff4d4f' }}
                 />
               </Card>
             </Col>
           </Row>
         )}
-        
+
         {/* Search and filters */}
         <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
           <Col xs={24} md={12}>
@@ -648,7 +648,7 @@ const MyCourses = () => {
           </Col>
           <Col xs={12} md={4}>
             <Dropdown overlay={
-              <Menu onClick={({key}) => setSortBy(key)}>
+              <Menu onClick={({ key }) => setSortBy(key)}>
                 <Menu.Item key="recent">Recent Purchase</Menu.Item>
                 <Menu.Item key="title">Course Title</Menu.Item>
                 <Menu.Item key="progress">Progress</Menu.Item>
@@ -660,10 +660,10 @@ const MyCourses = () => {
             </Dropdown>
           </Col>
           <Col xs={12} md={4}>
-            <Button 
-              size="large" 
-              style={{ width: '100%' }} 
-              icon={<FilterOutlined />} 
+            <Button
+              size="large"
+              style={{ width: '100%' }}
+              icon={<FilterOutlined />}
               type={showCategoryFilter ? "primary" : "default"}
               onClick={() => setShowCategoryFilter(!showCategoryFilter)}
             >
@@ -671,9 +671,9 @@ const MyCourses = () => {
             </Button>
           </Col>
           <Col xs={24} md={4}>
-            <Button 
-              size="large" 
-              style={{ width: '100%' }} 
+            <Button
+              size="large"
+              style={{ width: '100%' }}
               onClick={resetFilters}
             >
               Reset All Filters
@@ -729,38 +729,38 @@ const MyCourses = () => {
             </Col>
           </Row>
         )}
-        
+
         {/* Tabs for different views */}
         <Card style={{ marginBottom: 24 }}>
-          <Tabs 
-            activeKey={activeTab} 
-            onChange={setActiveTab} 
+          <Tabs
+            activeKey={activeTab}
+            onChange={setActiveTab}
             size="large"
             centered
             style={{ marginBottom: 24 }}
           >
-            <TabPane 
-              tab={<><AppstoreOutlined /> All Courses</>} 
+            <TabPane
+              tab={<><AppstoreOutlined /> All Courses</>}
               key="all"
             />
-            <TabPane 
-              tab={<><ClockCircleOutlined /> In Progress</>} 
+            <TabPane
+              tab={<><ClockCircleOutlined /> In Progress</>}
               key="inProgress"
             />
-            <TabPane 
-              tab={<><CheckCircleOutlined /> Completed</>} 
+            <TabPane
+              tab={<><CheckCircleOutlined /> Completed</>}
               key="completed"
             />
-            <TabPane 
-              tab={<><BookOutlined /> Not Started</>} 
+            <TabPane
+              tab={<><BookOutlined /> Not Started</>}
               key="notStarted"
             />
-            <TabPane 
-              tab={<><TrophyOutlined /> Certified</>} 
+            <TabPane
+              tab={<><TrophyOutlined /> Certified</>}
               key="certified"
             />
-            <TabPane 
-              tab={<><HeartFilled /> Favorites</>} 
+            <TabPane
+              tab={<><HeartFilled /> Favorites</>}
               key="favorites"
             />
           </Tabs>
@@ -781,7 +781,7 @@ const MyCourses = () => {
               )}
             </div>
           )}
-          
+
           {/* Course grid */}
           {loading ? (
             <div style={{ padding: '20px 0' }}>
@@ -804,22 +804,22 @@ const MyCourses = () => {
                   {searchTerm || categoryFilter !== 'all'
                     ? "No courses match your search criteria"
                     : activeTab === "favorites"
-                    ? "You haven't added any courses to favorites yet"
-                    : activeTab === "inProgress"
-                    ? "You don't have any courses in progress"
-                    : activeTab === "completed"
-                    ? "You haven't completed any courses yet"
-                    : activeTab === "notStarted"
-                    ? "All your courses have been started"
-                    : activeTab === "certified"
-                    ? "You don't have any certifications yet"
-                    : "You don't have any courses"}
+                      ? "You haven't added any courses to favorites yet"
+                      : activeTab === "inProgress"
+                        ? "You don't have any courses in progress"
+                        : activeTab === "completed"
+                          ? "You haven't completed any courses yet"
+                          : activeTab === "notStarted"
+                            ? "All your courses have been started"
+                            : activeTab === "certified"
+                              ? "You don't have any certifications yet"
+                              : "You don't have any courses"}
                 </Text>
               }
             >
               {activeTab === "all" && !searchTerm && categoryFilter === 'all' && (
-                <Button 
-                  type="primary" 
+                <Button
+                  type="primary"
                   size="large"
                   onClick={() => navigate('/courses')}
                   icon={<ShoppingCartOutlined />}
@@ -828,8 +828,8 @@ const MyCourses = () => {
                 </Button>
               )}
               {(searchTerm || categoryFilter !== 'all') && (
-                <Button 
-                  type="default" 
+                <Button
+                  type="default"
                   onClick={resetFilters}
                 >
                   Clear Filters
@@ -847,7 +847,7 @@ const MyCourses = () => {
             </Row>
           )}
         </Card>
-        
+
         {/* Recommendations section - this could be added later */}
         {/* <Card title={<><FireOutlined /> Recommended Next Steps</>} style={{ marginBottom: 24 }}>
           <Empty 

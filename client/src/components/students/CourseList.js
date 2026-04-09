@@ -1,30 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  Button, 
-  Spin, 
-  Input, 
-  Select, 
-  Slider, 
-  Card, 
-  Typography, 
-  Space, 
-  Row, 
-  Col, 
-  Avatar, 
-  Tag, 
-  Divider, 
-  Modal, 
-  Empty, 
-  Badge, 
-  Rate, 
-  Layout, 
-  message 
+import {
+  Button,
+  Spin,
+  Input,
+  Select,
+  Slider,
+  Card,
+  Typography,
+  Space,
+  Row,
+  Col,
+  Avatar,
+  Tag,
+  Divider,
+  Modal,
+  Empty,
+  Badge,
+  Rate,
+  Layout,
+  message
 } from "antd";
-import { 
-  SearchOutlined, 
-  ShoppingCartOutlined, 
-  UserOutlined, 
+import {
+  SearchOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
   CloseCircleOutlined,
   FilterOutlined,
   ReloadOutlined
@@ -90,11 +90,11 @@ const CourseList = () => {
     "Telecommunications"
   ];
 
-    // Loading spinner
-    const [navigating, setNavigating] = useState(false); // Kiểm soát hiển thị loading khi chuyển trang
+  // Loading spinner
+  const [navigating, setNavigating] = useState(false); // Kiểm soát hiển thị loading khi chuyển trang
   const [navigationTarget, setNavigationTarget] = useState(null); // Lưu địa chỉ trang đích
   const [initialLoading, setInitialLoading] = useState(true);
-  
+
   useEffect(() => {
     setTimeout(() => {
       setInitialLoading(false);
@@ -378,14 +378,14 @@ const CourseList = () => {
     setNavigating(false);
     setNavigationTarget(null);
   };
-  
+
   if (initialLoading) {
     return (
-      <FullScreenLoader 
-        message="Preparing Your Courses" 
+      <FullScreenLoader
+        message="Preparing Your Courses"
         description="Loading your educational content"
         duration={2000}
-        onNavigate={() => {performNavigation()}}
+        onNavigate={() => { performNavigation() }}
       />
     );
   }
@@ -393,7 +393,7 @@ const CourseList = () => {
   return (
     <Layout style={{ minHeight: "100vh", background: "#f0f2f5" }}>
       <Spin spinning={spinning} tip="Loading..." size="large" />
-      
+
       <Content style={{ padding: "24px", width: 1200, margin: "0 auto" }}>
         <Card style={{ marginBottom: 24 }} title={<Title level={4}>Course List</Title>}>
           <Space direction="vertical" size="middle" style={{ width: "100%" }}>
@@ -498,10 +498,10 @@ const CourseList = () => {
                       {filter.value}
                     </Tag>
                   ))}
-                  <Button 
-                    type="primary" 
+                  <Button
+                    type="primary"
                     danger
-                    icon={<ReloadOutlined />} 
+                    icon={<ReloadOutlined />}
                     onClick={handleClearFilters}
                   >
                     Reset All
@@ -534,8 +534,8 @@ const CourseList = () => {
               {filteredCourses.length > 0 ? (
                 filteredCourses.map((course) => (
                   <Col xs={24} sm={12} md={8} lg={6} key={course._id}>
-                    <Badge.Ribbon 
-                      text={`$${course.price}`} 
+                    <Badge.Ribbon
+                      text={`$${course.price}`}
                       color="cyan"
                     >
                       <Card
@@ -567,18 +567,18 @@ const CourseList = () => {
                             <>
                               <Tag color="geekblue">{course.category}</Tag>
                               <div style={{ marginTop: 8 }}>
-                                <Rate 
-                                  disabled 
-                                  allowHalf 
-                                  defaultValue={course.average_rating || 0} 
+                                <Rate
+                                  disabled
+                                  allowHalf
+                                  defaultValue={course.average_rating || 0}
                                 />
                                 <Text type="secondary"> ({course.comments.length})</Text>
                               </div>
-                              
+
                               {course.tutor && (
                                 <div style={{ marginTop: 16, display: "flex", alignItems: "center" }}>
-                                  <Avatar 
-                                    src={course.tutor.avatar} 
+                                  <Avatar
+                                    src={course.tutor.avatar}
                                     size="large"
                                     icon={!course.tutor.avatar && <UserOutlined />}
                                   />

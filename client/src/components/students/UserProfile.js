@@ -531,9 +531,9 @@ const UserProfile = () => {
             validateStatus={newPassword ? "success" : ""}
             help={
               newPassword &&
-              !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{6,}$/.test(
-                newPassword
-              )
+                !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{6,}$/.test(
+                  newPassword
+                )
                 ? "Password must contain uppercase, lowercase, number and special character"
                 : ""
             }

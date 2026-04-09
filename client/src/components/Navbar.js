@@ -139,9 +139,8 @@ const Navbar = () => {
 
       // Handle avatar URL from Google
       if (response.data.avatar) {
-        const googleAvatarUrl = `${
-          response.data.avatar
-        }?${new Date().getTime()}`;
+        const googleAvatarUrl = `${response.data.avatar
+          }?${new Date().getTime()}`;
         setAvatarUrl(googleAvatarUrl);
         localStorage.setItem("avatarUrl", googleAvatarUrl);
       } else {
@@ -276,18 +275,26 @@ const Navbar = () => {
     return null; // Don't render Navbar
   }
 
+  // Get current active key for menu
+  const activeKey = getActiveKey();
+
   // Menu items for navigation
   const navMenuItems = [
     {
       key: "home",
       icon: <HomeOutlined />,
-      label: "Home Pages",
+      label: "Home Page",
       onClick: () => debouncedNavigate("/"),
+      style: {
+        borderBottom: activeKey === "home" ? "#1890ff" : "none",
+        background:
+          activeKey === "home" ? "rgba(24, 144, 255, 0.1)" : "transparent",
+      },
     },
     {
       key: "courses",
       icon: <BookOutlined />,
-      label: "Course List",
+      label: role === "Admin" ? "Dashboard" : "Course List",
       onClick: () => {
         if (role === "Admin") {
           debouncedNavigate("/statistic-for-admin");
@@ -297,18 +304,37 @@ const Navbar = () => {
           debouncedNavigate("/course-list");
         }
       },
+      style: {
+        borderBottom: activeKey === "courses" ? "#1890ff" : "none",
+        background:
+          activeKey === "courses"
+            ? "rgba(24, 144, 255, 0.1)"
+            : "transparent",
+      },
     },
     {
       key: "contact",
       icon: <ContactsOutlined />,
       label: "Contact",
       onClick: () => debouncedNavigate("/contact"),
+      style: {
+        borderBottom: activeKey === "contact" ? "#1890ff" : "none",
+        background:
+          activeKey === "contact"
+            ? "rgba(24, 144, 255, 0.1)"
+            : "transparent",
+      },
     },
     {
       key: "about",
       icon: <InfoCircleOutlined />,
       label: "About",
       onClick: () => debouncedNavigate("/about"),
+      style: {
+        borderBottom: activeKey === "about" ? "#1890ff" : "none",
+        background:
+          activeKey === "about" ? "rgba(24, 144, 255, 0.1)" : "transparent",
+      },
     },
   ];
 
@@ -322,13 +348,13 @@ const Navbar = () => {
     },
     ...(role === "Student"
       ? [
-          {
-            key: "cart",
-            icon: <ShoppingCartOutlined />,
-            label: "Cart",
-            onClick: () => debouncedNavigate("/cart"),
-          },
-        ]
+        {
+          key: "cart",
+          icon: <ShoppingCartOutlined />,
+          label: "Cart",
+          onClick: () => debouncedNavigate("/cart"),
+        },
+      ]
       : []),
     // {
     //   key: 'theme',
@@ -356,9 +382,6 @@ const Navbar = () => {
     },
   ];
 
-  // Get current active key for menu
-  const activeKey = getActiveKey();
-
   // Format number with commas
   const formatNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -370,8 +393,8 @@ const Navbar = () => {
         background: isHome
           ? "transparent"
           : theme === "dark"
-          ? "#001529"
-          : "#fff",
+            ? "#001529"
+            : "#fff",
         position: isHome ? "fixed" : "sticky",
         top: 0,
         zIndex: 100,
@@ -406,6 +429,7 @@ const Navbar = () => {
       {/* Navigation Menu - Always visible with active underline */}
       <Menu
         mode="horizontal"
+        items={navMenuItems}
         selectedKeys={[activeKey]}
         style={{
           background: "transparent",
@@ -416,68 +440,7 @@ const Navbar = () => {
           justifyContent: "center",
         }}
         theme={isHome || theme === "dark" ? "dark" : "light"}
-      >
-        <Menu.Item
-          key="home"
-          icon={<HomeOutlined />}
-          onClick={() => debouncedNavigate("/")}
-          style={{
-            borderBottom: activeKey === "home" ? "#1890ff" : "none",
-            background:
-              activeKey === "home" ? "rgba(24, 144, 255, 0.1)" : "transparent",
-          }}
-        >
-          Home Page
-        </Menu.Item>
-        <Menu.Item
-          key="courses"
-          icon={<BookOutlined />}
-          onClick={() => {
-            if (role === "Admin") {
-              debouncedNavigate("/statistic-for-admin");
-            } else if (role === "Tutor") {
-              debouncedNavigate("/courses-list-tutor");
-            } else {
-              debouncedNavigate("/course-list");
-            }
-          }}
-          style={{
-            borderBottom: activeKey === "courses" ? "#1890ff" : "none",
-            background:
-              activeKey === "courses"
-                ? "rgba(24, 144, 255, 0.1)"
-                : "transparent",
-          }}
-        >
-          {role === "Admin" ? "Dashboard" : "Course List"}
-        </Menu.Item>
-        <Menu.Item
-          key="contact"
-          icon={<ContactsOutlined />}
-          onClick={() => debouncedNavigate("/contact")}
-          style={{
-            borderBottom: activeKey === "contact" ? "#1890ff" : "none",
-            background:
-              activeKey === "contact"
-                ? "rgba(24, 144, 255, 0.1)"
-                : "transparent",
-          }}
-        >
-          Contact
-        </Menu.Item>
-        <Menu.Item
-          key="about"
-          icon={<InfoCircleOutlined />}
-          onClick={() => debouncedNavigate("/about")}
-          style={{
-            borderBottom: activeKey === "about" ? "#1890ff" : "none",
-            background:
-              activeKey === "about" ? "rgba(24, 144, 255, 0.1)" : "transparent",
-          }}
-        >
-          About
-        </Menu.Item>
-      </Menu>
+      />
 
       {/* User Profile + Balance */}
       <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -571,9 +534,8 @@ const Navbar = () => {
                 icon={<UserOutlined />}
                 size="large"
                 style={{
-                  border: `2px solid ${
-                    theme === "dark" ? "#1890ff" : "#f0f0f0"
-                  }`,
+                  border: `2px solid ${theme === "dark" ? "#1890ff" : "#f0f0f0"
+                    }`,
                   cursor: "pointer",
                 }}
                 onError={(e) => {

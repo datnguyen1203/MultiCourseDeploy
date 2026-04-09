@@ -596,9 +596,8 @@ const FinalExam = () => {
             <Statistic
               title="Your Score"
               value={score}
-              suffix={`/ ${totalMark} (${
-                score && totalMark ? ((score / totalMark) * 100).toFixed(2) : 0
-              }%)`}
+              suffix={`/ ${totalMark} (${score && totalMark ? ((score / totalMark) * 100).toFixed(2) : 0
+                }%)`}
               valueStyle={{
                 color: passStatus === "success" ? "#3f8600" : "#cf1322",
               }}

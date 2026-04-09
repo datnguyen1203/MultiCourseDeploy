@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { WalletOutlined, QuestionCircleOutlined, LoadingOutlined } from "@ant-design/icons";
-import { 
-  Card, 
-  Typography, 
-  Input, 
-  Button, 
-  Space, 
-  Tooltip, 
-  Row, 
-  Col, 
-  InputNumber, 
-  message, 
-  Spin 
+import {
+  Card,
+  Typography,
+  Input,
+  Button,
+  Space,
+  Tooltip,
+  Row,
+  Col,
+  InputNumber,
+  message,
+  Spin
 } from "antd";
 
 const { Title } = Typography;
@@ -76,31 +76,31 @@ const WalletStudent = () => {
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   return (
-    <div style={{ 
-      display: "flex", 
-      justifyContent: "center", 
-      alignItems: "center", 
-      minHeight: "100vh", 
+    <div style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "100vh",
       padding: "24px",
       background: "#f0f2f5"
     }}>
-      <Card 
-        style={{ 
-          width: "100%", 
+      <Card
+        style={{
+          width: "100%",
           maxWidth: 500,
           borderRadius: 8,
           boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
         }}
       >
-        <Title 
-          level={2} 
-          style={{ 
-            textAlign: "center", 
+        <Title
+          level={2}
+          style={{
+            textAlign: "center",
             // color: "#1890ff",
             marginBottom: 24
           }}
         >
-          <WalletOutlined style={{ marginRight: 8,  color: "#1890ff" }} /> Deposit Wallet
+          <WalletOutlined style={{ marginRight: 8, color: "#1890ff" }} /> Deposit Wallet
         </Title>
 
         <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -142,10 +142,10 @@ const WalletStudent = () => {
             onClick={handlePayment}
             disabled={loading}
             block
-            style={{ 
+            style={{
               height: 48,
               fontSize: 16,
-              background: "#1890ff" 
+              background: "#1890ff"
             }}
           >
             {loading ? <Spin indicator={antIcon} /> : "Deposit"}

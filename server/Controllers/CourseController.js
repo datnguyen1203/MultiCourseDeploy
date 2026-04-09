@@ -5,39 +5,15 @@ const Order = require("../Models/Orders");
 const User = require("../Models/Users");
 const ActivityHistory = require("../Models/ActivityHistory");
 const multer = require("multer");
-const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 const config = require("../Configurations/Config");
+const {
+  deleteCloudinaryAsset,
+  uploadBufferToCloudinary,
+} = require("../Utils/cloudinary");
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
-async function uploadFileToStorage(file, folderPath) {
-  const bucket = admin.storage().bucket();
-  const blob = bucket.file(folderPath + file.originalname);
-  const blobStream = blob.createWriteStream({
-    metadata: {
-      contentType: file.mimetype,
-    },
-  });
-  blobStream.on("error", (err) => {
-    console.log(err);
-  });
-  blobStream.on("finish", async () => {
-    await blob.makePublic();
-  });
-  blobStream.end(file.buffer);
-
-  // Wait for the blob upload to complete
-  await new Promise((resolve, reject) => {
-    blobStream.on("finish", resolve);
-    blobStream.on("error", reject);
-  });
-
-  // Return the public URL
-  const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-  return publicUrl;
-}
 
 //Course with status true
 exports.getActiveCourses = async (req, res) => {
@@ -111,9 +87,12 @@ exports.requetsCreateCourse = async (req, res) => {
       // Kiểm tra xem file hình ảnh có tồn tại không
       let imageUrl = null;
       if (req.file) {
-        // Upload hình ảnh lên Firebase Storage
-        const folderPath = "Courses/" + title + "/"; // Thay đổi theo cấu trúc thư mục bạn muốn
-        imageUrl = await uploadFileToStorage(req.file, folderPath);
+        const uploadResult = await uploadBufferToCloudinary(req.file.buffer, {
+          folder: `courses/${title}/cover`,
+          public_id: `course_${Date.now()}`,
+          resource_type: "image",
+        });
+        imageUrl = uploadResult.secure_url;
       }
 
       const newCourse = new Course({
@@ -243,9 +222,8 @@ exports.processCreateCourse = async (req, res) => {
           html: `
       <p>Dear ${tutor.fullname},</p>
 
-      <p>We regret to inform you that your course, "<strong>${
-        course.title
-      }</strong>," has not been approved due to the following reasons:</p>
+      <p>We regret to inform you that your course, "<strong>${course.title
+            }</strong>," has not been approved due to the following reasons:</p>
 
       <p><strong>Reason:</strong> ${message || "Not specified"}</p>
 
@@ -388,53 +366,7 @@ exports.processUpdateCourse = async (req, res) => {
         return res.status(404).json({ message: "Course not found" });
       }
 
-      // Nếu tiêu đề mới khác với tiêu đề cũ
       if (newTitle) {
-        const oldFolderPath = `Courses/${course.title}/`;
-        const newFolderPath = `Courses/${newTitle}/`;
-
-        // Move all files in the old folder to the new folder
-        const bucket = admin.storage().bucket();
-        const [files] = await bucket.getFiles({ prefix: oldFolderPath });
-        if (files.length > 0) {
-          for (const file of files) {
-            const oldFilePath = file.name;
-
-            // Tạo đường dẫn mới cho file
-            const newFilePath = oldFilePath.replace(
-              oldFolderPath,
-              newFolderPath
-            );
-
-            // Sao chép file sang folder mới
-            await bucket.file(oldFilePath).copy(bucket.file(newFilePath));
-            // Công khai file mới
-            await bucket.file(newFilePath).makePublic();
-            // Xóa file cũ
-            await bucket.file(oldFilePath).delete();
-          }
-        }
-
-        if (course.image) {
-          course.image = course.image.replace(
-            `Courses/${course.title}/`,
-            `Courses/${newTitle}/`
-          );
-        }
-
-        const lessons = await Lesson.find({ course_id: req.params.course_id });
-        for (const lesson of lessons) {
-          lesson.video_url = lesson.video_url.replace(
-            `Courses/${course.title}/`,
-            `Courses/${newTitle}/`
-          );
-          lesson.document_url = lesson.document_url.replace(
-            `Courses/${course.title}/`,
-            `Courses/${newTitle}/`
-          );
-          await lesson.save();
-        }
-
         course.title = newTitle;
       }
 
@@ -498,9 +430,8 @@ exports.processUpdateCourse = async (req, res) => {
           html: `
       <p>Dear ${tutor.fullname},</p>
 
-      <p>We regret to inform you that your request to update the course "<strong>${
-        request.course
-      }</strong>" has been rejected.</p>
+      <p>We regret to inform you that your request to update the course "<strong>${request.course
+            }</strong>" has been rejected.</p>
 
       <p><strong>Reason:</strong> ${message || "Not specified"}</p>
 
@@ -621,19 +552,17 @@ exports.processDeleteCourse = async (req, res) => {
         return res.status(404).json({ message: "Course not found" });
       }
 
-      // Xóa tất cả các bài học của khóa học
-      await Lesson.deleteMany({ course_id: req.params.course_id });
-
-      // Xóa folder chứa tất cả các file của khóa học
-      const bucket = admin.storage().bucket();
-      const folderPath = `Courses/${course.title}/`;
-      const [files] = await bucket.getFiles({ prefix: folderPath });
-      if (files.length > 0) {
-        for (const file of files) {
-          const filePath = file.name;
-          await bucket.file(filePath).delete();
-        }
+      const lessons = await Lesson.find({ course_id: request.course });
+      for (const lesson of lessons) {
+        await deleteCloudinaryAsset(lesson.video_url);
+        await deleteCloudinaryAsset(lesson.document_url);
       }
+
+      if (course.image) {
+        await deleteCloudinaryAsset(course.image);
+      }
+
+      await Lesson.deleteMany({ course_id: request.course });
 
       // Xóa khóa học
       await course.deleteOne();
@@ -681,9 +610,8 @@ exports.processDeleteCourse = async (req, res) => {
           html: `
       <p>Dear ${tutor.fullname},</p>
 
-      <p>We regret to inform you that your request to delete the course "<strong>${
-        request.course
-      }</strong>" has been <strong>rejected</strong>.</p>
+      <p>We regret to inform you that your request to delete the course "<strong>${request.course
+            }</strong>" has been <strong>rejected</strong>.</p>
 
       <p><strong>Reason:</strong> ${message || "Not specified"}</p>
 
@@ -725,30 +653,26 @@ exports.updateCourseImage = async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    const bucket = admin.storage().bucket();
-
     upload.single("image")(req, res, async (err) => {
       if (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" });
       }
 
+      const previousImage = course.image;
+
       let imageUrl = null;
       if (req.file) {
-        const folderPath = "Courses/" + course.title + "/";
-        imageUrl = await uploadFileToStorage(req.file, folderPath);
+        const uploadResult = await uploadBufferToCloudinary(req.file.buffer, {
+          folder: `courses/${course._id}/cover`,
+          public_id: `course_${Date.now()}`,
+          resource_type: "image",
+        });
+        imageUrl = uploadResult.secure_url;
+      }
 
-        // Xóa hình ảnh cũ
-
-        if (course.image) {
-          const oldFilePath = course.image.split("firebasestorage.app/")[1]; // Lấy đường dẫn file từ URL
-          if (oldFilePath) {
-            const file = bucket.file(oldFilePath);
-            await file.delete().catch((err) => {
-              console.log("Error deleting old image:", err);
-            });
-          }
-        }
+      if (previousImage) {
+        await deleteCloudinaryAsset(previousImage);
       }
 
       course.image = imageUrl;
@@ -786,9 +710,8 @@ exports.changeCourseStatus = async (req, res) => {
     const newActivity = new ActivityHistory({
       user: req.user._id,
       role: "Admin",
-      description: `Changed the status of course with ID: ${
-        req.params.course_id
-      } form ${course.status} to ${!course.status}`,
+      description: `Changed the status of course with ID: ${req.params.course_id
+        } form ${course.status} to ${!course.status}`,
     });
 
     course.status = !course.status;
@@ -812,9 +735,8 @@ exports.changeCourseStatus = async (req, res) => {
         subject: `Your course "${course.title}" has been Deactivated`,
         html: `
       <p>Dear ${tutor.fullname},</p>
-        <p>We regret to inform you that your course, "<strong>${
-          course.title
-        }</strong>," has been deactivated by the Admin.</p>
+        <p>We regret to inform you that your course, "<strong>${course.title
+          }</strong>," has been deactivated by the Admin.</p>
           <p><strong>Reason:</strong> ${message || "Not specified"}</p>
         <p>Your course is no longer visible on the platform, and students cannot view or enroll in it.</p>
         <p>If you have any questions or need further clarification, please do not hesitate to contact us.</p>

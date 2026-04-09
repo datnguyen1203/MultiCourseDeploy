@@ -1,6 +1,4 @@
 const { createCanvas, loadImage } = require("canvas");
-const fs = require("fs");
-const path = require("path");
 const Course = require("../Models/Courses");
 const StudentCertificate = require("../Models/StudentCertificates");
 const User = require("../Models/Users");
@@ -11,29 +9,7 @@ const height = 700; // Increased height
 const canvas = createCanvas(width, height);
 const ctx = canvas.getContext("2d");
 
-const multer = require("multer");
-const admin = require("firebase-admin");
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-async function uploadFileToStorage(buffer, fileName) {
-  const bucket = admin.storage().bucket();
-  const blob = bucket.file(fileName);
-  const blobStream = blob.createWriteStream({
-    metadata: { contentType: "image/png" },
-  });
-
-  return new Promise((resolve, reject) => {
-    blobStream.on("error", (err) => reject(err));
-    blobStream.on("finish", async () => {
-      await blob.makePublic();
-      resolve(`https://storage.googleapis.com/${bucket.name}/${blob.name}`);
-    });
-
-    blobStream.end(buffer);
-  });
-}
+const { uploadBufferToCloudinary } = require("../Utils/cloudinary");
 
 exports.generateCertificate = async (req, res) => {
   try {
@@ -148,14 +124,12 @@ exports.generateCertificate = async (req, res) => {
 
     // Tạo buffer từ canvas
     const buffer = Buffer.from(canvas.toBuffer("image/png").buffer);
-    const filename = `certificate_${Date.now()}.png`;
-    const folderPath = `Certificate/${course.title}/`;
-
-    // Upload lên Firebase Storage
-    const publicUrl = await uploadFileToStorage(
-      buffer,
-      `certificates/${filename}`
-    );
+    const uploadResult = await uploadBufferToCloudinary(buffer, {
+      folder: `certificates/${course._id}`,
+      public_id: `certificate_${Date.now()}`,
+      resource_type: "image",
+    });
+    const publicUrl = uploadResult.secure_url;
 
     // Lưu thông tin chứng chỉ vào database
     const newCertificate = new StudentCertificate({

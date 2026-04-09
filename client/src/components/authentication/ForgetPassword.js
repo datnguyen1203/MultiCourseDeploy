@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { 
-  Form, 
-  Input, 
-  Button, 
-  Card, 
-  Typography, 
-  Row, 
-  Col, 
+import {
+  Form,
+  Input,
+  Button,
+  Card,
+  Typography,
+  Row,
+  Col,
   Alert,
-  Space 
+  Space
 } from "antd";
-import { 
-  EyeInvisibleOutlined, 
+import {
+  EyeInvisibleOutlined,
   EyeTwoTone,
   CheckCircleOutlined
 } from "@ant-design/icons";
@@ -36,7 +36,7 @@ const ForgetPassword = () => {
     if (step === 2) {
       setOtpExpired(false);
       setTimer(200);
-  
+
       const countdown = setInterval(() => {
         setTimer((prev) => {
           if (prev === 1) {
@@ -51,7 +51,7 @@ const ForgetPassword = () => {
           return prev - 1;
         });
       }, 1000);
-  
+
       return () => clearInterval(countdown);
     }
   }, [step]);
@@ -93,27 +93,27 @@ const ForgetPassword = () => {
 
   const handleResetPassword = async () => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*?&_-]{8,}$/;
-  
+
     if (!otp || otp.trim() === "") {
       return showError("OTP is required.");
     }
-  
+
     if (!passwordRegex.test(newPassword)) {
       return showError(
         "Password must be at least 8 characters, contain uppercase, lowercase, numbers and special characters."
       );
     }
-  
+
     if (newPassword !== confirmPassword) {
       return showError("Passwords do not match.");
     }
-  
+
     try {
       const response = await axios.post(
         "https://multicourseserver.onrender.com/api/users/reset-password",
         { otp, newPassword }
       );
-  
+
       if (response.status === 200) {
         showSuccess(response.data.message);
         setStep(3);

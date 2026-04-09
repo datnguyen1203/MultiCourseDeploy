@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Badge, Button, Modal, Typography, Tag, Tooltip, Dropdown, Space, Input, Select, DatePicker, Row, Col, Card, List, message } from 'antd';
-import { 
-  ExclamationCircleOutlined, 
-  ReloadOutlined, 
-  EyeOutlined, 
+import {
+  ExclamationCircleOutlined,
+  ReloadOutlined,
+  EyeOutlined,
   StopOutlined,
   MoreOutlined,
   FilterOutlined,
@@ -128,7 +128,7 @@ const TutorRequests = () => {
 
     // Apply search filter to course title
     if (searchText) {
-      result = result.filter(request => 
+      result = result.filter(request =>
         request.course_title.toLowerCase().includes(searchText.toLowerCase())
       );
     }
@@ -147,7 +147,7 @@ const TutorRequests = () => {
     if (dateRange && dateRange[0] && dateRange[1]) {
       const startDate = dateRange[0].startOf('day').valueOf();
       const endDate = dateRange[1].endOf('day').valueOf();
-      
+
       result = result.filter(request => {
         const requestDate = new Date(request.request_date).getTime();
         return requestDate >= startDate && requestDate <= endDate;
@@ -176,7 +176,7 @@ const TutorRequests = () => {
         try {
           console.log("req id:", requestId);
           const token = localStorage.getItem('authToken');
-          await axios.post(`https://multicourseserver.onrender.com/api/requests/cancel-request/${requestId}`, 
+          await axios.post(`https://multicourseserver.onrender.com/api/requests/cancel-request/${requestId}`,
             { request_id: requestId },
             {
               headers: {
@@ -200,9 +200,9 @@ const TutorRequests = () => {
       'Rejected': { status: 'error', color: 'red' },
       'Canceled': { status: 'default', color: 'gray' }
     };
-    
+
     const config = statusConfig[status] || statusConfig['Pending'];
-    
+
     return <Badge status={config.status} text={status} />;
   };
 
@@ -222,8 +222,8 @@ const TutorRequests = () => {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Tooltip title="View change details">
-          <EyeOutlined 
-            style={styles.changeIcon} 
+          <EyeOutlined
+            style={styles.changeIcon}
             onClick={() => showChangeDetails(content, record.course_title, record.request_type)}
             className="changes-icon"
           />
@@ -233,7 +233,7 @@ const TutorRequests = () => {
   };
 
   const getRowClassName = (record) => {
-    switch(record.status) {
+    switch (record.status) {
       case 'Pending':
         return 'ant-table-row-pending';
       case 'Approved':
@@ -247,7 +247,7 @@ const TutorRequests = () => {
 
   const getActionMenu = (record) => {
     const items = [];
-    
+
     if (record.status === 'Pending') {
       items.push({
         key: 'cancel',
@@ -257,7 +257,7 @@ const TutorRequests = () => {
         onClick: () => handleCancel(record._id)
       });
     }
-    
+
     return items;
   };
 
@@ -374,7 +374,7 @@ const TutorRequests = () => {
     <div style={styles.container}>
       {/* Include the custom styles */}
       <style>{customStyles}</style>
-      
+
       <div style={styles.card}>
         <div style={styles.header}>
           <div>
@@ -382,23 +382,23 @@ const TutorRequests = () => {
             <Text type="secondary">Manage your course requests</Text>
           </div>
           <Space>
-            <Button 
-              icon={<FilterOutlined />} 
+            <Button
+              icon={<FilterOutlined />}
               onClick={() => setShowFilters(!showFilters)}
               type={showFilters ? "primary" : "default"}
             >
               Filters
             </Button>
-            <Button 
-              type="primary" 
-              icon={<ReloadOutlined />} 
+            <Button
+              type="primary"
+              icon={<ReloadOutlined />}
               onClick={fetchRequests}
             >
               Refresh
             </Button>
           </Space>
         </div>
-        
+
         {/* Filters Card */}
         {showFilters && (
           <Card style={styles.filterCard}>
@@ -454,7 +454,7 @@ const TutorRequests = () => {
             </Row>
           </Card>
         )}
-        
+
         <div style={{ overflowX: 'auto' }}>
           <Table
             columns={columns}
@@ -480,7 +480,7 @@ const TutorRequests = () => {
           />
         </div>
       </div>
-      
+
       {/* Modal for displaying change details */}
       <Modal
         title={
@@ -490,7 +490,7 @@ const TutorRequests = () => {
               <span>Change Details</span>
             </Space>
             <Text strong style={{ display: 'block', marginTop: '8px' }}>
-              {selectedCourse} - {selectedRequestType && 
+              {selectedCourse} - {selectedRequestType &&
                 <Tag color={selectedRequestType.includes('Created') ? 'green' : 'blue'}>
                   {selectedRequestType}
                 </Tag>
@@ -513,16 +513,16 @@ const TutorRequests = () => {
           renderItem={(item) => (
             <List.Item style={styles.modalItem}>
               <div style={{ marginBottom: '8px' }}>
-                <Tag 
-                  color="default" 
+                <Tag
+                  color="default"
                   style={{ fontWeight: 'bold', fontSize: '14px' }}
                 >
                   {item.title}
                 </Tag>
               </div>
               <div>
-                <Tag 
-                  color={getChangeValueColor(item.title)} 
+                <Tag
+                  color={getChangeValueColor(item.title)}
                   style={styles.modalTag}
                 >
                   {item.value}
@@ -534,7 +534,7 @@ const TutorRequests = () => {
           style={{ width: '100%' }}
         />
       </Modal>
-      
+
       <ToastContainer />
     </div>
   );

@@ -6,17 +6,6 @@ var logger = require("morgan");
 
 const mongoose = require("./Loaders/Mongoose");
 
-const admin = require("firebase-admin");
-const config = require("./Configurations/Config");
-
-const serviceAccount =
-  require("./Configurations/FirebaseConfig").serviceAccount;
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: config.storage_bucket,
-});
-
 const UserRouter = require("./Routers/UsersRouter");
 const CourseRouter = require("./Routers/CourseRouter");
 const LessonRouter = require("./Routers/LessonRouter");

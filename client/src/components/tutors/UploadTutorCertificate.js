@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { 
-  Form, 
-  Input, 
-  Button, 
-  Card, 
-  Typography, 
-  List, 
-  Divider, 
-  Space, 
-  Alert, 
+import {
+  Form,
+  Input,
+  Button,
+  Card,
+  Typography,
+  List,
+  Divider,
+  Space,
+  Alert,
   message as antMessage,
   Tag,
   Tooltip,
@@ -92,7 +92,7 @@ const UploadTutorCertificate = () => {
     // Check if the certificate already exists
     const isExist = certificates.some(
       (cert) =>
-        cert.title === newCertificate.title && 
+        cert.title === newCertificate.title &&
         cert.certificate_url === newCertificate.certificate_url
     );
 
@@ -120,7 +120,7 @@ const UploadTutorCertificate = () => {
       // Update the certificates list and reset form
       setCertificates(response.data.certificates || [...certificates, newCertificate]);
       form.resetFields();
-      
+
       // Show success message using Ant Design's message
       antMessage.success("Certificate added successfully!");
     } catch (error) {
@@ -137,9 +137,9 @@ const UploadTutorCertificate = () => {
 
   return (
     <div style={{ background: "#f0f2f5", padding: "24px", minHeight: "100vh" }}>
-      <Card 
-        style={{ 
-          maxWidth: "800px", 
+      <Card
+        style={{
+          maxWidth: "800px",
           margin: "0 auto",
           borderRadius: "8px",
           boxShadow: "0 1px 2px rgba(0,0,0,0.03), 0 2px 4px rgba(0,0,0,0.03)"
@@ -164,8 +164,8 @@ const UploadTutorCertificate = () => {
               { min: 3, message: "Title must be at least 3 characters" }
             ]}
           >
-            <Input 
-              placeholder="Enter certificate title (e.g. 'TESOL Certification')" 
+            <Input
+              placeholder="Enter certificate title (e.g. 'TESOL Certification')"
               prefix={<PaperClipOutlined style={{ color: "#bfbfbf" }} />}
               value={title}
               onChange={handleTitleChange}
@@ -177,15 +177,15 @@ const UploadTutorCertificate = () => {
             label="Certificate URL"
             rules={[
               { required: true, message: "Please enter certificate URL" },
-              { 
-                pattern: /^(https?:\/\/)/, 
-                message: "URL must start with http:// or https://" 
+              {
+                pattern: /^(https?:\/\/)/,
+                message: "URL must start with http:// or https://"
               }
             ]}
             extra="Enter a link to your certificate PDF or verification page"
           >
-            <Input 
-              placeholder="https://example.com/my-certificate.pdf" 
+            <Input
+              placeholder="https://example.com/my-certificate.pdf"
               prefix={<LinkOutlined style={{ color: "#bfbfbf" }} />}
               value={certificateUrl}
               onChange={handleUrlChange}
@@ -193,15 +193,15 @@ const UploadTutorCertificate = () => {
           </Form.Item>
 
           <Space style={{ width: "100%", justifyContent: "space-between", marginTop: "24px" }}>
-            <Button 
-              icon={<RollbackOutlined />} 
+            <Button
+              icon={<RollbackOutlined />}
               onClick={() => navigate("/courses-list-tutor")}
             >
               Skip for now
             </Button>
-            <Button 
-              type="primary" 
-              htmlType="submit" 
+            <Button
+              type="primary"
+              htmlType="submit"
               loading={loading}
               icon={<CheckCircleOutlined />}
             >
@@ -228,7 +228,7 @@ const UploadTutorCertificate = () => {
                 </Text>
               </Badge>
             </Divider>
-            
+
             <List
               itemLayout="horizontal"
               dataSource={certificates}
@@ -236,8 +236,8 @@ const UploadTutorCertificate = () => {
                 <List.Item>
                   <List.Item.Meta
                     avatar={
-                      isPDFUrl(cert.certificate_url) ? 
-                        <FilePdfOutlined style={{ fontSize: 24, color: '#ff4d4f' }} /> : 
+                      isPDFUrl(cert.certificate_url) ?
+                        <FilePdfOutlined style={{ fontSize: 24, color: '#ff4d4f' }} /> :
                         <LinkOutlined style={{ fontSize: 24, color: '#1890ff' }} />
                     }
                     title={

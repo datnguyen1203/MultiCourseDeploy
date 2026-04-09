@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { 
-  Table, 
-  Input, 
-  Button, 
-  Tag, 
-  Pagination, 
-  message, 
-  Card, 
-  Typography, 
-  Space, 
-  Divider, 
-  Empty, 
-  Spin, 
+import {
+  Table,
+  Input,
+  Button,
+  Tag,
+  Pagination,
+  message,
+  Card,
+  Typography,
+  Space,
+  Divider,
+  Empty,
+  Spin,
   Badge
 } from "antd";
-import { 
-  SearchOutlined, 
-  CopyOutlined, 
-  CalendarOutlined, 
-  ReloadOutlined, 
-  FileDoneOutlined, 
+import {
+  SearchOutlined,
+  CopyOutlined,
+  CalendarOutlined,
+  ReloadOutlined,
+  FileDoneOutlined,
   LinkOutlined
 } from "@ant-design/icons";
 
@@ -128,20 +128,20 @@ export default function Certificate() {
       dataIndex: "isPassed",
       key: "status",
       render: (isPassed) => (
-        <Badge 
-          status={isPassed ? "success" : "error"} 
+        <Badge
+          status={isPassed ? "success" : "error"}
           text={
-            <Tag 
-              color={isPassed ? "success" : "error"} 
-              style={{ 
-                fontWeight: "500", 
-                padding: "4px 12px", 
-                borderRadius: "4px" 
+            <Tag
+              color={isPassed ? "success" : "error"}
+              style={{
+                fontWeight: "500",
+                padding: "4px 12px",
+                borderRadius: "4px"
               }}
             >
               {isPassed ? "PASSED" : "FAILED"}
             </Tag>
-          } 
+          }
         />
       ),
       width: "15%",
@@ -181,10 +181,10 @@ export default function Certificate() {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ 
-              borderRadius: "4px", 
-              background: "blue", 
-         
+            style={{
+              borderRadius: "4px",
+              background: "blue",
+
             }}
           >
             View
@@ -206,10 +206,10 @@ export default function Certificate() {
   ];
 
   return (
-    <div style={{ 
-      minHeight: "100vh", 
-      padding: "24px", 
-      background: "linear-gradient(to right, #f0f2f5, #e6f7ff)" 
+    <div style={{
+      minHeight: "100vh",
+      padding: "24px",
+      background: "linear-gradient(to right, #f0f2f5, #e6f7ff)"
     }}>
       <Card
         style={{
@@ -225,12 +225,12 @@ export default function Certificate() {
       >
         <div style={{ textAlign: "center", marginBottom: "28px" }}>
           <Space direction="vertical" size={4}>
-            <Title 
-              level={2} 
-              style={{ 
-                margin: 0, 
+            <Title
+              level={2}
+              style={{
+                margin: 0,
                 // color: "#1890ff", 
-                fontWeight: "bold" 
+                fontWeight: "bold"
               }}
             >
               📜 Certificate Management
@@ -261,8 +261,8 @@ export default function Certificate() {
                 setFilterDate(e.target.value);
                 handleFilterChange(e.target.value, filterName);
               }}
-              style={{ 
-                width: "200px", 
+              style={{
+                width: "200px",
                 borderRadius: "6px",
               }}
               placeholder="Filter by date"
@@ -276,29 +276,29 @@ export default function Certificate() {
                 handleFilterChange(filterDate, e.target.value);
               }}
               prefix={<SearchOutlined style={{ color: "#1890ff" }} />}
-              style={{ 
-                width: "280px", 
-                borderRadius: "6px" 
+              style={{
+                width: "280px",
+                borderRadius: "6px"
               }}
               allowClear
             />
           </Space>
-          
+
           <Space>
-            <Button 
-              onClick={resetFilters} 
-              icon={<ReloadOutlined />} 
-              style={{ 
+            <Button
+              onClick={resetFilters}
+              icon={<ReloadOutlined />}
+              style={{
                 borderRadius: "6px",
               }}
             >
               Reset
             </Button>
-            <Button 
-              type="primary" 
-              onClick={fetchCertificates} 
-              icon={<ReloadOutlined />} 
-              style={{ 
+            <Button
+              type="primary"
+              onClick={fetchCertificates}
+              icon={<ReloadOutlined />}
+              style={{
                 borderRadius: "6px",
               }}
             >
@@ -307,10 +307,10 @@ export default function Certificate() {
           </Space>
         </div>
 
-        <div style={{ 
-          background: "#fff", 
-          borderRadius: "8px", 
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)" 
+        <div style={{
+          background: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)"
         }}>
           <Spin spinning={loading} tip="Loading certificates...">
             <Table
@@ -321,21 +321,21 @@ export default function Certificate() {
               bordered={false}
               style={{ overflow: "hidden" }}
               rowClassName={(record, index) => index % 2 === 0 ? "table-row-light" : "table-row-dark"}
-              locale={{ 
+              locale={{
                 emptyText: (
-                  <Empty 
-                    description="No certificates found" 
-                    image={Empty.PRESENTED_IMAGE_SIMPLE} 
+                  <Empty
+                    description="No certificates found"
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
                   />
-                ) 
+                )
               }}
             />
           </Spin>
         </div>
 
-        <div style={{ 
-          display: "flex", 
-          justifyContent: "center", 
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
           marginTop: "20px"
         }}>
           <Pagination
@@ -346,9 +346,9 @@ export default function Certificate() {
             showSizeChanger={false}
             showQuickJumper
             showTotal={(total) => `Total ${total} certificates`}
-            style={{ 
-              padding: "8px 16px", 
-              background: "#fff", 
+            style={{
+              padding: "8px 16px",
+              background: "#fff",
               borderRadius: "8px",
               boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)"
             }}

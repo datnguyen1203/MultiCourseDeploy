@@ -150,9 +150,8 @@ const Login = () => {
       );
 
       ctx.rotate((Math.random() - 0.5) * 0.3);
-      ctx.fillStyle = `rgb(${Math.random() * 100}, ${Math.random() * 100}, ${
-        Math.random() * 100
-      })`;
+      ctx.fillStyle = `rgb(${Math.random() * 100}, ${Math.random() * 100}, ${Math.random() * 100
+        })`;
       ctx.fillText(captcha[i], 0, 0);
       ctx.restore();
     }

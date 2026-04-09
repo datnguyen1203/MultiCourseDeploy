@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
+import axios from "../axiosConfig";
 
 export default function HomeScreen() {
   const [courses, setCourses] = useState([]);
@@ -18,6 +19,18 @@ export default function HomeScreen() {
   const token = localStorage.getItem("authToken");
   const [tutors, setTutors] = useState([]);
   const [bestSeller, setBestSeller] = useState([]);
+
+  const normalizeToArray = (payload, keys = []) => {
+    if (Array.isArray(payload)) return payload;
+
+    for (const key of keys) {
+      if (Array.isArray(payload?.[key])) {
+        return payload[key];
+      }
+    }
+
+    return [];
+  };
 
   //   function showFlyingDragon() {
   //     const dragon = document.createElement("img");
@@ -63,17 +76,11 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetchTopTutors = async () => {
       try {
-        const response = await fetch(
-          "https://multicourseserver.onrender.com/api/courses/top-tutors",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setTutors(data);
+        const response = await axios.get("/api/courses/top-tutors", {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        const data = response.data;
+        setTutors(normalizeToArray(data, ["tutors", "topTutors", "data"]));
         console.log("Top tutors data:", data);
       } catch (error) {
         console.error("Error fetching top tutors:", error);
@@ -89,17 +96,11 @@ export default function HomeScreen() {
     const fetchCourses = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          "https://multicourseserver.onrender.com/api/courses/top-courses",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setCourses(data);
+        const response = await axios.get("/api/courses/top-courses", {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        const data = response.data;
+        setCourses(normalizeToArray(data, ["courses", "data"]));
       } catch (error) {
         setError(error.message);
       }
@@ -112,17 +113,15 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetchBestSeller = async () => {
       try {
-        const response = await fetch(
-          "https://multicourseserver.onrender.com/api/courses/best-seller",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-          }
-        );
+        const response = await axios.get("/api/courses/best-seller", {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
 
-        const data = await response.json();
+        const data = normalizeToArray(response.data, [
+          "bestSeller",
+          "courses",
+          "data",
+        ]);
         console.log("Dữ liệu best seller:", data);
 
         if (data.length > 0) {
@@ -423,12 +422,11 @@ function CourseCard({ course }) {
                 <Star
                   key={star}
                   size={14}
-                  className={`${
-                    course.average_rating &&
-                    star <= Math.round(course.average_rating)
+                  className={`${course.average_rating &&
+                      star <= Math.round(course.average_rating)
                       ? "text-yellow-400 fill-yellow-400"
                       : "text-gray-300"
-                  }`}
+                    }`}
                 />
               ))}
             </div>

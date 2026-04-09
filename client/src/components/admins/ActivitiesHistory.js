@@ -286,16 +286,14 @@ export default function ActivitiesHistory() {
       <Row gutter={[16, 16]} className="mb-6">
         <Col xs={24} sm={12} md={8} lg={4}>
           <Card
-            className={`${
-              theme === "dark" ? "bg-gray-700 text-white" : "bg-blue-50"
-            } rounded-lg shadow-md h-full border-none`}
+            className={`${theme === "dark" ? "bg-gray-700 text-white" : "bg-blue-50"
+              } rounded-lg shadow-md h-full border-none`}
           >
             <Statistic
               title={
                 <span
-                  className={`${
-                    theme === "dark" ? "text-gray-300" : "text-gray-700"
-                  } font-medium`}
+                  className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    } font-medium`}
                 >
                   Total Activities
                 </span>
@@ -303,9 +301,8 @@ export default function ActivitiesHistory() {
               value={activityCounts.total}
               prefix={
                 <HistoryOutlined
-                  className={`${
-                    theme === "dark" ? "text-blue-400" : "text-blue-500"
-                  }`}
+                  className={`${theme === "dark" ? "text-blue-400" : "text-blue-500"
+                    }`}
                 />
               }
               valueStyle={{ color: theme === "dark" ? "#fff" : "#1890ff" }}
@@ -314,16 +311,14 @@ export default function ActivitiesHistory() {
         </Col>
         <Col xs={24} sm={12} md={8} lg={4}>
           <Card
-            className={`${
-              theme === "dark" ? "bg-gray-700 text-white" : "bg-blue-50"
-            } rounded-lg shadow-md h-full border-none`}
+            className={`${theme === "dark" ? "bg-gray-700 text-white" : "bg-blue-50"
+              } rounded-lg shadow-md h-full border-none`}
           >
             <Statistic
               title={
                 <span
-                  className={`${
-                    theme === "dark" ? "text-gray-300" : "text-gray-700"
-                  } font-medium`}
+                  className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    } font-medium`}
                 >
                   Requests
                 </span>
@@ -336,16 +331,14 @@ export default function ActivitiesHistory() {
         </Col>
         <Col xs={24} sm={12} md={8} lg={4}>
           <Card
-            className={`${
-              theme === "dark" ? "bg-gray-700 text-white" : "bg-green-50"
-            } rounded-lg shadow-md h-full border-none`}
+            className={`${theme === "dark" ? "bg-gray-700 text-white" : "bg-green-50"
+              } rounded-lg shadow-md h-full border-none`}
           >
             <Statistic
               title={
                 <span
-                  className={`${
-                    theme === "dark" ? "text-gray-300" : "text-gray-700"
-                  } font-medium`}
+                  className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    } font-medium`}
                 >
                   Courses
                 </span>
@@ -358,16 +351,14 @@ export default function ActivitiesHistory() {
         </Col>
         <Col xs={24} sm={12} md={8} lg={4}>
           <Card
-            className={`${
-              theme === "dark" ? "bg-gray-700 text-white" : "bg-red-50"
-            } rounded-lg shadow-md h-full border-none`}
+            className={`${theme === "dark" ? "bg-gray-700 text-white" : "bg-red-50"
+              } rounded-lg shadow-md h-full border-none`}
           >
             <Statistic
               title={
                 <span
-                  className={`${
-                    theme === "dark" ? "text-gray-300" : "text-gray-700"
-                  } font-medium`}
+                  className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    } font-medium`}
                 >
                   Reviews
                 </span>
@@ -380,16 +371,14 @@ export default function ActivitiesHistory() {
         </Col>
         <Col xs={24} sm={12} md={8} lg={4}>
           <Card
-            className={`${
-              theme === "dark" ? "bg-gray-700 text-white" : "bg-cyan-50"
-            } rounded-lg shadow-md h-full border-none`}
+            className={`${theme === "dark" ? "bg-gray-700 text-white" : "bg-cyan-50"
+              } rounded-lg shadow-md h-full border-none`}
           >
             <Statistic
               title={
                 <span
-                  className={`${
-                    theme === "dark" ? "text-gray-300" : "text-gray-700"
-                  } font-medium`}
+                  className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    } font-medium`}
                 >
                   Wallet
                 </span>
@@ -402,16 +391,14 @@ export default function ActivitiesHistory() {
         </Col>
         <Col xs={24} sm={12} md={8} lg={4}>
           <Card
-            className={`${
-              theme === "dark" ? "bg-gray-700 text-white" : "bg-orange-50"
-            } rounded-lg shadow-md h-full border-none`}
+            className={`${theme === "dark" ? "bg-gray-700 text-white" : "bg-orange-50"
+              } rounded-lg shadow-md h-full border-none`}
           >
             <Statistic
               title={
                 <span
-                  className={`${
-                    theme === "dark" ? "text-gray-300" : "text-gray-700"
-                  } font-medium`}
+                  className={`${theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    } font-medium`}
                 >
                   Users
                 </span>
@@ -428,30 +415,26 @@ export default function ActivitiesHistory() {
 
   return (
     <div
-      className={`min-h-screen ${
-        theme === "dark"
+      className={`min-h-screen ${theme === "dark"
           ? "bg-gray-900"
           : "bg-gradient-to-br from-blue-50 to-indigo-100"
-      } p-6`}
+        } p-6`}
     >
       <Card
-        className={`shadow-lg rounded-lg ${
-          theme === "dark" ? "bg-gray-800 text-white" : "bg-white"
-        }`}
+        className={`shadow-lg rounded-lg ${theme === "dark" ? "bg-gray-800 text-white" : "bg-white"
+          }`}
         bordered={false}
       >
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <div className="flex items-center mb-4 sm:mb-0">
             <HistoryOutlined
-              className={`text-2xl mr-3 ${
-                theme === "dark" ? "text-blue-400" : "text-blue-500"
-              }`}
+              className={`text-2xl mr-3 ${theme === "dark" ? "text-blue-400" : "text-blue-500"
+                }`}
             />
             <Title
               level={2}
-              className={`m-0 ${
-                theme === "dark" ? "text-white" : "text-gray-800"
-              }`}
+              className={`m-0 ${theme === "dark" ? "text-white" : "text-gray-800"
+                }`}
             >
               Activities History
             </Title>
@@ -476,11 +459,10 @@ export default function ActivitiesHistory() {
             <Button
               icon={<ReloadOutlined />}
               onClick={handleReset}
-              className={`flex items-center justify-center ${
-                theme === "dark"
+              className={`flex items-center justify-center ${theme === "dark"
                   ? "bg-gray-700 text-white hover:bg-gray-600"
                   : "bg-blue-500 text-white hover:bg-blue-600"
-              }`}
+                }`}
             >
               Reset
             </Button>
@@ -518,10 +500,10 @@ export default function ActivitiesHistory() {
                     ? "bg-red-900 bg-opacity-20"
                     : "bg-red-50"
                   : record.type === "create"
-                  ? theme === "dark"
-                    ? "bg-green-900 bg-opacity-20"
-                    : "bg-green-50"
-                  : ""
+                    ? theme === "dark"
+                      ? "bg-green-900 bg-opacity-20"
+                      : "bg-green-50"
+                    : ""
               }
               locale={{
                 emptyText: (
@@ -537,9 +519,8 @@ export default function ActivitiesHistory() {
                   <Table.Summary.Row>
                     <Table.Summary.Cell colSpan={4} className="text-right">
                       <Text
-                        className={`${
-                          theme === "dark" ? "text-gray-300" : "text-gray-600"
-                        }`}
+                        className={`${theme === "dark" ? "text-gray-300" : "text-gray-600"
+                          }`}
                       >
                         Total activities: {filteredData.length}
                       </Text>

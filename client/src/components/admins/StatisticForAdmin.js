@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { 
-  Table, 
-  Card, 
-  Statistic, 
-  Layout, 
-  Typography, 
-  Spin, 
+import {
+  Table,
+  Card,
+  Statistic,
+  Layout,
+  Typography,
+  Spin,
   Divider,
   DatePicker,
   Select,
@@ -17,9 +17,9 @@ import {
   Badge,
   message
 } from "antd";
-import { 
-  DollarOutlined, 
-  CalendarOutlined, 
+import {
+  DollarOutlined,
+  CalendarOutlined,
   LineChartOutlined,
   ShoppingCartOutlined,
   FilterOutlined,
@@ -46,7 +46,7 @@ const StatisticForAdmin = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Filter states
   const [dateRange, setDateRange] = useState(null);
   const [searchText, setSearchText] = useState('');
@@ -105,7 +105,7 @@ const StatisticForAdmin = () => {
 
   const applyFilters = () => {
     let result = [...orders];
-    
+
     // Apply date range filter
     if (dateRange && dateRange[0] && dateRange[1]) {
       const startDate = dateRange[0].startOf('day').valueOf();
@@ -115,20 +115,20 @@ const StatisticForAdmin = () => {
         return orderDate >= startDate && orderDate <= endDate;
       });
     }
-    
+
     // Apply search filter (on buyer name)
     if (searchText) {
       const lowerSearchText = searchText.toLowerCase();
-      result = result.filter(order => 
+      result = result.filter(order =>
         (order.user?.fullname || "Anonymous").toLowerCase().includes(lowerSearchText)
       );
     }
-    
+
     // Apply price range filter
     if (priceRange) {
       result = result.filter(order => {
         const price = order.total_price;
-        switch(priceRange) {
+        switch (priceRange) {
           case 'under100k':
             return price < 100000;
           case '100k-500k':
@@ -143,11 +143,11 @@ const StatisticForAdmin = () => {
         }
       });
     }
-    
+
     // Apply sorting
     result.sort((a, b) => {
       let comparison = 0;
-      
+
       switch (sortField) {
         case 'buyer':
           const nameA = (a.user?.fullname || "Anonymous").toLowerCase();
@@ -162,10 +162,10 @@ const StatisticForAdmin = () => {
           comparison = new Date(a.order_date) - new Date(b.order_date);
           break;
       }
-      
+
       return sortDirection === 'ascend' ? comparison : -comparison;
     });
-    
+
     setFilteredOrders(result);
   };
 
@@ -180,28 +180,28 @@ const StatisticForAdmin = () => {
 
   // Calculate additional statistics
   const totalOrders = orders.length;
-  const averageOrderValue = totalOrders > 0 
-    ? Math.round(totalRevenue / totalOrders) 
+  const averageOrderValue = totalOrders > 0
+    ? Math.round(totalRevenue / totalOrders)
     : 0;
-  
+
   // Find top month
-  const topMonth = monthlyRevenue.length > 0 
-    ? monthlyRevenue.reduce((max, current) => 
-        current.revenue > max.revenue ? current : max, 
-        monthlyRevenue[0]
-      ) 
+  const topMonth = monthlyRevenue.length > 0
+    ? monthlyRevenue.reduce((max, current) =>
+      current.revenue > max.revenue ? current : max,
+      monthlyRevenue[0]
+    )
     : { month: 'N/A', revenue: 0 };
 
   // This month revenue (assuming the monthlyRevenue is sorted)
-  const currentMonthRevenue = monthlyRevenue.length > 0 
-    ? monthlyRevenue[monthlyRevenue.length - 1].revenue 
+  const currentMonthRevenue = monthlyRevenue.length > 0
+    ? monthlyRevenue[monthlyRevenue.length - 1].revenue
     : 0;
-  
+
   // Previous month revenue
-  const previousMonthRevenue = monthlyRevenue.length > 1 
-    ? monthlyRevenue[monthlyRevenue.length - 2].revenue 
+  const previousMonthRevenue = monthlyRevenue.length > 1
+    ? monthlyRevenue[monthlyRevenue.length - 2].revenue
     : 0;
-  
+
   // Calculate growth percentage
   let monthlyGrowth;
   if (previousMonthRevenue === 0) {
@@ -218,15 +218,15 @@ const StatisticForAdmin = () => {
     return (
       <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="text-center bg-white p-8 rounded-2xl shadow-xl">
-          <Spin 
-            size="large" 
+          <Spin
+            size="large"
             className="text-6xl mb-4"
             indicator={
-              <LineChartOutlined 
-                spin 
-                className="text-blue-600 text-4xl animate-pulse" 
+              <LineChartOutlined
+                spin
+                className="text-blue-600 text-4xl animate-pulse"
               />
-            } 
+            }
           />
           <p className="text-gray-600 mt-4">Loading financial data...</p>
         </div>
@@ -313,8 +313,8 @@ const StatisticForAdmin = () => {
     <Layout className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <Content className="max-w-7xl mx-auto w-full">
         <div className="mb-8 flex justify-between items-center">
-          <Title 
-            level={2} 
+          <Title
+            level={2}
             className="text-gray-800 flex items-center gap-3 m-0"
           >
             <LineChartOutlined className="text-blue-600" />
@@ -330,7 +330,7 @@ const StatisticForAdmin = () => {
         {/* Enhanced Revenue Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Total Revenue Card */}
-          <Card 
+          <Card
             className="shadow-lg border-blue-200 border-1 rounded-2xl transform transition-all hover:-translate-y-1 hover:shadow-xl overflow-hidden"
             bodyStyle={{ padding: '20px' }}
           >
@@ -357,7 +357,7 @@ const StatisticForAdmin = () => {
           </Card>
 
           {/* Today's Revenue Card */}
-          <Card 
+          <Card
             className="shadow-lg border-purple-200 border-1 bg-purple-100 rounded-2xl transform transition-all hover:-translate-y-1 hover:shadow-xl overflow-hidden"
             bodyStyle={{ padding: '20px' }}
           >
@@ -390,7 +390,7 @@ const StatisticForAdmin = () => {
           </Card>
 
           {/* Average Order Value */}
-          <Card 
+          <Card
             className="shadow-lg border-green-200 border-1 bg-green-100 rounded-2xl transform transition-all hover:-translate-y-1 hover:shadow-xl overflow-hidden"
             bodyStyle={{ padding: '20px' }}
           >
@@ -423,7 +423,7 @@ const StatisticForAdmin = () => {
           </Card>
 
           {/* Growth Rate Card */}
-          <Card 
+          <Card
             className="shadow-lg border-red-200 bg-red-100 rounded-2xl transform transition-all hover:-translate-y-1 hover:shadow-xl border-1 overflow-hidden"
             bodyStyle={{ padding: '20px' }}
           >
@@ -432,8 +432,8 @@ const StatisticForAdmin = () => {
                 <Text className="text-gray-500 text-sm"> Top month</Text>
                 <div className="flex items-baseline mt-1">
                   <Title level={3} className={`m-0 ${monthlyGrowth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {topMonth.month} 
-                  </Title> 
+                    {topMonth.month}
+                  </Title>
                 </div>
               </div>
               <div className={`w-12 h-12 rounded-full ${monthlyGrowth >= 0 ? 'bg-red-500' : 'bg-red-500'} flex items-center justify-center shadow-md`}>
@@ -453,7 +453,7 @@ const StatisticForAdmin = () => {
                 <Text className="text-red-500 text-xs font-medium">
                   Revenue: {formatCurrency(topMonth.revenue)}
                   {/* <span className="font-medium text-blue-500">{topMonth.month}</span>  */}
-            
+
                 </Text>
               </div>
             </div>
@@ -464,7 +464,7 @@ const StatisticForAdmin = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="md:col-span-3">
             {/* Monthly Revenue Chart */}
-            <Card 
+            <Card
               title={
                 <div className="flex items-center">
                   <LineChartOutlined className="mr-2 text-blue-500" />
@@ -472,8 +472,8 @@ const StatisticForAdmin = () => {
                 </div>
               }
               className="shadow-lg rounded-2xl overflow-hidden"
-              headStyle={{ 
-                backgroundColor: '#f8fafc', 
+              headStyle={{
+                backgroundColor: '#f8fafc',
                 borderBottom: '1px solid #e2e8f0',
                 fontWeight: 600,
                 color: '#2d3748',
@@ -482,32 +482,32 @@ const StatisticForAdmin = () => {
             >
               <div style={{ height: '320px' }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
+                  <BarChart
                     data={monthlyRevenue}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                   >
-                    <CartesianGrid 
-                      strokeDasharray="3 3" 
-                      vertical={false} 
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
                       stroke="#f0f0f0"
                     />
-                    <XAxis 
-                      dataKey="month" 
-                      stroke="#718096" 
+                    <XAxis
+                      dataKey="month"
+                      stroke="#718096"
                       tickLine={false}
                       axisLine={{ stroke: '#E2E8F0' }}
                     />
-                    <YAxis 
-                      stroke="#718096" 
+                    <YAxis
+                      stroke="#718096"
                       tickLine={false}
                       axisLine={{ stroke: '#E2E8F0' }}
                       width={80}
                       tickFormatter={(value) => `${value.toLocaleString()}`}
                     />
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value) => [`${value.toLocaleString()} VND`, 'Revenue']}
-                      contentStyle={{ 
-                        backgroundColor: '#fff', 
+                      contentStyle={{
+                        backgroundColor: '#fff',
                         border: '1px solid #e2e8f0',
                         borderRadius: '8px',
                         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
@@ -515,10 +515,10 @@ const StatisticForAdmin = () => {
                       labelStyle={{ fontWeight: 600, color: '#2D3748' }}
                       cursor={{ fill: 'rgba(237, 242, 247, 0.8)' }}
                     />
-                    <Bar 
-                      dataKey="revenue" 
-                      fill="#3182ce" 
-                      barSize={40} 
+                    <Bar
+                      dataKey="revenue"
+                      fill="#3182ce"
+                      barSize={40}
                       radius={[6, 6, 0, 0]}
                       className="hover:opacity-80 transition-opacity"
                     />
@@ -527,76 +527,76 @@ const StatisticForAdmin = () => {
               </div>
             </Card>
           </div>
-          
+
           <div className="md:col-span-1">
             {/* Key Stats Card */}
             <Card
-  title={
-    <div className="flex items-center">
-      <TrophyOutlined className="mr-2 text-yellow-500" />
-      <span>Key Stats</span>
-    </div>
-  }
-  className="shadow-lg rounded-2xl overflow-visible"
-  headStyle={{ 
-    backgroundColor: '#f8fafc', 
-    borderBottom: '1px solid #e2e8f0',
-    fontWeight: 600,
-    color: '#2d3748',
-    padding: '12px 16px'
-  }}
->
-  <div style={{ minHeight: '320px' }}>
-    <div className="space-y-4">
-      <div>
-        <Text className="text-gray-500 text-sm">Best Month</Text>
-        <div className="flex items-center mt-1">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500 flex items-center justify-center mr-3 shadow-md">
-            <TrophyOutlined className="text-white text-lg" />
-          </div>
-          <div>
-            <Text className="font-bold text-gray-800 text-xl">{topMonth.month}</Text>
-            <div className="text-sm text-yellow-600">{formatCurrency(topMonth.revenue)}</div>
-          </div>
-        </div>
-      </div>
-      
-      <div>
-        <Text className="text-gray-500 text-sm">Total Orders</Text>
-        <div className="flex items-center mt-1">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center mr-3 shadow-md">
-            <ShoppingCartOutlined className="text-white text-lg" />
-          </div>
-          <div>
-            <Text className="font-bold text-gray-800 text-xl">{totalOrders}</Text>
-            <div className="text-sm text-blue-600">Average value: {formatCurrency(averageOrderValue)}</div>
-          </div>
-        </div>
-      </div>
-      
-      <div className="pb-4">
-        <Text className="text-gray-500 text-sm">Revenue This Year</Text>
-        <div className="mt-1">
-          <div className="flex items-center">
-            <div className="w-[70px] h-10 rounded-full bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center mr-3 shadow-md">
-              <DollarOutlined className="text-white text-lg" />
-            </div>
-            <div>
-              <Text className="font-bold text-gray-800 text-xl">{formatCurrency(revenueYear)}</Text>
-              <div className="text-sm text-purple-600">Total revenue since the beginning of the year</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</Card>
+              title={
+                <div className="flex items-center">
+                  <TrophyOutlined className="mr-2 text-yellow-500" />
+                  <span>Key Stats</span>
+                </div>
+              }
+              className="shadow-lg rounded-2xl overflow-visible"
+              headStyle={{
+                backgroundColor: '#f8fafc',
+                borderBottom: '1px solid #e2e8f0',
+                fontWeight: 600,
+                color: '#2d3748',
+                padding: '12px 16px'
+              }}
+            >
+              <div style={{ minHeight: '320px' }}>
+                <div className="space-y-4">
+                  <div>
+                    <Text className="text-gray-500 text-sm">Best Month</Text>
+                    <div className="flex items-center mt-1">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500 flex items-center justify-center mr-3 shadow-md">
+                        <TrophyOutlined className="text-white text-lg" />
+                      </div>
+                      <div>
+                        <Text className="font-bold text-gray-800 text-xl">{topMonth.month}</Text>
+                        <div className="text-sm text-yellow-600">{formatCurrency(topMonth.revenue)}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Text className="text-gray-500 text-sm">Total Orders</Text>
+                    <div className="flex items-center mt-1">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center mr-3 shadow-md">
+                        <ShoppingCartOutlined className="text-white text-lg" />
+                      </div>
+                      <div>
+                        <Text className="font-bold text-gray-800 text-xl">{totalOrders}</Text>
+                        <div className="text-sm text-blue-600">Average value: {formatCurrency(averageOrderValue)}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pb-4">
+                    <Text className="text-gray-500 text-sm">Revenue This Year</Text>
+                    <div className="mt-1">
+                      <div className="flex items-center">
+                        <div className="w-[70px] h-10 rounded-full bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center mr-3 shadow-md">
+                          <DollarOutlined className="text-white text-lg" />
+                        </div>
+                        <div>
+                          <Text className="font-bold text-gray-800 text-xl">{formatCurrency(revenueYear)}</Text>
+                          <div className="text-sm text-purple-600">Total revenue since the beginning of the year</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
 
           </div>
         </div>
 
         {/* Order List with Filters */}
-        <Card 
+        <Card
           title={
             <div className="flex items-center">
               <ShoppingCartOutlined className="mr-2 text-blue-500" />
@@ -604,8 +604,8 @@ const StatisticForAdmin = () => {
             </div>
           }
           className="shadow-lg rounded-2xl mb-8"
-          headStyle={{ 
-            backgroundColor: '#f8fafc', 
+          headStyle={{
+            backgroundColor: '#f8fafc',
             borderBottom: '1px solid #e2e8f0',
             fontWeight: 600,
             color: '#2d3748',
@@ -626,33 +626,33 @@ const StatisticForAdmin = () => {
               <FilterOutlined className="mr-2 text-blue-600" />
               <Text strong>Filter Orders</Text>
             </div>
-            
+
             <Row gutter={[16, 16]} className="mb-4">
               <Col xs={24} md={8}>
                 <div className="mb-2">
                   <Text type="secondary">Date Range</Text>
                 </div>
-                <RangePicker 
+                <RangePicker
                   style={{ width: '100%' }}
                   value={dateRange}
                   onChange={(dates) => setDateRange(dates)}
                   placeholder={['Start Date', 'End Date']}
                 />
               </Col>
-              
+
               <Col xs={24} md={8}>
                 <div className="mb-2">
                   <Text type="secondary">Search by Buyer</Text>
                 </div>
-                <Input 
-                  placeholder="Search buyer name" 
+                <Input
+                  placeholder="Search buyer name"
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
                   prefix={<SearchOutlined className="text-gray-400" />}
                   allowClear
                 />
               </Col>
-              
+
               <Col xs={24} md={8}>
                 <div className="mb-2">
                   <Text type="secondary">Price Range</Text>
@@ -672,10 +672,10 @@ const StatisticForAdmin = () => {
                 </Select>
               </Col>
             </Row>
-            
+
             <div className="flex justify-end">
-              <Button 
-                icon={<ReloadOutlined />} 
+              <Button
+                icon={<ReloadOutlined />}
                 onClick={resetFilters}
                 className="bg-gray-200 hover:bg-gray-300 border-none shadow-sm"
               >
@@ -683,15 +683,15 @@ const StatisticForAdmin = () => {
               </Button>
             </div>
           </div>
-          
-          <Table 
-            columns={columns} 
-            dataSource={data} 
-            pagination={{ 
-              pageSize: 5, 
+
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={{
+              pageSize: 5,
               showSizeChanger: true,
               style: { marginTop: '16px' },
-              showTotal: (total, range) => 
+              showTotal: (total, range) =>
                 `${range[0]}-${range[1]} of ${total} orders`
             }}
             className="w-full"

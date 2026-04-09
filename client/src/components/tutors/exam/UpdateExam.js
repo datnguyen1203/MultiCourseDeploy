@@ -283,9 +283,9 @@ const UpdateExam = () => {
         questions: prevExam.questions.map((q, index) =>
           index === qIndex
             ? {
-                ...q,
-                answers: [...q.answers, { answer: "", isCorrect: false }],
-              }
+              ...q,
+              answers: [...q.answers, { answer: "", isCorrect: false }],
+            }
             : q
         ),
       };

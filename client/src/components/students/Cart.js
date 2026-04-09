@@ -39,7 +39,7 @@ const Cart = () => {
   const [cartId, setCartId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const Cart = () => {
 
         setCartItems(updatedItems);
         setTotalPrice(updatedTotalPrice);
-        
+
         message.success("Course removed from cart successfully");
       } else {
         message.error("Failed to remove item from cart");
@@ -171,9 +171,9 @@ const Cart = () => {
           <Space direction="vertical" size="large" align="center">
             <Title level={4}>Your cart is empty</Title>
             <Text type="secondary">No courses in your cart yet</Text>
-            <Button 
-              type="primary" 
-              icon={<HomeOutlined />} 
+            <Button
+              type="primary"
+              icon={<HomeOutlined />}
               size="large"
               onClick={() => navigate("/")}
             >
@@ -225,9 +225,9 @@ const Cart = () => {
                   renderItem={(item) => (
                     <List.Item
                       actions={[
-                        <Button 
-                          type="text" 
-                          danger 
+                        <Button
+                          type="text"
+                          danger
                           icon={<DeleteOutlined />}
                           onClick={() => showDeleteConfirm(item.course._id)}
                         >
@@ -237,11 +237,11 @@ const Cart = () => {
                     >
                       <List.Item.Meta
                         avatar={
-                          <Image 
-                            src={item.course.image} 
-                            alt={item.course.title} 
-                            width={120} 
-                            height={80} 
+                          <Image
+                            src={item.course.image}
+                            alt={item.course.title}
+                            width={120}
+                            height={80}
                             style={{ objectFit: 'cover', borderRadius: 8 }}
                             preview={false}
                           />
@@ -272,8 +272,8 @@ const Cart = () => {
 
             {/* Order Summary */}
             <Col xs={24} lg={8}>
-              <Card 
-                title={<Title level={4}>Order Summary</Title>} 
+              <Card
+                title={<Title level={4}>Order Summary</Title>}
                 bordered={false}
                 style={{ position: 'sticky', top: 24 }}
               >
@@ -294,19 +294,19 @@ const Cart = () => {
                       <Text strong style={{ fontSize: 16 }}>Total</Text>
                     </Col>
                     <Col>
-                      <Statistic 
-                        value={totalPrice} 
-                        suffix="VND" 
-                        precision={0} 
+                      <Statistic
+                        value={totalPrice}
+                        suffix="VND"
+                        precision={0}
                         valueStyle={{ color: '#1890ff', fontSize: 20 }}
                       />
                     </Col>
                   </Row>
 
-                  <Button 
-                    type="primary" 
-                    icon={<CreditCardOutlined />} 
-                    size="large" 
+                  <Button
+                    type="primary"
+                    icon={<CreditCardOutlined />}
+                    size="large"
                     block
                     onClick={handlePayment}
                   >
@@ -325,8 +325,8 @@ const Cart = () => {
         open={isSuccessModalOpen}
         onCancel={() => setIsSuccessModalOpen(false)}
         footer={[
-          <Button 
-            key="goto-courses" 
+          <Button
+            key="goto-courses"
             type="primary"
             icon={<BookOutlined />}
             onClick={() => {

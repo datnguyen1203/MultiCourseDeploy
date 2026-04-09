@@ -346,10 +346,10 @@ const PurchasedCourseDetail = () => {
   // Loading state
   if (loading) {
     return (
-      <div style={{ 
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         minHeight: "100vh",
         background: "linear-gradient(to right, #f0f2f5, #e6f7ff)"
       }}>
@@ -426,16 +426,16 @@ const PurchasedCourseDetail = () => {
   ];
 
   return (
-    <Layout className="purchased-course-detail" style={{ 
+    <Layout className="purchased-course-detail" style={{
       background: "linear-gradient(to right, #f0f2f5, #e6f7ff)",
       minHeight: "100vh"
     }}>
       {contextHolder}
-      
+
       <Content style={{ padding: "24px", maxWidth: 1200, margin: "0 auto" }}>
-        <Button 
-          type="text" 
-          icon={<LeftOutlined />} 
+        <Button
+          type="text"
+          icon={<LeftOutlined />}
           onClick={() => navigate(-1)}
           style={{ marginBottom: 16 }}
         >
@@ -450,21 +450,21 @@ const PurchasedCourseDetail = () => {
           <Row>
             <Col xs={24} md={12}>
               <div style={{ position: "relative" }}>
-                <img 
-                  src={courseDetail.image || "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"} 
-                  alt={courseDetail.title} 
-                  style={{ 
-                    width: "100%", 
-                    height: "100%", 
+                <img
+                  src={courseDetail.image || "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
+                  alt={courseDetail.title}
+                  style={{
+                    width: "100%",
+                    height: "100%",
                     objectFit: "cover",
                     maxHeight: 400
                   }}
                 />
-                
+
                 {/* Tutor badge overlay */}
                 {courseDetail.tutor && (
-                  <div 
-                    style={{ 
+                  <div
+                    style={{
                       position: "absolute",
                       bottom: 16,
                       left: 16,
@@ -477,8 +477,8 @@ const PurchasedCourseDetail = () => {
                     }}
                     onClick={() => setIsTutorDrawerVisible(true)}
                   >
-                    <Avatar 
-                      src={courseDetail.tutor.avatar} 
+                    <Avatar
+                      src={courseDetail.tutor.avatar}
                       icon={!courseDetail.tutor.avatar && <UserOutlined />}
                       style={{ marginRight: 8 }}
                     />
@@ -490,11 +490,11 @@ const PurchasedCourseDetail = () => {
                 )}
               </div>
             </Col>
-            
+
             <Col xs={24} md={12}>
               <div style={{ padding: 24 }}>
                 <Title level={2} style={{ marginBottom: 16 }}>{courseDetail.title}</Title>
-                
+
                 <Paragraph style={{ fontSize: 16, marginBottom: 24 }}>
                   {courseDetail.description}
                 </Paragraph>
@@ -502,11 +502,11 @@ const PurchasedCourseDetail = () => {
                 <Row gutter={[16, 16]}>
                   {courseInfoItems.map(item => (
                     <Col xs={12} key={item.key}>
-                      <Card 
-                        size="small" 
+                      <Card
+                        size="small"
                         style={{ backgroundColor: `${item.color}10`, borderColor: item.color }}
                       >
-                        <Statistic 
+                        <Statistic
                           title={
                             <span style={{ color: item.color, display: "flex", alignItems: "center" }}>
                               {item.icon}
@@ -524,7 +524,7 @@ const PurchasedCourseDetail = () => {
                 <Divider />
 
                 <Space size="large">
-                  <Statistic 
+                  <Statistic
                     title={
                       <span style={{ display: "flex", alignItems: "center" }}>
                         <StarOutlined style={{ marginRight: 8, color: "#faad14" }} />
@@ -536,8 +536,8 @@ const PurchasedCourseDetail = () => {
                     precision={1}
                     valueStyle={{ color: "#faad14" }}
                   />
-                  
-                  <Statistic 
+
+                  <Statistic
                     title={
                       <span style={{ display: "flex", alignItems: "center" }}>
                         <CommentOutlined style={{ marginRight: 8, color: "#1890ff" }} />
@@ -564,8 +564,8 @@ const PurchasedCourseDetail = () => {
           }
           style={{ marginBottom: 24 }}
         >
-          <Collapse 
-            accordion 
+          <Collapse
+            accordion
             bordered={false}
             expandIconPosition="end"
             className="site-collapse-custom-collapse"
@@ -585,12 +585,12 @@ const PurchasedCourseDetail = () => {
                 className="site-collapse-custom-panel"
               >
                 <Paragraph>{lesson.description}</Paragraph>
-                
+
                 <Space size="middle" style={{ marginTop: 16 }}>
                   {lesson.document_url && (
-                    <Button 
-                      type="primary" 
-                      ghost 
+                    <Button
+                      type="primary"
+                      ghost
                       icon={<FileOutlined />}
                       href={lesson.document_url}
                       target="_blank"
@@ -600,7 +600,7 @@ const PurchasedCourseDetail = () => {
                     </Button>
                   )}
                 </Space>
-                
+
                 {lesson.comments && lesson.comments.length > 0 && (
                   <div style={{ marginTop: 24 }}>
                     <Divider>
@@ -609,7 +609,7 @@ const PurchasedCourseDetail = () => {
                         <span>Lesson Feedback ({lesson.comments.length})</span>
                       </Space>
                     </Divider>
-                    
+
                     <List
                       itemLayout="horizontal"
                       dataSource={lesson.comments}
@@ -640,10 +640,10 @@ const PurchasedCourseDetail = () => {
           {/* Lesson Pagination */}
           {lessons.length > lessonsPerPage && (
             <div style={{ marginTop: 24, textAlign: 'center' }}>
-              <Pagination 
-                current={lessonPage} 
+              <Pagination
+                current={lessonPage}
                 pageSize={lessonsPerPage}
-                total={lessons.length} 
+                total={lessons.length}
                 onChange={handleLessonPageChange}
                 showSizeChanger
                 pageSizeOptions={[5, 10, 20]}
@@ -673,24 +673,24 @@ const PurchasedCourseDetail = () => {
                   <List.Item
                     key={comment._id}
                     actions={
-                      comment.author === userProfile?.fullname 
+                      comment.author === userProfile?.fullname
                         ? [
-                            <Button 
-                              type="text" 
-                              icon={<EditOutlined />} 
-                              onClick={() => handleEditComment(comment)}
-                            >
-                              Edit
-                            </Button>,
-                            <Button 
-                              type="text" 
-                              danger 
-                              icon={<DeleteOutlined />} 
-                              onClick={() => handleDeleteComment(comment._id)}
-                            >
-                              Delete
-                            </Button>
-                          ]
+                          <Button
+                            type="text"
+                            icon={<EditOutlined />}
+                            onClick={() => handleEditComment(comment)}
+                          >
+                            Edit
+                          </Button>,
+                          <Button
+                            type="text"
+                            danger
+                            icon={<DeleteOutlined />}
+                            onClick={() => handleDeleteComment(comment._id)}
+                          >
+                            Delete
+                          </Button>
+                        ]
                         : undefined
                     }
                   >
@@ -714,10 +714,10 @@ const PurchasedCourseDetail = () => {
               {/* Comment Pagination */}
               {courseDetail.comments.length > commentsPerPage && (
                 <div style={{ marginTop: 24, textAlign: 'center' }}>
-                  <Pagination 
-                    current={commentPage} 
+                  <Pagination
+                    current={commentPage}
                     pageSize={commentsPerPage}
-                    total={courseDetail.comments.length} 
+                    total={courseDetail.comments.length}
                     onChange={handleCommentPageChange}
                     showSizeChanger
                     pageSizeOptions={[5, 10, 20]}
@@ -746,37 +746,37 @@ const PurchasedCourseDetail = () => {
             onFinish={handleSubmitComment}
           >
             <Form.Item label="Your Rating">
-              <Rate 
+              <Rate
                 allowClear={false}
-                value={rating} 
-                onChange={setRating} 
+                value={rating}
+                onChange={setRating}
                 style={{ fontSize: 36 }}
               />
             </Form.Item>
-            
+
             <Form.Item
               name="comment"
               label="Your Review"
               rules={[{ required: true, message: 'Please write your review' }]}
             >
-              <TextArea 
-                rows={4} 
-                placeholder="Share your thoughts about this course..." 
+              <TextArea
+                rows={4}
+                placeholder="Share your thoughts about this course..."
                 value={comment}
                 onChange={e => setComment(e.target.value)}
               />
             </Form.Item>
-            
+
             {submitError && (
               <Form.Item>
                 <div style={{ color: '#ff4d4f' }}>{submitError}</div>
               </Form.Item>
             )}
-            
+
             <Form.Item style={{ textAlign: 'right' }}>
-              <Button 
-                type="primary" 
-                htmlType="submit" 
+              <Button
+                type="primary"
+                htmlType="submit"
                 icon={<CommentOutlined />}
                 loading={submitting}
                 size="large"
@@ -797,10 +797,10 @@ const PurchasedCourseDetail = () => {
           <Button key="cancel" onClick={() => setIsModalVisible(false)}>
             Cancel
           </Button>,
-          <Button 
-            key="submit" 
-            type="primary" 
-            loading={submitting} 
+          <Button
+            key="submit"
+            type="primary"
+            loading={submitting}
             onClick={handleUpdateComment}
           >
             Update Review
@@ -809,14 +809,14 @@ const PurchasedCourseDetail = () => {
       >
         <Form layout="vertical">
           <Form.Item label="Rating">
-            <Rate 
+            <Rate
               allowClear={false}
-              value={editRating} 
-              onChange={setEditRating} 
+              value={editRating}
+              onChange={setEditRating}
             />
           </Form.Item>
           <Form.Item label="Comment">
-            <TextArea 
+            <TextArea
               rows={4}
               value={editComment}
               onChange={(e) => setEditComment(e.target.value)}
@@ -836,19 +836,19 @@ const PurchasedCourseDetail = () => {
       >
         {courseDetail?.tutor && (
           <div style={{ textAlign: "center", marginBottom: 24 }}>
-            <Avatar 
-              src={courseDetail.tutor.avatar} 
+            <Avatar
+              src={courseDetail.tutor.avatar}
               icon={!courseDetail.tutor.avatar && <UserOutlined />}
-              size={100} 
+              size={100}
               style={{ marginBottom: 16 }}
             />
             <Title level={4}>{courseDetail.tutor.fullname}</Title>
             <Text type="secondary">{courseDetail.tutor.email}</Text>
           </div>
         )}
-        
+
         <Divider />
-        
+
         <Descriptions title="Tutor Information" layout="vertical" bordered>
           <Descriptions.Item label="Address" span={3}>
             {courseDetail?.tutor?.address || "N/A"}
@@ -860,8 +860,8 @@ const PurchasedCourseDetail = () => {
             {courseDetail?.tutor?.gender || "N/A"}
           </Descriptions.Item>
           <Descriptions.Item label="Birthday">
-            {courseDetail?.tutor?.birthday 
-              ? new Date(courseDetail.tutor.birthday).toLocaleDateString("en-GB") 
+            {courseDetail?.tutor?.birthday
+              ? new Date(courseDetail.tutor.birthday).toLocaleDateString("en-GB")
               : "N/A"}
           </Descriptions.Item>
         </Descriptions>

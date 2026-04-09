@@ -6,8 +6,11 @@ module.exports = {
   email: process.env.EMAIL,
   password: process.env.PASSWORD,
 
-  //Firebase
-  storage_bucket: "multicourse-e86d1.firebasestorage.app",
+  cloudinary: {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  },
 
   // Google
   web: {

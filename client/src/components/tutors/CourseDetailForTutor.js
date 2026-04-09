@@ -411,18 +411,16 @@ const CourseDetailForTutor = () => {
           <div className="space-y-8 max-w-7xl mx-auto">
             {/* Course Header */}
             <Card
-              className={`w-full ${
-                isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-              }`}
+              className={`w-full ${isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                }`}
               bordered={false}
               headStyle={{ borderBottom: 0 }}
             >
               <div className="flex flex-col items-center">
                 <Title
                   level={1}
-                  className={`text-center mb-6 ${
-                    isDarkMode ? "text-white" : ""
-                  }`}
+                  className={`text-center mb-6 ${isDarkMode ? "text-white" : ""
+                    }`}
                 >
                   {course.title}
                 </Title>
@@ -450,9 +448,8 @@ const CourseDetailForTutor = () => {
                 </Space>
 
                 <Paragraph
-                  className={`text-center max-w-3xl mx-auto mb-8 text-lg ${
-                    isDarkMode ? "text-gray-300" : ""
-                  }`}
+                  className={`text-center max-w-3xl mx-auto mb-8 text-lg ${isDarkMode ? "text-gray-300" : ""
+                    }`}
                 >
                   {course.description}
                 </Paragraph>
@@ -472,11 +469,10 @@ const CourseDetailForTutor = () => {
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6 w-full max-w-4xl mt-8">
                   <Card
-                    className={`w-full md:w-1/2 ${
-                      isDarkMode
+                    className={`w-full md:w-1/2 ${isDarkMode
                         ? "bg-gradient-to-r from-blue-900 to-indigo-900"
                         : "bg-gradient-to-r from-green-400 to-blue-500"
-                    } text-white shadow-lg`}
+                      } text-white shadow-lg`}
                   >
                     <Statistic
                       title={
@@ -503,9 +499,8 @@ const CourseDetailForTutor = () => {
 
                   {course.comments && course.comments.length > 0 && (
                     <Card
-                      className={`w-full md:w-1/2 ${
-                        isDarkMode ? "bg-gray-700" : "bg-gray-50"
-                      } shadow-lg`}
+                      className={`w-full md:w-1/2 ${isDarkMode ? "bg-gray-700" : "bg-gray-50"
+                        } shadow-lg`}
                     >
                       <div className="flex items-center justify-center gap-2 mb-3">
                         <StarFilled className="text-yellow-400 text-xl" />
@@ -534,9 +529,8 @@ const CourseDetailForTutor = () => {
 
             {/* Reviews Section - Hiển thị trực tiếp trên trang */}
             <Card
-              className={`w-full ${
-                isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-              }`}
+              className={`w-full ${isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                }`}
               bordered={false}
               title={
                 <div className="flex items-center justify-between">
@@ -544,9 +538,8 @@ const CourseDetailForTutor = () => {
                     <MessageFilled className="text-blue-500 mr-2" />
                     <Title
                       level={3}
-                      className={`m-0 ${
-                        isDarkMode ? "text-white" : "text-gray-800"
-                      }`}
+                      className={`m-0 ${isDarkMode ? "text-white" : "text-gray-800"
+                        }`}
                     >
                       Course Reviews
                     </Title>
@@ -559,33 +552,29 @@ const CourseDetailForTutor = () => {
                   {course.comments.slice(0, 3).map((comment, index) => (
                     <div
                       key={index}
-                      className={`p-6 rounded-lg ${
-                        isDarkMode ? "bg-gray-700" : "bg-gray-50"
-                      } transition-all hover:shadow-md`}
+                      className={`p-6 rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-50"
+                        } transition-all hover:shadow-md`}
                     >
                       <div className="flex items-start">
                         <Avatar
                           icon={<UserOutlined />}
                           size={50}
-                          className={`${
-                            isDarkMode ? "bg-blue-600" : "bg-blue-500"
-                          } flex-shrink-0`}
+                          className={`${isDarkMode ? "bg-blue-600" : "bg-blue-500"
+                            } flex-shrink-0`}
                         />
                         <div className="ml-4 flex-grow">
                           <div className="flex items-center justify-between flex-wrap">
                             <Text
                               strong
-                              className={`text-lg ${
-                                isDarkMode ? "text-white" : ""
-                              }`}
+                              className={`text-lg ${isDarkMode ? "text-white" : ""
+                                }`}
                             >
                               {comment.author}
                             </Text>
                             <div className="flex items-center mt-1 sm:mt-0">
                               <ClockCircleFilled
-                                className={`mr-1 ${
-                                  isDarkMode ? "text-gray-400" : "text-gray-500"
-                                }`}
+                                className={`mr-1 ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                                  }`}
                               />
                               <Text type="secondary" className="text-sm">
                                 {new Date(comment.date).toLocaleDateString(
@@ -612,9 +601,8 @@ const CourseDetailForTutor = () => {
                           </div>
 
                           <Paragraph
-                            className={`mt-3 ${
-                              isDarkMode ? "text-gray-300" : "text-gray-700"
-                            }`}
+                            className={`mt-3 ${isDarkMode ? "text-gray-300" : "text-gray-700"
+                              }`}
                             ellipsis={{
                               rows: 3,
                               expandable: true,
@@ -649,11 +637,10 @@ const CourseDetailForTutor = () => {
                         type="primary"
                         ghost
                         onClick={openCommentModal}
-                        className={`rounded-full px-6 ${
-                          isDarkMode
+                        className={`rounded-full px-6 ${isDarkMode
                             ? "border-blue-400 text-blue-400 hover:border-blue-300 hover:text-blue-300"
                             : ""
-                        }`}
+                          }`}
                       >
                         View All {course.comments.length} Reviews
                       </Button>
@@ -676,16 +663,14 @@ const CourseDetailForTutor = () => {
               title={
                 <Title
                   level={3}
-                  className={`flex items-center ${
-                    isDarkMode ? "text-white" : ""
-                  }`}
+                  className={`flex items-center ${isDarkMode ? "text-white" : ""
+                    }`}
                 >
                   <UserOutlined className="mr-2" /> Students Enrolled
                 </Title>
               }
-              className={`w-full ${
-                isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-              }`}
+              className={`w-full ${isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                }`}
               bordered={false}
             >
               {students.length > 0 ? (
@@ -715,16 +700,14 @@ const CourseDetailForTutor = () => {
               title={
                 <Title
                   level={3}
-                  className={`flex items-center ${
-                    isDarkMode ? "text-white" : ""
-                  }`}
+                  className={`flex items-center ${isDarkMode ? "text-white" : ""
+                    }`}
                 >
                   <FileExcelOutlined className="mr-2" /> Course Exams
                 </Title>
               }
-              className={`w-full ${
-                isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-              }`}
+              className={`w-full ${isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                }`}
               bordered={false}
               extra={
                 role !== "Admin" &&
@@ -743,9 +726,8 @@ const CourseDetailForTutor = () => {
               {exams ? (
                 <div>
                   <Card
-                    className={`mb-4 ${
-                      isDarkMode ? "bg-gray-700 text-white" : "bg-gray-50"
-                    }`}
+                    className={`mb-4 ${isDarkMode ? "bg-gray-700 text-white" : "bg-gray-50"
+                      }`}
                     bordered={false}
                   >
                     <Meta
@@ -789,9 +771,8 @@ const CourseDetailForTutor = () => {
                           : exams.questions.slice(0, 3)
                         ).map((question, index) => (
                           <Panel
-                            header={`Question ${index + 1}: ${
-                              question.question
-                            }`}
+                            header={`Question ${index + 1}: ${question.question
+                              }`}
                             key={index}
                             className={
                               isDarkMode ? "bg-gray-600 border-gray-700" : ""
@@ -802,15 +783,14 @@ const CourseDetailForTutor = () => {
                               dataSource={question.answers}
                               renderItem={(answer) => (
                                 <List.Item
-                                  className={`py-2 px-4 rounded-md my-1 ${
-                                    answer.isCorrect
+                                  className={`py-2 px-4 rounded-md my-1 ${answer.isCorrect
                                       ? isDarkMode
                                         ? "bg-green-900 border-l-4 border-green-500 text-green-300"
                                         : "bg-green-100 border-l-4 border-green-500 text-green-700"
                                       : isDarkMode
-                                      ? "bg-red-900 border-l-4 border-red-500 text-red-300"
-                                      : "bg-red-50 border-l-4 border-red-300 text-red-500"
-                                  }`}
+                                        ? "bg-red-900 border-l-4 border-red-500 text-red-300"
+                                        : "bg-red-50 border-l-4 border-red-300 text-red-500"
+                                    }`}
                                 >
                                   <span className="ml-2">{answer.answer}</span>
                                 </List.Item>
@@ -831,9 +811,8 @@ const CourseDetailForTutor = () => {
                               <EyeOutlined />
                             )
                           }
-                          className={`mt-4 ${
-                            isDarkMode ? "text-blue-400" : ""
-                          }`}
+                          className={`mt-4 ${isDarkMode ? "text-blue-400" : ""
+                            }`}
                         >
                           {showAllQuestions ? "Show Less" : "Show More"}
                         </Button>
@@ -875,16 +854,14 @@ const CourseDetailForTutor = () => {
               title={
                 <Title
                   level={3}
-                  className={`flex items-center ${
-                    isDarkMode ? "text-white" : ""
-                  }`}
+                  className={`flex items-center ${isDarkMode ? "text-white" : ""
+                    }`}
                 >
                   <BookOutlined className="mr-2" /> Course Lessons
                 </Title>
               }
-              className={`w-full ${
-                isDarkMode ? "bg-gray-800 text-white" : "bg-white"
-              }`}
+              className={`w-full ${isDarkMode ? "bg-gray-800 text-white" : "bg-white"
+                }`}
               bordered={false}
               extra={
                 role !== "Admin" &&
@@ -905,9 +882,8 @@ const CourseDetailForTutor = () => {
                     <Card
                       key={lesson._id}
                       hoverable
-                      className={`${
-                        isDarkMode ? "bg-gray-700" : "bg-white"
-                      } border-l-4 border-blue-500 transition-all hover:shadow-xl`}
+                      className={`${isDarkMode ? "bg-gray-700" : "bg-white"
+                        } border-l-4 border-blue-500 transition-all hover:shadow-xl`}
                       actions={[
                         <Button
                           key="view"
@@ -948,9 +924,8 @@ const CourseDetailForTutor = () => {
                         </Tag>
                         <Text
                           strong
-                          className={`text-blue-500 text-lg ${
-                            isDarkMode ? "text-blue-400" : ""
-                          }`}
+                          className={`text-blue-500 text-lg ${isDarkMode ? "text-blue-400" : ""
+                            }`}
                         >
                           {lesson.title}
                         </Text>
@@ -1109,17 +1084,15 @@ const CourseDetailForTutor = () => {
             renderItem={(comment, index) => (
               <List.Item
                 key={index}
-                className={`mb-4 p-4 rounded-lg ${
-                  isDarkMode ? "bg-gray-700" : "bg-gray-50"
-                }`}
+                className={`mb-4 p-4 rounded-lg ${isDarkMode ? "bg-gray-700" : "bg-gray-50"
+                  }`}
               >
                 <div className="flex items-start">
                   <Avatar
                     icon={<UserOutlined />}
                     size={50}
-                    className={`${
-                      isDarkMode ? "bg-blue-600" : "bg-blue-500"
-                    } flex-shrink-0`}
+                    className={`${isDarkMode ? "bg-blue-600" : "bg-blue-500"
+                      } flex-shrink-0`}
                   />
                   <div className="ml-4 flex-grow">
                     <div className="flex items-center justify-between flex-wrap">
@@ -1131,9 +1104,8 @@ const CourseDetailForTutor = () => {
                       </Text>
                       <div className="flex items-center mt-1 sm:mt-0">
                         <ClockCircleFilled
-                          className={`mr-1 ${
-                            isDarkMode ? "text-gray-400" : "text-gray-500"
-                          }`}
+                          className={`mr-1 ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                            }`}
                         />
                         <Text type="secondary" className="text-sm">
                           {new Date(comment.date).toLocaleDateString("en-US", {
@@ -1157,9 +1129,8 @@ const CourseDetailForTutor = () => {
                     </div>
 
                     <Paragraph
-                      className={`mt-3 ${
-                        isDarkMode ? "text-gray-300" : "text-gray-700"
-                      }`}
+                      className={`mt-3 ${isDarkMode ? "text-gray-300" : "text-gray-700"
+                        }`}
                     >
                       {comment.comment}
                     </Paragraph>

@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { toast, ToastContainer } from "react-toastify";
-import { 
-  Dropdown, 
-  Spin, 
-  Table, 
-  Tag, 
-  Input, 
-  Button, 
-  Modal, 
-  Typography, 
+import {
+  Dropdown,
+  Spin,
+  Table,
+  Tag,
+  Input,
+  Button,
+  Modal,
+  Typography,
   Select,
   Card,
   message as antMessage,
   Row,
   Col
 } from "antd";
-import { 
-  EllipsisOutlined, 
-  CheckOutlined, 
-  StopOutlined, 
+import {
+  EllipsisOutlined,
+  CheckOutlined,
+  StopOutlined,
   SearchOutlined,
   FilterOutlined,
   ClockCircleOutlined,
@@ -84,8 +84,8 @@ export default function RequestList() {
       const data = await response.json();
       const sortedRequests = Array.isArray(data)
         ? data.sort(
-            (a, b) => new Date(b.request_date) - new Date(a.request_date)
-          )
+          (a, b) => new Date(b.request_date) - new Date(a.request_date)
+        )
         : [];
 
       setRequests(sortedRequests);
@@ -111,31 +111,31 @@ export default function RequestList() {
 
   const filterRequests = (search, status) => {
     let filtered = requests;
-  
+
     if (search) {
       filtered = filtered.filter(request => {
         // Kiểm tra request có tồn tại không
         if (!request) return false;
-  
+
         // Kiểm tra và chuyển đổi an toàn
-        const courseTitle = typeof request.course_title === 'string' 
-          ? request.course_title.toLowerCase() 
+        const courseTitle = typeof request.course_title === 'string'
+          ? request.course_title.toLowerCase()
           : '';
-        const requestType = typeof request.request_type === 'string' 
-          ? request.request_type.toLowerCase() 
+        const requestType = typeof request.request_type === 'string'
+          ? request.request_type.toLowerCase()
           : '';
-  
+
         return courseTitle.includes(search.toLowerCase()) ||
-               requestType.includes(search.toLowerCase());
+          requestType.includes(search.toLowerCase());
       });
     }
-  
+
     if (status !== "All") {
-      filtered = filtered.filter(request => 
+      filtered = filtered.filter(request =>
         request && request.status === status
       );
     }
-  
+
     setFilteredRequests(filtered);
   };
 
@@ -168,7 +168,7 @@ export default function RequestList() {
     try {
       setSpinning(true);
       setPercent(0);
-      
+
       let ptg = 0;
       const interval = setInterval(() => {
         ptg += 5;
@@ -205,7 +205,7 @@ export default function RequestList() {
     }
   };
 
-  const columns = [ 
+  const columns = [
     {
       title: "Course Name",
       dataIndex: "course_title",
@@ -244,25 +244,25 @@ export default function RequestList() {
       onFilter: (value, record) => record.status === value,
       render: (status) => {
         const statusColors = {
-          Pending: { 
-            color: "yellow", 
-            className: "bg-yellow-100 text-yellow-800 px-3 py-1" 
+          Pending: {
+            color: "yellow",
+            className: "bg-yellow-100 text-yellow-800 px-3 py-1"
           },
-          Approved: { 
-            color: "green", 
-            className: "bg-green-100 text-green-800 px-3 py-1" 
+          Approved: {
+            color: "green",
+            className: "bg-green-100 text-green-800 px-3 py-1"
           },
-          Rejected: { 
-            color: "red", 
-            className: "bg-red-100 text-red-800 px-3 py-1" 
+          Rejected: {
+            color: "red",
+            className: "bg-red-100 text-red-800 px-3 py-1"
           }
         };
-    
+
         const statusStyle = statusColors[status] || statusColors.Pending;
-    
+
         return (
-          <Tag 
-            color={statusStyle.color} 
+          <Tag
+            color={statusStyle.color}
             className={statusStyle.className}
           >
             {status}
@@ -275,11 +275,11 @@ export default function RequestList() {
       key: "actions",
       render: (record) => (
         record.status === "Pending" && (
-          <DropDownMenu 
-            handleProcessRequest={handleProcessRequest} 
-            setIsModalOpen={setIsModalOpen} 
-            setSelectedRequest={setSelectedRequest}  
-            record={record} 
+          <DropDownMenu
+            handleProcessRequest={handleProcessRequest}
+            setIsModalOpen={setIsModalOpen}
+            setSelectedRequest={setSelectedRequest}
+            record={record}
           />
         )
       ),
@@ -297,13 +297,13 @@ export default function RequestList() {
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 to-indigo-100'} p-6`}>
       <Spin spinning={spinning} percent={percent} fullscreen />
-      
+
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
           <Title level={2} className={`m-0 ${theme === 'dark' ? 'text-white' : 'text-blue-800'}`}>
             Request Management
           </Title>
-          
+
           <div className="flex items-center space-x-4">
             <Input
               placeholder="Search requests"
@@ -331,7 +331,7 @@ export default function RequestList() {
 
         {/* Thêm bộ đếm requests ở đây */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card 
+          <Card
             className={`shadow-md hover:shadow-lg transition-shadow ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-blue-200'}`}
           >
             <div className="text-center">
@@ -343,8 +343,8 @@ export default function RequestList() {
               <Text className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Total Requests</Text>
             </div>
           </Card>
-          
-          <Card 
+
+          <Card
             className={`shadow-md hover:shadow-lg transition-shadow ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-yellow-50 border-yellow-200'}`}
           >
             <div className="text-center">
@@ -359,8 +359,8 @@ export default function RequestList() {
               <Text className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}> Pending</Text>
             </div>
           </Card>
-          
-          <Card 
+
+          <Card
             className={`shadow-md hover:shadow-lg transition-shadow ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-green-50 border-green-200'}`}
           >
             <div className="text-center">
@@ -375,8 +375,8 @@ export default function RequestList() {
               <Text className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}> Approved</Text>
             </div>
           </Card>
-          
-          <Card 
+
+          <Card
             className={`shadow-md hover:shadow-lg transition-shadow ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-red-50 border-red-200'}`}
           >
             <div className="text-center">
@@ -401,10 +401,10 @@ export default function RequestList() {
         )}
 
         <div className={`rounded-xl shadow-lg overflow-hidden ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-          <Table 
-            columns={columns} 
+          <Table
+            columns={columns}
             dataSource={data}
-            pagination={{ 
+            pagination={{
               position: ['bottomCenter'],
               showSizeChanger: true,
               pageSizeOptions: [10, 20, 50],
@@ -422,9 +422,9 @@ export default function RequestList() {
           <Button key="cancel" onClick={() => setIsModalOpen(false)}>
             Cancel
           </Button>,
-          <Button 
-            key="reject" 
-            type="primary" 
+          <Button
+            key="reject"
+            type="primary"
             danger
             onClick={() => {
               handleProcessRequest(
@@ -440,18 +440,18 @@ export default function RequestList() {
           </Button>
         ]}
       >
-          <div className="mb-4">
+        <div className="mb-4">
           <p className="mb-2 text-gray-600">
             Please provide a reason for banning this course:
           </p>
-        <Input.TextArea
-          rows={4}
-          placeholder="Please provide a detailed reason for rejection..."
-          value={rejectReason}
-          onChange={(e) => setRejectReason(e.target.value)}
-          
-        />
-         </div>
+          <Input.TextArea
+            rows={4}
+            placeholder="Please provide a detailed reason for rejection..."
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+
+          />
+        </div>
       </Modal>
 
       <ToastContainer theme={theme === "dark" ? "dark" : "light"} />
@@ -459,7 +459,7 @@ export default function RequestList() {
   );
 }
 
-const DropDownMenu = ({record, handleProcessRequest, setIsModalOpen, setSelectedRequest}) => {
+const DropDownMenu = ({ record, handleProcessRequest, setIsModalOpen, setSelectedRequest }) => {
   const items = [
     {
       key: '1',
@@ -491,10 +491,10 @@ const DropDownMenu = ({record, handleProcessRequest, setIsModalOpen, setSelected
   ];
 
   return (
-    <Dropdown menu={{items}} trigger={['click']}>
-      <Button 
-        type="text" 
-        icon={<EllipsisOutlined />} 
+    <Dropdown menu={{ items }} trigger={['click']}>
+      <Button
+        type="text"
+        icon={<EllipsisOutlined />}
         className="hover:bg-gray-100 rounded-full"
       />
     </Dropdown>

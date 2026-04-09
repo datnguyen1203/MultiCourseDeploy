@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { 
-  Dropdown, 
-  Table, 
-  Tag, 
-  Card, 
-  Space, 
-  Typography, 
-  Button, 
-  Input, 
-  Select, 
-  Row, 
-  Col, 
+import {
+  Dropdown,
+  Table,
+  Tag,
+  Card,
+  Space,
+  Typography,
+  Button,
+  Input,
+  Select,
+  Row,
+  Col,
   message,
   Collapse
 } from 'antd';
 import { toast, ToastContainer } from "react-toastify";
 import { useTheme } from "../context/ThemeContext";
-import { 
-  EllipsisOutlined, 
-  CheckOutlined, 
-  StopOutlined, 
-  SearchOutlined, 
+import {
+  EllipsisOutlined,
+  CheckOutlined,
+  StopOutlined,
+  SearchOutlined,
   ReloadOutlined,
   StarFilled,
   FilterOutlined,
@@ -64,7 +64,7 @@ export default function ManageReview() {
     setLoading(true);
     try {
       const response = await axios.get(
-        'https://multicourseserver.onrender.com/api/comments/show-all-comments', 
+        'https://multicourseserver.onrender.com/api/comments/show-all-comments',
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -100,7 +100,7 @@ export default function ManageReview() {
   // Apply filters
   const filteredData = comments.filter((comment) => {
     // Text search filter
-    const matchesSearch = 
+    const matchesSearch =
       comment.author.toLowerCase().includes(searchText.toLowerCase()) ||
       (comment.type === 'course' ? comment.courseTitle : comment.lessonTitle)
         .toLowerCase()
@@ -111,14 +111,14 @@ export default function ManageReview() {
     const matchesType = filters.type === 'all' || comment.type === filters.type;
 
     // Status filter
-    const matchesStatus = 
-      filters.status === 'all' || 
-      (filters.status === 'active' && comment.status) || 
+    const matchesStatus =
+      filters.status === 'all' ||
+      (filters.status === 'active' && comment.status) ||
       (filters.status === 'inactive' && !comment.status);
 
     // Rating filter
-    const matchesRating = 
-      filters.rating === 'all' || 
+    const matchesRating =
+      filters.rating === 'all' ||
       (filters.rating === '5' && comment.rating === 5) ||
       (filters.rating === '4' && comment.rating === 4) ||
       (filters.rating === '3' && comment.rating === 3) ||
@@ -131,14 +131,14 @@ export default function ManageReview() {
   // Apply sorting
   const sortedData = sortConfig.key
     ? [...filteredData].sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      })
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    })
     : filteredData;
 
   const getSortIcon = (columnKey) => {
@@ -156,10 +156,10 @@ export default function ManageReview() {
   const totalReviews = comments.length;
   const activeReviews = comments.filter(comment => comment.status).length;
   const inactiveReviews = totalReviews - activeReviews;
-  
+
   const courseReviews = comments.filter(comment => comment.type === 'course').length;
   const lessonReviews = comments.filter(comment => comment.type === 'lesson').length;
-  
+
   // Calculate star ratings
   const fiveStarReviews = comments.filter(comment => comment.rating === 5).length;
   const fourStarReviews = comments.filter(comment => comment.rating === 4).length;
@@ -167,7 +167,7 @@ export default function ManageReview() {
   const twoStarReviews = comments.filter(comment => comment.rating === 2).length;
   const oneStarReviews = comments.filter(comment => comment.rating === 1).length;
   const lowStarReviews = twoStarReviews + oneStarReviews;
-  
+
   // Calculate average rating
   const totalRatingSum = comments.reduce((sum, comment) => sum + comment.rating, 0);
   const averageRating = totalReviews > 0 ? (totalRatingSum / totalReviews).toFixed(1) : 0;
@@ -185,7 +185,7 @@ export default function ManageReview() {
     {
       title: (
         <div className="flex items-center cursor-pointer" onClick={() => handleSort('type')}>
-          Type 
+          Type
           {/* {getSortIcon('type')} */}
         </div>
       ),
@@ -201,7 +201,7 @@ export default function ManageReview() {
     {
       title: (
         <div className="flex items-center cursor-pointer" onClick={() => handleSort('author')}>
-          Full Name 
+          Full Name
           {/* {getSortIcon('author')} */}
         </div>
       ),
@@ -213,7 +213,7 @@ export default function ManageReview() {
     {
       title: (
         <div className="flex items-center cursor-pointer" onClick={() => handleSort('courseTitle')}>
-          Course Name 
+          Course Name
           {/* {getSortIcon('courseTitle')} */}
         </div>
       ),
@@ -243,20 +243,20 @@ export default function ManageReview() {
             {/* <Text className="line-clamp-1 max-w-[150px]">
               {record.comment}
             </Text> */}
-              <Button 
-            type="text" 
-            icon={expandedRowKeys.includes(record.commentId) ? <UpOutlined /> : <DownOutlined />}
-            className="ml-2" 
-          />
+            <Button
+              type="text"
+              icon={expandedRowKeys.includes(record.commentId) ? <UpOutlined /> : <DownOutlined />}
+              className="ml-2"
+            />
           </div>
-        
+
         </div>
       ),
     },
     {
       title: (
         <div className="flex items-center cursor-pointer" onClick={() => handleSort('status')}>
-          Status 
+          Status
           {/* {getSortIcon('status')} */}
         </div>
       ),
@@ -264,7 +264,7 @@ export default function ManageReview() {
       key: 'status',
       sorter: true,
       render: (status) => (
-        status 
+        status
           ? <Tag color="success" icon={<CheckOutlined />} className="px-3 py-1">Active</Tag>
           : <Tag color="error" icon={<StopOutlined />} className="px-3 py-1">Inactive</Tag>
       ),
@@ -295,8 +295,8 @@ export default function ManageReview() {
         <div className="flex mb-2">
           <div className="flex mr-3">
             {[...Array(5)].map((_, i) => (
-              <StarFilled 
-                key={i} 
+              <StarFilled
+                key={i}
                 className={`text-lg ${i < record.rating ? 'text-yellow-400' : 'text-gray-300'}`}
               />
             ))}
@@ -314,7 +314,7 @@ export default function ManageReview() {
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100'} p-6`}>
-      <Card 
+      <Card
         className={`shadow-lg rounded-lg ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white'}`}
         bordered={false}
       >
@@ -330,8 +330,8 @@ export default function ManageReview() {
               className="rounded-md w-full sm:w-64"
               allowClear
             />
-            <Button 
-              icon={<ReloadOutlined />} 
+            <Button
+              icon={<ReloadOutlined />}
               onClick={fetchComments}
               className={`flex items-center ${theme === 'dark' ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
             >
@@ -428,10 +428,10 @@ export default function ManageReview() {
                   {fiveStarReviews}
                 </div>
                 <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-amber-600'}`}>
-                  {totalReviews > 0 ? ((fiveStarReviews/totalReviews)*100).toFixed(1) : 0}%
+                  {totalReviews > 0 ? ((fiveStarReviews / totalReviews) * 100).toFixed(1) : 0}%
                 </div>
               </div>
-              
+
               <div className="text-center">
                 <div className="flex">
                   <StarFilled className="text-yellow-400" />
@@ -444,10 +444,10 @@ export default function ManageReview() {
                   {fourStarReviews}
                 </div>
                 <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-amber-600'}`}>
-                  {totalReviews > 0 ? ((fourStarReviews/totalReviews)*100).toFixed(1) : 0}%
+                  {totalReviews > 0 ? ((fourStarReviews / totalReviews) * 100).toFixed(1) : 0}%
                 </div>
               </div>
-              
+
               <div className="text-center">
                 <div className="flex">
                   <StarFilled className="text-yellow-400" />
@@ -460,10 +460,10 @@ export default function ManageReview() {
                   {threeStarReviews}
                 </div>
                 <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-amber-600'}`}>
-                  {totalReviews > 0 ? ((threeStarReviews/totalReviews)*100).toFixed(1) : 0}%
+                  {totalReviews > 0 ? ((threeStarReviews / totalReviews) * 100).toFixed(1) : 0}%
                 </div>
               </div>
-              
+
               <div className="text-center">
                 <div className="flex">
                   <StarFilled className="text-yellow-400" />
@@ -476,10 +476,10 @@ export default function ManageReview() {
                   {twoStarReviews}
                 </div>
                 <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-amber-600'}`}>
-                  {totalReviews > 0 ? ((twoStarReviews/totalReviews)*100).toFixed(1) : 0}%
+                  {totalReviews > 0 ? ((twoStarReviews / totalReviews) * 100).toFixed(1) : 0}%
                 </div>
               </div>
-              
+
               <div className="text-center">
                 <div className="flex">
                   <StarFilled className="text-yellow-400" />
@@ -492,11 +492,11 @@ export default function ManageReview() {
                   {oneStarReviews}
                 </div>
                 <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-amber-600'}`}>
-                  {totalReviews > 0 ? ((oneStarReviews/totalReviews)*100).toFixed(1) : 0}%
+                  {totalReviews > 0 ? ((oneStarReviews / totalReviews) * 100).toFixed(1) : 0}%
                 </div>
               </div>
             </div>
-            
+
             <div className={`flex items-center px-4 py-2 rounded-full ${theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-white border border-amber-200'}`}>
               <StarFilled className="text-yellow-400 text-xl mr-2" />
               <div>
@@ -575,8 +575,8 @@ export default function ManageReview() {
               </div>
             </Col>
             <Col xs={24} sm={8} md={6} className="mt-[26px] items-end">
-              <Button 
-                icon={<ReloadOutlined />} 
+              <Button
+                icon={<ReloadOutlined />}
                 onClick={() => setFilters({ type: 'all', status: 'all', rating: 'all' })}
                 className={`w-full ${theme === 'dark' ? 'bg-gray-600 text-white hover:bg-gray-500' : 'bg-gray-200 hover:bg-gray-300'}`}
               >
@@ -586,9 +586,9 @@ export default function ManageReview() {
           </Row>
         </div>
 
-        <Table 
-          columns={columns} 
-          dataSource={data} 
+        <Table
+          columns={columns}
+          dataSource={data}
           loading={loading}
           expandable={{
             expandedRowKeys: expandedRowKeys,
@@ -596,7 +596,7 @@ export default function ManageReview() {
             onExpand: (expanded, record) => toggleExpandRow(record),
             expandRowByClick: false
           }}
-          pagination={{ 
+          pagination={{
             pageSize: 10,
             showSizeChanger: true,
             showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
@@ -624,14 +624,14 @@ const DropDownMenu = ({ record, fetchComments }) => {
 
   const toggleCommentStatus = async (type, commentId) => {
     try {
-      const url = type === 'course' 
+      const url = type === 'course'
         ? `https://multicourseserver.onrender.com/api/comments/change-course-comment-status/${commentId}`
         : `https://multicourseserver.onrender.com/api/comments/change-lesson-comment-status/${commentId}`;
-      
+
       await axios.put(url, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      
+
       fetchComments();
       message.success('Comment status updated successfully');
     } catch (error) {
@@ -644,7 +644,7 @@ const DropDownMenu = ({ record, fetchComments }) => {
     {
       key: '1',
       label: (
-        <div 
+        <div
           onClick={() => toggleCommentStatus(record.type, record.commentId)}
           className={`flex items-center gap-2 px-4 py-2 text-sm ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'} rounded-md transition-colors duration-150`}
         >

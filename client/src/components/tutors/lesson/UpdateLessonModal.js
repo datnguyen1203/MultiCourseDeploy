@@ -305,16 +305,14 @@ const UpdateLessonModal = ({ lesson, onClose, onUpdate, visible = true }) => {
                   <InboxOutlined className="text-blue-500" />
                 </p>
                 <p
-                  className={`ant-upload-text ${
-                    isDarkMode ? "text-white" : ""
-                  }`}
+                  className={`ant-upload-text ${isDarkMode ? "text-white" : ""
+                    }`}
                 >
                   Click or drag to upload video
                 </p>
                 <p
-                  className={`ant-upload-hint text-xs ${
-                    isDarkMode ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`ant-upload-hint text-xs ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
                 >
                   {lesson?.video_url
                     ? "Upload to replace existing video"
@@ -360,16 +358,14 @@ const UpdateLessonModal = ({ lesson, onClose, onUpdate, visible = true }) => {
                   <InboxOutlined className="text-blue-500" />
                 </p>
                 <p
-                  className={`ant-upload-text ${
-                    isDarkMode ? "text-white" : ""
-                  }`}
+                  className={`ant-upload-text ${isDarkMode ? "text-white" : ""
+                    }`}
                 >
                   Click or drag to upload document
                 </p>
                 <p
-                  className={`ant-upload-hint text-xs ${
-                    isDarkMode ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`ant-upload-hint text-xs ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
                 >
                   {lesson?.document_url
                     ? "Upload to replace existing document"
